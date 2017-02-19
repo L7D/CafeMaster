@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C088E97C-9102-4F16-AA5B-5A32B4358F5F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CafeMaster_UI</RootNamespace>
+    <AssemblyName>우윳빛깔 카페스탭</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>APP_ICON.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>bin\Release\bin\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Json">
+      <HintPath>..\..\..\C#\라이브러리\System.Net.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GlobalVar.cs" />
+    <Compile Include="Interface\AutoLoginManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\AutoLoginManagerForm.Designer.cs">
+      <DependentUpon>AutoLoginManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\CustomInterface.cs" />
+    <Compile Include="Interface\AutoLoginSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\AutoLoginSettingForm.Designer.cs">
+      <DependentUpon>AutoLoginSettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\NotifyBoxInterface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\NotifyBoxInterface.Designer.cs">
+      <DependentUpon>NotifyBoxInterface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\NotifyChildPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\NotifyChildPanel.Designer.cs">
+      <DependentUpon>NotifyChildPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\OptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\OptionForm.Designer.cs">
+      <DependentUpon>OptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\ProgramInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\ProgramInformation.Designer.cs">
+      <DependentUpon>ProgramInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\UserWarnOptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\UserWarnOptionForm.Designer.cs">
+      <DependentUpon>UserWarnOptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Welcome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\Welcome.Designer.cs">
+      <DependentUpon>Welcome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lib\Advice.cs" />
+    <Compile Include="Lib\AutoLogin.cs" />
+    <Compile Include="Lib\BrowserCapture.cs" />
+    <Compile Include="Lib\Config.cs" />
+    <Compile Include="Lib\Core.cs" />
+    <Compile Include="Lib\Gate.cs" />
+    <Compile Include="Lib\NaverRequest.cs" />
+    <Compile Include="Lib\Notify.cs" />
+    <Compile Include="Lib\NotifyBox.cs" />
+    <Compile Include="Lib\SoundNotify.cs" />
+    <Compile Include="Lib\Theme.cs" />
+    <Compile Include="Lib\Update.cs" />
+    <Compile Include="Lib\Utility.cs" />
+    <Compile Include="Lib\UXProgram.cs" />
+    <Compile Include="Lib\WinAPI.cs" />
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\NaverLoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\NaverLoginForm.Designer.cs">
+      <DependentUpon>NaverLoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Interface\AutoLoginManagerForm.resx">
+      <DependentUpon>AutoLoginManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\AutoLoginSettingForm.resx">
+      <DependentUpon>AutoLoginSettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\NaverLoginForm.resx">
+      <DependentUpon>NaverLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\NotifyBoxInterface.resx">
+      <DependentUpon>NotifyBoxInterface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\NotifyChildPanel.resx">
+      <DependentUpon>NotifyChildPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\OptionForm.resx">
+      <DependentUpon>OptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\ProgramInformation.resx">
+      <DependentUpon>ProgramInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\UserWarnOptionForm.resx">
+      <DependentUpon>UserWarnOptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Welcome.resx">
+      <DependentUpon>Welcome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NaverLoginForm_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WARNING_ICON.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ERROR_ICON.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\INFORMATION_ICON.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\QUESTION_ICON.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PROGRAM_LOGO.png" />
+    <None Include="Resources\OPTION.png" />
+    <None Include="Resources\PICTURE.png" />
+    <None Include="Resources\Background03.png" />
+    <None Include="Resources\WARN_EXAMPLE.jpg" />
+    <None Include="Resources\THUNDER.png" />
+    <None Include="Resources\REMOVE_ICON.png" />
+    <None Include="Resources\UPDATE_HAVE.png" />
+    <None Include="Resources\Background01.png" />
+    <None Include="Resources\Background02.png" />
+    <None Include="Resources\PROGRAM_LOCKED.png" />
+    <None Include="Resources\VIEW.png" />
+    <None Include="Resources\newNotify.wav" />
+    <None Include="Resources\welcome_v2.wav" />
+    <None Include="Resources\welcome.wav" />
+    <None Include="Resources\PROGRAM_FUNNY_ICON.png" />
+    <None Include="Resources\REFRESH.png" />
+    <None Include="Resources\BOARD_ICON.png" />
+    <None Include="Resources\TIME_ICON.png" />
+    <None Include="Resources\USER_ICON.png" />
+    <None Include="Resources\locked.png" />
+    <None Include="Resources\unlocked.png" />
+    <None Include="Resources\BELL_IGNORE.png" />
+    <None Include="Resources\BELL_NORMAL.png" />
+    <None Include="Resources\HIDE.png" />
+    <None Include="Resources\notify.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HELP.png" />
+    <None Include="Resources\ADMIN_SHIELD.png" />
+    <None Include="Resources\NEW_ARTICLE.png" />
+    <None Include="Resources\CHAT.png" />
+    <None Include="Resources\EMPTY.png" />
+    <None Include="Resources\CHECK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="APP_ICON.ico" />
+    <None Include="Resources\FLATCHECKBOX_ON.png" />
+    <None Include="Resources\FLATCHECKBOX_OFF.png" />
+    <None Include="Resources\PROFILE_UNKNOWN_160x160.png" />
+    <None Include="Resources\PROFILE_UNKNOWN.png" />
+    <None Include="Resources\PROFILE_IMAGE_CIRCLE.png" />
+    <None Include="Resources\CLIPBOARD.png" />
+    <None Include="Resources\PROFILE_IMAGE_CIRCLE_160x160.png" />
+    <None Include="Resources\CLOSE.png" />
+    <None Include="Resources\WELCOME_SPLASH.png" />
+    <None Include="Resources\PROGRAM_ICON_45x45.png" />
+    <None Include="Resources\PROGRAM_ICON_150x150.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>move "$(TargetDir)\*.dll" "$(TargetDir)\bin"
+move "$(TargetDir)\*.pdb" "$(TargetDir)\bin"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
