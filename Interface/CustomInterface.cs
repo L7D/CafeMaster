@@ -16,7 +16,7 @@ namespace CafeMaster_UI.Interface
 	{
 		public static void ScrollDown( this Panel p, int pos )
 		{
-			//pos passed in should be positive
+			// pos passed in should be positive
 			using ( Control c = new Control( ) { Parent = p, Height = 1, Top = p.ClientSize.Height + pos } )
 			{
 				p.ScrollControlIntoView( c );
@@ -24,7 +24,7 @@ namespace CafeMaster_UI.Interface
 		}
 		public static void ScrollUp( this Panel p, int pos )
 		{
-			//pos passed in should be negative
+			// pos passed in should be negative
 			using ( Control c = new Control( ) { Parent = p, Height = 1, Top = pos } )
 			{
 				p.ScrollControlIntoView( c );
@@ -68,44 +68,6 @@ namespace CafeMaster_UI.Interface
 		{
 			base.OnClick( e );
 			this.Status = !this.Status;
-
-		}
-	}
-
-	// https://cboard.cprogramming.com/csharp-programming/119414-custom-tooltip.html
-	public class TipTimeToolTip : ToolTip
-	{
-		public TipTimeToolTip( )
-		{
-			this.OwnerDraw = true;
-			this.Popup += new PopupEventHandler( this.OnPopup );
-			this.Draw += new DrawToolTipEventHandler( this.OnDraw );
-
-		}
-
-		private void OnPopup( object sender, PopupEventArgs e ) // use this event to set the size of the tool tip
-		{
-			e.ToolTipSize = new Size( 200, 100 );
-		}
-
-		private void OnDraw( object sender, DrawToolTipEventArgs e ) // use this event to customise the tool tip
-		{
-			Graphics g = e.Graphics;
-
-			LinearGradientBrush b = new LinearGradientBrush( e.Bounds,
-				Color.GreenYellow, Color.MintCream, 45f );
-
-			g.FillRectangle( b, e.Bounds );
-
-			g.DrawRectangle( new Pen( Brushes.Red, 1 ), new Rectangle( e.Bounds.X, e.Bounds.Y,
-				e.Bounds.Width - 1, e.Bounds.Height - 1 ) );
-
-			g.DrawString( e.ToolTipText, new Font( e.Font, FontStyle.Bold ), Brushes.Silver,
-				new PointF( e.Bounds.X + 6, e.Bounds.Y + 6 ) ); // shadow layer
-			g.DrawString( e.ToolTipText, new Font( e.Font, FontStyle.Bold ), Brushes.Black,
-				new PointF( e.Bounds.X + 5, e.Bounds.Y + 5 ) ); // top layer
-
-			b.Dispose( );
 		}
 	}
 
@@ -114,18 +76,12 @@ namespace CafeMaster_UI.Interface
 	{
 		public DoubleBufferPanel( )
 		{
-			// Set the value of the double-buffering style bits to true.
-			this.SetStyle( ControlStyles.DoubleBuffer |
-			  ControlStyles.UserPaint |
-			  ControlStyles.AllPaintingInWmPaint,
-			  true );
-
+			this.SetStyle( ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true );
 			this.UpdateStyles( );
 		}
 	}
 
-
-	//http://stackoverflow.com/questions/16989957/drawing-over-richtextbox
+	// http://stackoverflow.com/questions/16989957/drawing-over-richtextbox
 	class RichBox : RichTextBox
 	{
 		private const int WM_PAINT = 15;
@@ -151,16 +107,18 @@ namespace CafeMaster_UI.Interface
 
 				using ( Graphics g = Graphics.FromHwnd( this.Handle ) )
 				{
-					int w = this.Width, h = this.Height;
+					using ( Pen lineDrawer = new Pen( GlobalVar.MasterColor )
+					{
+						Width = 1
+					} )
+					{
+						int w = this.Width, h = this.Height;
 
-					Pen lineDrawer = new Pen( GlobalVar.MasterColor ); // Line Color is same as Title bar
-					lineDrawer.Width = 1; // Line width set to 10px
-
-					//g.DrawLine( lineDrawer, 0, 0, w, 0 ); // 위
-					//g.DrawLine( lineDrawer, 0, 0, 0, h ); // 왼쪽
-					//g.DrawLine( lineDrawer, w - lineDrawer.Width, 0, w - lineDrawer.Width, h ); // 오른쪽
-					//g.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
-					g.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // Bottom line drawing
+						//g.DrawLine( lineDrawer, 0, 0, w, 0 ); // 위
+						//g.DrawLine( lineDrawer, 0, 0, 0, h ); // 왼쪽
+						//g.DrawLine( lineDrawer, w - lineDrawer.Width, 0, w - lineDrawer.Width, h ); // 오른쪽
+						g.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
+					}
 				}
 			}
 			else
@@ -176,12 +134,12 @@ namespace CafeMaster_UI.Interface
 		protected override void OnPaint( PaintEventArgs pe )
 		{
 			// This is the only line needed for anti-aliasing to be turned on.
-			pe.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			pe.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
 			// the next two lines of code (not comments) are needed to get the highest 
 			// possible quiality of anti-aliasing. Remove them if you want the image to render faster.
-			pe.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-			pe.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			pe.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+			pe.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 			// this line is needed for .net to draw the contents.
 			base.OnPaint( pe );
 		}
@@ -193,7 +151,7 @@ namespace CafeMaster_UI.Interface
 	//	{
 	//		base.BackColor = Color.White;
 	//		base.BorderStyle = BorderStyle.None;
-	//		base.Font = new Font( "맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, ( ( byte ) ( 129 ) ) );
+	//		base.Font = new Font( "나눔 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, ( ( byte ) ( 129 ) ) );
 
 	//		this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
 	//	}
@@ -237,9 +195,7 @@ namespace CafeMaster_UI.Interface
 				Progress_Target_private = value;
 
 				if ( valueAnimationTimer == null )
-				{
 					TimerCreate( );
-				}
 
 				valueAnimationTimer.Start( );
 			}
@@ -415,7 +371,7 @@ namespace CafeMaster_UI.Interface
 
 		public FlatButton( )
 		{
-			base.Font = new Font( "맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, ( ( byte ) ( 129 ) ) );
+			base.Font = new Font( "나눔 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, ( ( byte ) ( 129 ) ) );
 			base.FlatStyle = FlatStyle.Flat;
 			base.BackColor = Color.Transparent;
 			base.Cursor = Cursors.Hand;
@@ -432,20 +388,13 @@ namespace CafeMaster_UI.Interface
 		{
 			backgroundAnimationTimer = new Timer( )
 			{
-				Interval = 10
+				Interval = 50
 			};
 			backgroundAnimationTimer.Tick += ( object sender, EventArgs e ) =>
 			{
 				Color currentColor = this.BackgroundDrawer.Color;
 
-				if ( mouseJoin )
-				{
-					currentColor = Utility.LerpColor( currentColor, this.EnterStateBackgroundColor, this.AnimationLerpP );
-				}
-				else
-				{
-					currentColor = Utility.LerpColor( currentColor, this.NormalStateBackgroundColor, this.AnimationLerpP );
-				}
+				currentColor = Utility.LerpColor( currentColor, mouseJoin ? this.EnterStateBackgroundColor : this.NormalStateBackgroundColor, this.AnimationLerpP );
 
 				if ( this.BackgroundDrawer.Color.Equals( currentColor ) )
 				{
@@ -462,9 +411,7 @@ namespace CafeMaster_UI.Interface
 		protected override void OnMouseEnter( EventArgs e )
 		{
 			if ( backgroundAnimationTimer == null )
-			{
 				TimerCreate( );
-			}
 
 			if ( !backgroundAnimationTimer.Enabled )
 				backgroundAnimationTimer.Start( );
@@ -477,9 +424,7 @@ namespace CafeMaster_UI.Interface
 		protected override void OnMouseLeave( EventArgs e )
 		{
 			if ( backgroundAnimationTimer == null )
-			{
 				TimerCreate( );
-			}
 
 			if ( !backgroundAnimationTimer.Enabled )
 				backgroundAnimationTimer.Start( );
@@ -491,17 +436,19 @@ namespace CafeMaster_UI.Interface
 
 		protected override void OnPaint( PaintEventArgs e )
 		{
-			base.OnPaint( e );
+			//base.OnPaint( e );
 
 			e.Graphics.FillRectangle( this.BackgroundDrawer, e.ClipRectangle );
 
 			// http://stackoverflow.com/questions/10427069/painting-text-on-button-difference-in-look
-			SizeF sf = e.Graphics.MeasureString( this.ButtonText, this.Font, this.Width );
-			Point ThePoint = new Point( );
-			ThePoint.X = ( int ) ( ( this.Width / 2 ) - ( sf.Width / 2 ) );
-			ThePoint.Y = ( int ) ( ( this.Height / 2 ) - ( sf.Height / 2 ) );
+			SizeF textSize = e.Graphics.MeasureString( this.ButtonText, this.Font, this.Width );
+			Point location = new Point(
+				( int ) ( ( this.Width / 2 ) - ( textSize.Width / 2 ) ),
+				( int ) ( ( this.Height / 2 ) - ( textSize.Height / 2 ) )
+			);
 
-			e.Graphics.DrawString( this.ButtonText, this.Font, this.TextDrawer, ThePoint );
+			e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+			e.Graphics.DrawString( this.ButtonText, this.Font, this.TextDrawer, location );
 		}
 	}
 

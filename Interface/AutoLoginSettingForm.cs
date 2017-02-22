@@ -87,7 +87,7 @@ namespace CafeMaster_UI.Interface
 
 					e.Cancel = true;
 
-					if ( Utility.CookieFetch.GetUriCookieContainer( e.Url ).GetCookies( e.Url ).Count > 0 )
+					if ( Utility.GetUriCookieContainer( e.Url ).GetCookies( e.Url ).Count > 0 )
 					{
 						AutoLogin.SetAccountDataResult result = AutoLogin.SetAccountData( IDTemp, PWDTemp );
 
@@ -119,7 +119,7 @@ namespace CafeMaster_UI.Interface
 					}
 					else
 					{
-						Utility.LogWrite( "CookieIsEmpty_AutoLoginSettingForm", Utility.LogSeverity.ERROR );
+						Utility.WriteErrorLog( "CookieIsEmpty_AutoLoginSettingForm", Utility.LogSeverity.ERROR );
 						NotifyBox.Show( this, "오류", "죄송합니다, 로그인 데이터를 가져올 수 없었습니다, 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 						this.Close( );
 					}
@@ -127,7 +127,7 @@ namespace CafeMaster_UI.Interface
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( this, "오류", "죄송합니다, 로그인 데이터를 가져올 수 없었습니다, 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				this.Close( );
 			}
@@ -172,7 +172,7 @@ namespace CafeMaster_UI.Interface
 				}
 			}
 
-			Utility.LogWrite( "AutoLoginEventAttachFailed", Utility.LogSeverity.ERROR );
+			Utility.WriteErrorLog( "AutoLoginEventAttachFailed", Utility.LogSeverity.ERROR );
 			NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 설정을 위한 기본 설정을 할 수 없었습니다, 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			this.Close( );
 		}

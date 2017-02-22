@@ -15,154 +15,183 @@ using System.Windows.Forms;
 
 namespace CafeMaster_UI.Lib
 {
-	// http://stackoverflow.com/questions/11309827/window-application-flash-like-orange-on-taskbar-when-minimize
-	public static class FlashWindow
+	struct CookieTable
 	{
-		[DllImport( "user32.dll" )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		private static extern bool FlashWindowEx( ref FLASHWINFO pwfi );
+		public string id;
+		public string value;
 
-		[StructLayout( LayoutKind.Sequential )]
-		private struct FLASHWINFO
+		public CookieTable( string id, string value )
 		{
-			/// <summary>
-			/// The size of the structure in bytes.
-			/// </summary>
-			public uint cbSize;
-			/// <summary>
-			/// A Handle to the Window to be Flashed. The window can be either opened or minimized.
-			/// </summary>
-			public IntPtr hwnd;
-			/// <summary>
-			/// The Flash Status.
-			/// </summary>
-			public uint dwFlags;
-			/// <summary>
-			/// The number of times to Flash the window.
-			/// </summary>
-			public uint uCount;
-			/// <summary>
-			/// The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
-			/// </summary>
-			public uint dwTimeout;
-		}
-
-		/// <summary>
-		/// Stop flashing. The system restores the window to its original stae.
-		/// </summary>
-		public const uint FLASHW_STOP = 0;
-
-		/// <summary>
-		/// Flash the window caption.
-		/// </summary>
-		public const uint FLASHW_CAPTION = 1;
-
-		/// <summary>
-		/// Flash the taskbar button.
-		/// </summary>
-		public const uint FLASHW_TRAY = 2;
-
-		/// <summary>
-		/// Flash both the window caption and taskbar button.
-		/// This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags.
-		/// </summary>
-		public const uint FLASHW_ALL = 3;
-
-		/// <summary>
-		/// Flash continuously, until the FLASHW_STOP flag is set.
-		/// </summary>
-		public const uint FLASHW_TIMER = 4;
-
-		/// <summary>
-		/// Flash continuously until the window comes to the foreground.
-		/// </summary>
-		public const uint FLASHW_TIMERNOFG = 12;
-
-
-		/// <summary>
-		/// Flash the spacified Window (Form) until it recieves focus.
-		/// </summary>
-		/// <param name="form">The Form (Window) to Flash.</param>
-		/// <returns></returns>
-		public static bool Flash( System.Windows.Forms.Form form )
-		{
-			// Make sure we're running under Windows 2000 or later
-			if ( Win2000OrLater )
-			{
-				FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL | FLASHW_TIMERNOFG, uint.MaxValue, 0 );
-				return FlashWindowEx( ref fi );
-			}
-			return false;
-		}
-
-		private static FLASHWINFO Create_FLASHWINFO( IntPtr handle, uint flags, uint count, uint timeout )
-		{
-			FLASHWINFO fi = new FLASHWINFO( );
-			fi.cbSize = Convert.ToUInt32( Marshal.SizeOf( fi ) );
-			fi.hwnd = handle;
-			fi.dwFlags = flags;
-			fi.uCount = count;
-			fi.dwTimeout = timeout;
-			return fi;
-		}
-
-		/// <summary>
-		/// Flash the specified Window (form) for the specified number of times
-		/// </summary>
-		/// <param name="form">The Form (Window) to Flash.</param>
-		/// <param name="count">The number of times to Flash.</param>
-		/// <returns></returns>
-		public static bool Flash( System.Windows.Forms.Form form, uint count )
-		{
-			if ( Win2000OrLater )
-			{
-				FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL, count, 0 );
-				return FlashWindowEx( ref fi );
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Start Flashing the specified Window (form)
-		/// </summary>
-		/// <param name="form">The Form (Window) to Flash.</param>
-		/// <returns></returns>
-		public static bool Start( System.Windows.Forms.Form form )
-		{
-			if ( Win2000OrLater )
-			{
-				FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL, uint.MaxValue, 0 );
-				return FlashWindowEx( ref fi );
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Stop Flashing the specified Window (form)
-		/// </summary>
-		/// <param name="form"></param>
-		/// <returns></returns>
-		public static bool Stop( System.Windows.Forms.Form form )
-		{
-			if ( Win2000OrLater )
-			{
-				FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_STOP, uint.MaxValue, 0 );
-				return FlashWindowEx( ref fi );
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// A boolean value indicating whether the application is running on Windows 2000 or later.
-		/// </summary>
-		private static bool Win2000OrLater
-		{
-			get { return System.Environment.OSVersion.Version.Major >= 5; }
+			this.id = id;
+			this.value = value;
 		}
 	}
 
 	static class Utility
 	{
+		// http://stackoverflow.com/questions/11309827/window-application-flash-like-orange-on-taskbar-when-minimize
+		public static class FlashWindow
+		{
+			[DllImport( "user32.dll" )]
+			[return: MarshalAs( UnmanagedType.Bool )]
+			private static extern bool FlashWindowEx( ref FLASHWINFO pwfi );
+
+			[StructLayout( LayoutKind.Sequential )]
+			private struct FLASHWINFO
+			{
+				/// <summary>
+				/// The size of the structure in bytes.
+				/// </summary>
+				public uint cbSize;
+				/// <summary>
+				/// A Handle to the Window to be Flashed. The window can be either opened or minimized.
+				/// </summary>
+				public IntPtr hwnd;
+				/// <summary>
+				/// The Flash Status.
+				/// </summary>
+				public uint dwFlags;
+				/// <summary>
+				/// The number of times to Flash the window.
+				/// </summary>
+				public uint uCount;
+				/// <summary>
+				/// The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
+				/// </summary>
+				public uint dwTimeout;
+			}
+
+			/// <summary>
+			/// Stop flashing. The system restores the window to its original stae.
+			/// </summary>
+			public const uint FLASHW_STOP = 0;
+
+			/// <summary>
+			/// Flash the window caption.
+			/// </summary>
+			public const uint FLASHW_CAPTION = 1;
+
+			/// <summary>
+			/// Flash the taskbar button.
+			/// </summary>
+			public const uint FLASHW_TRAY = 2;
+
+			/// <summary>
+			/// Flash both the window caption and taskbar button.
+			/// This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags.
+			/// </summary>
+			public const uint FLASHW_ALL = 3;
+
+			/// <summary>
+			/// Flash continuously, until the FLASHW_STOP flag is set.
+			/// </summary>
+			public const uint FLASHW_TIMER = 4;
+
+			/// <summary>
+			/// Flash continuously until the window comes to the foreground.
+			/// </summary>
+			public const uint FLASHW_TIMERNOFG = 12;
+
+
+			/// <summary>
+			/// Flash the spacified Window (Form) until it recieves focus.
+			/// </summary>
+			/// <param name="form">The Form (Window) to Flash.</param>
+			/// <returns></returns>
+			public static bool Flash( Form form )
+			{
+				if ( form == null ) return false;
+
+				// Make sure we're running under Windows 2000 or later
+				if ( Win2000OrLater )
+				{
+					FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL | FLASHW_TIMERNOFG, uint.MaxValue, 0 );
+					return FlashWindowEx( ref fi );
+				}
+				return false;
+			}
+
+			public static bool Flash( )
+			{
+				Main form = GetMainForm( ); // Utility.GetMainForm( );
+
+				if ( form == null ) return false;
+
+				// Make sure we're running under Windows 2000 or later
+				if ( Win2000OrLater )
+				{
+					FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL | FLASHW_TIMERNOFG, uint.MaxValue, 0 );
+					return FlashWindowEx( ref fi );
+				}
+				return false;
+			}
+
+			private static FLASHWINFO Create_FLASHWINFO( IntPtr handle, uint flags, uint count, uint timeout )
+			{
+				FLASHWINFO fi = new FLASHWINFO( );
+				fi.cbSize = Convert.ToUInt32( Marshal.SizeOf( fi ) );
+				fi.hwnd = handle;
+				fi.dwFlags = flags;
+				fi.uCount = count;
+				fi.dwTimeout = timeout;
+				return fi;
+			}
+
+			/// <summary>
+			/// Flash the specified Window (form) for the specified number of times
+			/// </summary>
+			/// <param name="form">The Form (Window) to Flash.</param>
+			/// <param name="count">The number of times to Flash.</param>
+			/// <returns></returns>
+			public static bool Flash( System.Windows.Forms.Form form, uint count )
+			{
+				if ( Win2000OrLater )
+				{
+					FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL, count, 0 );
+					return FlashWindowEx( ref fi );
+				}
+				return false;
+			}
+
+			/// <summary>
+			/// Start Flashing the specified Window (form)
+			/// </summary>
+			/// <param name="form">The Form (Window) to Flash.</param>
+			/// <returns></returns>
+			public static bool Start( System.Windows.Forms.Form form )
+			{
+				if ( Win2000OrLater )
+				{
+					FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_ALL, uint.MaxValue, 0 );
+					return FlashWindowEx( ref fi );
+				}
+				return false;
+			}
+
+			/// <summary>
+			/// Stop Flashing the specified Window (form)
+			/// </summary>
+			/// <param name="form"></param>
+			/// <returns></returns>
+			public static bool Stop( System.Windows.Forms.Form form )
+			{
+				if ( Win2000OrLater )
+				{
+					FLASHWINFO fi = Create_FLASHWINFO( form.Handle, FLASHW_STOP, uint.MaxValue, 0 );
+					return FlashWindowEx( ref fi );
+				}
+				return false;
+			}
+
+			/// <summary>
+			/// A boolean value indicating whether the application is running on Windows 2000 or later.
+			/// </summary>
+			private static bool Win2000OrLater
+			{
+				get { return System.Environment.OSVersion.Version.Major >= 5; }
+			}
+		}
+
 		// Lerp (Linear interpolation, 선형보간법) 
 		// p 의 값이 0에 가까워질수록 ( a - b ) 에 비례하여 중간 값이 커진다 (애니메이션이 빨라진다)
 		// p 의 값이 1에 가까워질수록 ( a - b ) 에 비례하여 중간 값이 작아진다 (애니메이션이 느려진다)
@@ -194,20 +223,19 @@ namespace CafeMaster_UI.Lib
 			newB = a.B * p + b.B * ( 1 - p );
 			newA = a.A * p + b.A * ( 1 - p );
 
-			//return Color.FromArgb( (int)Math.Round( newR ), ( int ) newG, ( int ) newB );
 			return Color.FromArgb( ( int ) Math.Round( newA ), ( int ) Math.Round( newR ), ( int ) Math.Round( newG ), ( int ) Math.Round( newB ) );
 		}
 
 		// http://bananamandoo.tistory.com/27
 		public static void Delay( int ms )
 		{
-			DateTime ThisMoment = DateTime.Now;
-			DateTime AfterWards = ThisMoment.Add( new TimeSpan( 0, 0, 0, 0, ms ) );
+			DateTime thisMoment = DateTime.Now;
+			DateTime afterWards = thisMoment.Add( new TimeSpan( 0, 0, 0, 0, ms ) );
 
-			while ( AfterWards >= ThisMoment )
+			while ( afterWards >= thisMoment )
 			{
 				Application.DoEvents( );
-				ThisMoment = DateTime.Now;
+				thisMoment = DateTime.Now;
 			}
 		}
 
@@ -225,10 +253,10 @@ namespace CafeMaster_UI.Lib
 
 		// https://msdn.microsoft.com/ko-kr/library/8kb3ddd4(v=vs.110).aspx
 		// http://www.codeproject.com/Tips/606379/Caller-Info-Attributes-in-Csharp
-		public static void LogWrite( string errorString, LogSeverity severity = LogSeverity.NORMAL,
-		[CallerMemberName] string debugTrace_CallerName = null,
-		[CallerFilePath] string debugTrace_CallerFilePath = null,
-		[CallerLineNumber] int debugTrace_CallerLine = -1 )
+		public static void WriteErrorLog( string errorString, LogSeverity severity = LogSeverity.NORMAL,
+		[CallerMemberName] string debugTraceCallerName = "Unknown",
+		[CallerFilePath] string debugTraceCallerFilePath = "Unknown Location",
+		[CallerLineNumber] int debugTraceCallerLine = -1 )
 		{
 			try
 			{
@@ -238,22 +266,21 @@ namespace CafeMaster_UI.Lib
 					Directory.CreateDirectory( path );
 
 				File.AppendAllText( path + @"\error.log",
-					string.Format( "CafeMaster_CrashLog_{0} @{1} :	{2} -> #{3}		{4}:{5}" + Environment.NewLine,
+					string.Format( "MilkPowerCafeStaff_ErrorLOG_{0} @{1} :	{2} -> #{3}		{4}:{5}" + Environment.NewLine,
 						DateTime.Now.ToString( "HH:mm:ss" ), // 0
 						severity.ToString( ), // 1
-						debugTrace_CallerName, // 2
+						debugTraceCallerName, // 2
 						errorString, // 3
-						Path.GetFileName( debugTrace_CallerFilePath ), // 4
-						debugTrace_CallerLine // 5
-					),
-				Encoding.UTF8 );
+						Path.GetFileName( debugTraceCallerFilePath ), // 4
+						debugTraceCallerLine // 5
+					), Encoding.UTF8
+				);
 			}
-			catch ( Exception ) { }
+			catch { }
 		}
 
 		// http://stackoverflow.com/questions/14488796/does-net-provide-an-easy-way-convert-bytes-to-kb-mb-gb-etc
-		private static readonly string[ ] SizeSuffixes =
-				  { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+		private static readonly string[ ] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
 		public static string SizeSuffix( Int64 value, int decimalPlaces = 1 )
 		{
@@ -274,8 +301,7 @@ namespace CafeMaster_UI.Lib
 		{
 			foreach ( Form i in Application.OpenForms )
 			{
-				if ( i.Name == name )
-					return i;
+				if ( i.Name == name ) return i;
 			}
 
 			return null;
@@ -285,8 +311,7 @@ namespace CafeMaster_UI.Lib
 		{
 			foreach ( Form i in Application.OpenForms )
 			{
-				if ( i.Name == "Main" )
-					return ( Main ) i;
+				if ( i.Name == "Main" ) return i as Main;
 			}
 
 			return null;
@@ -295,82 +320,84 @@ namespace CafeMaster_UI.Lib
 		// http://stackoverflow.com/questions/10520048/calculate-md5-checksum-for-a-file
 		public static string GetMD5Hash( string fileName )
 		{
-			using ( MD5 md5 = MD5.Create( ) )
+			try
 			{
-				using ( FileStream stream = File.OpenRead( fileName ) )
+				using ( MD5 md5 = MD5.Create( ) )
 				{
-					return Convert.ToBase64String( md5.ComputeHash( stream ) );
+					using ( FileStream stream = File.OpenRead( fileName ) )
+					{
+						return Convert.ToBase64String( md5.ComputeHash( stream ) );
+					}
 				}
 			}
+			catch { return ""; }
 		}
 
 		public static string GetMD5Hash( byte[ ] fileByte )
 		{
-			using ( MD5 md5 = MD5.Create( ) )
+			try
 			{
-				using ( Stream stream = new MemoryStream( fileByte ) )
+				using ( MD5 md5 = MD5.Create( ) )
 				{
-					return Convert.ToBase64String( md5.ComputeHash( stream ) );
+					using ( Stream stream = new MemoryStream( fileByte ) )
+					{
+						return Convert.ToBase64String( md5.ComputeHash( stream ) );
+					}
 				}
 			}
+			catch { return ""; }
 		}
 
-		public static void URLSetAllNaverCookie( string url )
+		public static List<CookieTable> CookieParse( string cookieString )
 		{
-			foreach ( CookieStruct i in GlobalVar.COOKIES_LIST )
+			List<CookieTable> cookieTable = new List<CookieTable>( );
+
+			foreach ( string i in cookieString.Split( ';' ) )
+			{
+				string[ ] structure = i.Split( '=' );
+
+				if ( structure.Length < 2 ) continue;
+
+				cookieTable.Add( new CookieTable(
+					structure[ 0 ].Trim( ),
+					structure[ 1 ].Trim( )
+				) );
+			}
+
+			return cookieTable;
+		}
+
+		public static void SetUriCookieContainerToNaverCookies( string url )
+		{
+			foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
 			{
 				WinAPI.InternetSetCookie( url, i.id, i.value );
 			}
 		}
 
 		// http://fdin.tistory.com/entry/C%EC%97%90%EC%84%9C-WebBrowser-cookie%EB%A5%BC-HttpWebRequest%EB%A1%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0
-		public static class CookieFetch
+		public static CookieContainer GetUriCookieContainer( Uri uri )
 		{
-			[DllImport( "wininet.dll", SetLastError = true )]
-			private static extern bool InternetGetCookieEx(
-		string url,
-		string cookieName,
-		StringBuilder cookieData,
-		ref int size,
-		Int32 dwFlags,
-		IntPtr lpReserved );
+			CookieContainer cookies = null;
 
-			private const Int32 InternetCookieHttponly = 0x2000;
-
-			/// <summary>  
-			/// Gets the URI cookie container.  
-			/// </summary>  
-			/// <param name="uri">The URI.  
-			/// <returns></returns>  
-			public static CookieContainer GetUriCookieContainer( Uri uri )
+			int datasize = 8192 * 16;
+			StringBuilder cookieData = new StringBuilder( datasize );
+			if ( !WinAPI.InternetGetCookieEx( uri.ToString( ), null, cookieData, ref datasize, 0x2000, IntPtr.Zero ) )
 			{
-				CookieContainer cookies = null;
-				// Determine the size of the cookie  
-				int datasize = 8192 * 16;
-				StringBuilder cookieData = new StringBuilder( datasize );
-				if ( !InternetGetCookieEx( uri.ToString( ), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero ) )
-				{
-					if ( datasize < 0 )
-						return null;
-					// Allocate stringbuilder large enough to hold the cookie  
-					cookieData = new StringBuilder( datasize );
-					if ( !InternetGetCookieEx(
-						uri.ToString( ),
-						null, cookieData,
-						ref datasize,
-						InternetCookieHttponly,
-						IntPtr.Zero ) )
-						return null;
-				}
+				if ( datasize < 0 ) return null;
 
-				if ( cookieData.Length > 0 )
-				{
-					cookies = new CookieContainer( );
-					cookies.SetCookies( uri, cookieData.ToString( ).Replace( ';', ',' ) );
-				}
-
-				return cookies;
+				cookieData = new StringBuilder( datasize );
+				if ( !WinAPI.InternetGetCookieEx( uri.ToString( ), null, cookieData, ref datasize, 0x2000, IntPtr.Zero ) )
+					return null;
 			}
+
+			if ( cookieData.Length > 0 )
+			{
+				cookies = new CookieContainer( );
+				cookies.SetCookies( uri, cookieData.ToString( ).Replace( ';', ',' ) );
+			}
+
+			return cookies;
 		}
 
 		public static MemoryStream FileToMemoryStream( string dir )

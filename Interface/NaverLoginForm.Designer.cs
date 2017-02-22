@@ -33,10 +33,11 @@
 			this.APP_TITLE = new System.Windows.Forms.Label();
 			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.AUTOLOGIN_DESC = new System.Windows.Forms.Label();
-			this.LOADING_GIFIMAGE = new System.Windows.Forms.WebBrowser();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
+			this.PROFILE_IMAGE = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// APP_TITLE_BAR
@@ -84,29 +85,13 @@
 			this.AUTOLOGIN_DESC.BackColor = System.Drawing.Color.Transparent;
 			this.AUTOLOGIN_DESC.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.AUTOLOGIN_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.AUTOLOGIN_DESC.Location = new System.Drawing.Point(0, 250);
+			this.AUTOLOGIN_DESC.Location = new System.Drawing.Point(0, 305);
 			this.AUTOLOGIN_DESC.Name = "AUTOLOGIN_DESC";
 			this.AUTOLOGIN_DESC.Size = new System.Drawing.Size(595, 20);
 			this.AUTOLOGIN_DESC.TabIndex = 5;
 			this.AUTOLOGIN_DESC.Text = "자동 로그인을 시도하는 중 ...";
 			this.AUTOLOGIN_DESC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.AUTOLOGIN_DESC.Visible = false;
-			// 
-			// LOADING_GIFIMAGE
-			// 
-			this.LOADING_GIFIMAGE.AllowNavigation = false;
-			this.LOADING_GIFIMAGE.AllowWebBrowserDrop = false;
-			this.LOADING_GIFIMAGE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.LOADING_GIFIMAGE.IsWebBrowserContextMenuEnabled = false;
-			this.LOADING_GIFIMAGE.Location = new System.Drawing.Point(272, 175);
-			this.LOADING_GIFIMAGE.MinimumSize = new System.Drawing.Size(20, 20);
-			this.LOADING_GIFIMAGE.Name = "LOADING_GIFIMAGE";
-			this.LOADING_GIFIMAGE.ScriptErrorsSuppressed = true;
-			this.LOADING_GIFIMAGE.ScrollBarsEnabled = false;
-			this.LOADING_GIFIMAGE.Size = new System.Drawing.Size(50, 50);
-			this.LOADING_GIFIMAGE.TabIndex = 16;
-			this.LOADING_GIFIMAGE.Visible = false;
-			this.LOADING_GIFIMAGE.WebBrowserShortcutsEnabled = false;
 			// 
 			// browserBehind
 			// 
@@ -127,15 +112,29 @@
 			this.browserBehind.WebBrowserShortcutsEnabled = false;
 			this.browserBehind.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.browserBehind_Navigating);
 			// 
+			// PROFILE_IMAGE
+			// 
+			this.PROFILE_IMAGE.BackColor = System.Drawing.Color.Transparent;
+			this.PROFILE_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_160x160;
+			this.PROFILE_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.PROFILE_IMAGE.Image = global::CafeMaster_UI.Properties.Resources.PROFILE_IMAGE_CIRCLE_160x160;
+			this.PROFILE_IMAGE.Location = new System.Drawing.Point(217, 120);
+			this.PROFILE_IMAGE.Name = "PROFILE_IMAGE";
+			this.PROFILE_IMAGE.Size = new System.Drawing.Size(160, 160);
+			this.PROFILE_IMAGE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.PROFILE_IMAGE.TabIndex = 49;
+			this.PROFILE_IMAGE.TabStop = false;
+			this.PROFILE_IMAGE.Visible = false;
+			// 
 			// NaverLoginForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(595, 470);
-			this.Controls.Add(this.LOADING_GIFIMAGE);
 			this.Controls.Add(this.AUTOLOGIN_DESC);
 			this.Controls.Add(this.APP_TITLE_BAR);
+			this.Controls.Add(this.PROFILE_IMAGE);
 			this.Controls.Add(this.browserBehind);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -149,6 +148,7 @@
 			this.APP_TITLE_BAR.ResumeLayout(false);
 			this.APP_TITLE_BAR.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -160,6 +160,6 @@
 		private System.Windows.Forms.Label APP_TITLE;
 		private System.Windows.Forms.PictureBox CLOSE_BUTTON;
 		private System.Windows.Forms.Label AUTOLOGIN_DESC;
-		private System.Windows.Forms.WebBrowser LOADING_GIFIMAGE;
+		private System.Windows.Forms.PictureBox PROFILE_IMAGE;
 	}
 }

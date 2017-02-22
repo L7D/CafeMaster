@@ -21,7 +21,7 @@ namespace CafeMaster_UI.Lib
 					wb.ScriptErrorsSuppressed = true;
 
 					WinAPI.CoInternetSetFeatureEnabled( 21, 0x00000002, true );
-					Utility.URLSetAllNaverCookie( url );
+					Utility.SetUriCookieContainerToNaverCookies( url );
 
 					wb.Navigate( url );
 
@@ -45,9 +45,14 @@ namespace CafeMaster_UI.Lib
 				}
 				catch ( Exception ex )
 				{
-					Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+					Utility.WriteErrorLog( "CaptureException #" + threadNumber + " - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 				}
 			}
+		}
+
+		public static bool FileAvailable( string threadNumber )
+		{
+			return File.Exists( GlobalVar.CAPTURE_DIR + "\\" + threadNumber + ".png" );
 		}
 
 		public static void OpenImage( string threadNumber )
@@ -60,14 +65,14 @@ namespace CafeMaster_UI.Lib
 				}
 				catch ( Exception ex )
 				{
-					Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+					Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 					NotifyBox.Show( null, "오류", "죄송합니다, 이미지 파일을 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				}
 			}
 			else
 			{
-				Utility.LogWrite( "CaptureImageNotFound", Utility.LogSeverity.ERROR );
-				NotifyBox.Show( null, "오류", "죄송합니다, 이 게시글에 대한 캡쳐된 이미지가 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+				Utility.WriteErrorLog( "CaptureImageNotFound", Utility.LogSeverity.ERROR );
+				NotifyBox.Show( null, "오류", "죄송합니다, 이 게시물에 대한 캡처된 이미지가 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 			}
 		}
 

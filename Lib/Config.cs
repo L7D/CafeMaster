@@ -20,11 +20,16 @@ namespace CafeMaster_UI.Lib
 			{
 				StringBuilder sb = new StringBuilder( );
 
-				sb.Append( "[Milk Power Cafe Staff Config]" + Environment.NewLine + Environment.NewLine );
+				sb.AppendLine( "# 우윳빛깔 카페스탭 설정 파일 ver " + GlobalVar.CURRENT_VERSION + " #" );
+				sb.AppendLine( "# 이 파일을 함부로 수정하지 마세요! #" + Environment.NewLine );
 
+				int count = 0;
 				foreach ( string data in CONFIGS.Keys )
 				{
-					sb.AppendLine( data + " = " + CONFIGS[ data ] );
+					if ( ++count == CONFIGS.Count )
+						sb.Append( data + " -> " + CONFIGS[ data ] );
+					else
+						sb.AppendLine( data + " -> " + CONFIGS[ data ] );
 				}
 
 				if ( !Directory.Exists( GlobalVar.DATA_DIR ) )
@@ -34,11 +39,11 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( IOException ex )
 			{
-				Utility.LogWrite( "ConfigIOError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "ConfigIOError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 		}
 
@@ -60,11 +65,19 @@ namespace CafeMaster_UI.Lib
 				foreach ( string i in File.ReadAllLines( GlobalVar.CONFIG_DIR, Encoding.UTF8 ) )
 				{
 					if ( string.IsNullOrEmpty( i ) ) continue;
-					if ( i.StartsWith( "[" ) && i.EndsWith( "]" ) ) continue;
+					if ( i.StartsWith( "#" ) && i.EndsWith( "#" ) ) continue;
 
-					string[ ] str = i.Split( new char[ 1 ] { '=' }, StringSplitOptions.RemoveEmptyEntries );
+					string[ ] str = i.Split( new string[ 1 ] { "->" }, StringSplitOptions.RemoveEmptyEntries );
 
-					if ( str.Length == 2 )
+					if ( str.Length > 2 )
+					{
+						// Test -> Value -> Data 같은 config 데이터를 처리하기 위함
+						tempTable.Add(
+							str[ 0 ].Trim( ),
+							i.Substring( i.IndexOf( "->" ) + 2 ).Trim( )
+						);
+					}
+					else
 					{
 						tempTable.Add(
 							str[ 0 ].Trim( ),
@@ -77,21 +90,27 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( IOException ex )
 			{
-				Utility.LogWrite( "ConfigIOError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "ConfigIOError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+			}
+			catch ( ArgumentOutOfRangeException ex )
+			{
+				Utility.WriteErrorLog( "ConfigStringIndexError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Reset( );
 			}
 			catch ( IndexOutOfRangeException ex )
 			{
-				Utility.LogWrite( "ConfigStructError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "ConfigIndexError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Reset( );
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 		}
 
 		public static void Reset( )
 		{
-			string configValue = @"[Milk Power Cafe Staff Config]$$SoundMute = False$SyncInterval = 30$CaptureEnable = True$UXSendEnable = True".Replace( "$", Environment.NewLine );
+			string configValue = "# 우윳빛깔 카페스탭 설정 파일 ver " + GlobalVar.CURRENT_VERSION + " #$# 이 파일을 함부로 수정하지 마세요! #$$SoundEnable -> 1$SyncInterval -> 30$CaptureEnable -> 1$UXSendEnable -> 1".Replace( "$", Environment.NewLine );
 
 			try
 			{
@@ -105,9 +124,9 @@ namespace CafeMaster_UI.Lib
 				foreach ( string i in File.ReadAllLines( GlobalVar.CONFIG_DIR, Encoding.UTF8 ) )
 				{
 					if ( string.IsNullOrEmpty( i ) ) continue;
-					if ( i.StartsWith( "[" ) && i.EndsWith( "]" ) ) continue;
+					if ( i.StartsWith( "#" ) && i.EndsWith( "#" ) ) continue;
 
-					string[ ] str = i.Split( new char[ 1 ] { '=' }, StringSplitOptions.RemoveEmptyEntries );
+					string[ ] str = i.Split( new string[ 1 ] { "->" }, StringSplitOptions.RemoveEmptyEntries );
 
 					if ( str.Length == 2 )
 					{
@@ -122,15 +141,15 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( IOException ex )
 			{
-				Utility.LogWrite( "ConfigIOError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "ConfigIOError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 			catch ( IndexOutOfRangeException ex )
 			{
-				Utility.LogWrite( "ConfigStructError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "ConfigIndexError - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 		}
 

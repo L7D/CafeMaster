@@ -12,120 +12,104 @@ namespace CafeMaster_UI.Lib
 	public struct NotifyData
 	{
 		public string threadTitle;
-		public string threadNumber;
-		public string threadAuthor;
+		public string threadID;
 		public string threadURL;
+		public int threadHit; // 데이터 추가 시점에 조회수
+
+		// for NaverRequest.ThreadDetailStruct
 		public string threadTime;
-		public int threadHit;
-
-
-		// by ThreadDetailStruct
-		public string detailTime;
-		public string detailAuthor;
-		public string authorIconGIF;
-		public string boardName;
-
-
+		public string threadAuthor;
+		public string personaconURL;
+		public string articleName;
 
 
 		public bool focused;
 	}
 
-	public struct NotifyIgnoreData
-	{
-		public string threadNumber;
-	}
-
 	static class Notify
 	{
-		public static List<NotifyData> lists = new List<NotifyData>( );
-		public static List<NotifyIgnoreData> ignoreData = new List<NotifyIgnoreData>( );
+		private static List<NotifyData> LISTS = new List<NotifyData>( );
+		private static Main mainForm = null;
 
-		public static bool IsAlreadyAdded( string threadNumber )
+		public static bool Exists( string threadNumber )
 		{
-			Predicate<NotifyData> finder = ( NotifyData data ) => { return data.threadNumber == threadNumber; };
+			//Predicate<NotifyData> finder = ( NotifyData data ) => { return data.threadNumber == threadNumber; };
 
-			return lists.FindIndex( finder ) > -1;
+			return LISTS.FindIndex( ( NotifyData data ) =>
+			{
+				return data.threadID == threadNumber;
+			} ) > -1;
 		}
 
-		public static void Add( string threadTitle, string threadNumber, string threadAuthor, string threadURL, string threadTime, int threadHit )
+		public static void Add( TableDataTable table )
 		{
+			string threadID = table.number;
+
 			NotifyData data = new NotifyData( );
-			data.threadTitle = HttpUtility.HtmlDecode( threadTitle );
-			data.threadNumber = threadNumber;
-			data.threadAuthor = threadAuthor;
-			data.threadURL = threadURL;
-			data.threadTime = threadTime;
-			data.threadHit = threadHit;
+
+			data.threadTitle = HttpUtility.HtmlDecode( table.title );
+			data.threadID = table.number;
+			data.threadURL = table.url;
+			data.threadHit = table.hit;
 			data.focused = false;
 
-			TopProgressMessage.Set( "#" + threadNumber + " 게시글의 정보를 불러오고 있습니다 ... [2/3]" );
+			TopProgressMessage.Set( "#" + threadID + " 게시글의 정보를 불러오고 있습니다 ... [2/3]" );
 
-			ThreadDetailStruct? detailStruct = NaverRequest.ThreadDetailRequest( threadNumber );
+			ThreadDetailStruct? detailStruct = NaverRequest.ThreadDetailRequest( threadID );
 
 			if ( detailStruct.HasValue )
 			{
-				data.authorIconGIF = detailStruct.Value.authorIconGIF;
-				data.boardName = detailStruct.Value.boardName;
-				data.detailTime = detailStruct.Value.detailTime;
-				data.detailAuthor = detailStruct.Value.detailAuthor;
+				data.threadAuthor = detailStruct.Value.threadAuthor;
+				data.threadTime = detailStruct.Value.threadTime;
+				data.personaconURL = detailStruct.Value.personaconURL;
+				data.articleName = detailStruct.Value.articleName;
+			}
+			else
+			{
+				data.threadAuthor = "NULL(NULL)";
+				data.threadTime = "00:00";
+				data.articleName = "알 수 없음";
 			}
 
-			lists.Insert( 0, data );
+			LISTS.Insert( 0, data );
 
 			//await Task.Run( new Action( ( ) => Advice.CheckThread( data ) ) );
 			//Advice.CheckThread( data );
 
-			if ( Config.Get( "CaptureEnable", "true" ).ToLower( ) == "true" )
+			if ( Config.Get( "CaptureEnable", "1" ) == "1" )
 			{
-				TopProgressMessage.Set( "#" + threadNumber + " 게시글을 캡쳐하고 있습니다 ... [3/3]" );
+				TopProgressMessage.Set( "#" + threadID + " 게시글을 캡처하고 있습니다 ... [3/3]" );
 
-				Main main = Utility.GetMainForm( );
-
-				if ( main != null )
+				if ( mainForm != null )
 				{
-					if ( main.InvokeRequired )
-					{
-						main.Invoke( new Action( ( ) =>
-						{
-							BrowserCapture.Capture( threadNumber );
-						} ) );
-					}
+					if ( mainForm.InvokeRequired )
+						mainForm.Invoke( new Action( ( ) => BrowserCapture.Capture( threadID ) ) );
 					else
-					{
-						BrowserCapture.Capture( threadNumber );
-					}
+						BrowserCapture.Capture( threadID );
 				}
 			}
 			else
 			{
-				TopProgressMessage.Set( "#" + threadNumber + " 게시글 설정으로 인해 캡쳐하지 않습니다. [3/3]" );
+				TopProgressMessage.Set( "#" + threadID + " 게시글을 설정에 의해 캡처하지 않습니다. [3/3]" );
 			}
 		}
 
 		public static void Sort( )
 		{
-			lists = lists.OrderByDescending( c => c.threadNumber ).ToList( );
+			LISTS = LISTS.OrderByDescending( data => data.threadID ).ToList( );
 
-			// 예외처리바람;
 			RefreshMainNotifyPanel( );
 			Save( );
 		}
 
 		public static void RefreshMainNotifyPanel( )
 		{
-			Main main = Utility.GetMainForm( );
-
-			if ( main != null )
+			if ( mainForm != null )
 			{
-				if ( main.InvokeRequired )
-				{
-					main.Invoke( new Action( ( ) => main.RefreshNotifyPanel( ) ) );
-				}
+				if ( mainForm.InvokeRequired )
+					mainForm.Invoke( new Action( ( ) => mainForm.RefreshNotifyPanel( ) ) );
 				else
-				{
-					main.RefreshNotifyPanel( );
-				}
+					mainForm.RefreshNotifyPanel( );
 			}
 		}
 
@@ -139,15 +123,15 @@ namespace CafeMaster_UI.Lib
 		//	Save( );
 		//}
 
-		public static void Remove( string number, bool noRefresh = false, bool noSave = false )
+		public static void Remove( string threadID, bool noRefresh = false, bool noSave = false )
 		{
 			int index = 0;
 
-			foreach ( NotifyData i in lists )
+			foreach ( NotifyData i in LISTS )
 			{
-				if ( i.threadNumber.Equals( number ) )
+				if ( i.threadID == threadID )
 				{
-					lists.RemoveAt( index );
+					LISTS.RemoveAt( index );
 
 					break;
 				}
@@ -162,36 +146,38 @@ namespace CafeMaster_UI.Lib
 				Save( );
 		}
 
-		public static NotifyData? GetDataByNumber( string threadNumber )
+		public static NotifyData? GetDataByID( string threadID )
 		{
-			Predicate<NotifyData> finder = ( NotifyData data ) => { return data.threadNumber == threadNumber; };
-			int index = lists.FindIndex( finder );
+			NotifyData data = LISTS.Find( ( NotifyData v ) => {
+				return v.threadID == threadID;
+			} );
 
-			if ( index > -1 && lists?[ index ] != null )
-			{
-				return lists[ index ];
-			}
-
-			return null;
+			return data;
 		}
 
-		public static void SetFocused( string threadNumber, bool newValue )
+		public static List<NotifyData> GetAll( )
 		{
-			Predicate<NotifyData> finder = ( NotifyData data ) => { return data.threadNumber == threadNumber; };
-			int index = lists.FindIndex( finder );
+			return LISTS;
+		}
 
-			if ( index > -1 && lists?[ index ] != null )
+		public static void SetFocused( string threadID, bool newFocusValue )
+		{
+			//Predicate<NotifyData> finder = ( NotifyData data ) => { return data.threadID == threadNumber; };
+			int index = LISTS.FindIndex( ( NotifyData data ) => {
+				return data.threadID == threadID;
+			} );
+
+			if ( index > -1 && LISTS?[ index ] != null )
 			{
-				NotifyData oldData = lists[ index ];
-
-				oldData.focused = newValue;
-
-				lists[ index ] = oldData;
+				NotifyData oldData = LISTS[ index ];
+				oldData.focused = newFocusValue;
+				LISTS[ index ] = oldData;
 
 				Save( );
 			}
 			else
 			{
+				Utility.WriteErrorLog( "NotifyIndexError", Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( null, "오류", "죄송합니다, 데이터 조작 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 		}
@@ -200,11 +186,11 @@ namespace CafeMaster_UI.Lib
 		{
 			JsonArrayCollection collection = new JsonArrayCollection( );
 
-			foreach ( NotifyData i in lists )
+			foreach ( NotifyData i in LISTS )
 			{
 				JsonObjectCollection collection2 = new JsonObjectCollection( );
 
-				collection2.Add( new JsonStringValue( "threadNumber", i.threadNumber ) );
+				collection2.Add( new JsonStringValue( "threadID", i.threadID ) );
 				collection2.Add( new JsonStringValue( "threadTitle", i.threadTitle ) );
 				collection2.Add( new JsonStringValue( "threadAuthor", i.threadAuthor ) );
 				collection2.Add( new JsonStringValue( "threadURL", i.threadURL ) );
@@ -212,10 +198,8 @@ namespace CafeMaster_UI.Lib
 				collection2.Add( new JsonNumericValue( "threadHit", i.threadHit ) );
 				collection2.Add( new JsonBooleanValue( "focused", i.focused ) );
 
-				collection2.Add( new JsonStringValue( "authorIconGIF", i.authorIconGIF ) );
-				collection2.Add( new JsonStringValue( "boardName", i.boardName ) );
-				collection2.Add( new JsonStringValue( "detailTime", i.detailTime ) );
-				collection2.Add( new JsonStringValue( "detailAuthor", i.detailAuthor ) );
+				collection2.Add( new JsonStringValue( "personaconURL", i.personaconURL ) );
+				collection2.Add( new JsonStringValue( "articleName", i.articleName ) );
 
 				collection.Add( collection2 );
 			}
@@ -232,8 +216,10 @@ namespace CafeMaster_UI.Lib
 			//File.WriteAllText( GlobalVar.APP_DIR + @"\data\notifyIgnores.db", dataTable.ToString( ) );
 		}
 
-		public static void Load( )
+		public static void Initialize( )
 		{
+			mainForm = Utility.GetMainForm( );
+
 			if ( File.Exists( GlobalVar.APP_DIR + @"\data\notify.db" ) )
 			{
 				try
@@ -245,35 +231,35 @@ namespace CafeMaster_UI.Lib
 					foreach ( JsonObjectCollection i in collection )
 					{
 						NotifyData newNotifyData = new NotifyData( );
-						newNotifyData.threadNumber = i[ "threadNumber" ].GetValue( ).ToString( );
+						newNotifyData.threadID = i[ "threadID" ].GetValue( ).ToString( );
 						newNotifyData.threadTitle = HttpUtility.HtmlDecode( i[ "threadTitle" ].GetValue( ).ToString( ) );
-						newNotifyData.threadAuthor = i[ "threadAuthor" ].GetValue( ).ToString( );
 						newNotifyData.threadURL = i[ "threadURL" ].GetValue( ).ToString( );
-						newNotifyData.threadTime = i[ "threadTime" ].GetValue( ).ToString( );
 						newNotifyData.threadHit = int.Parse( i[ "threadHit" ].GetValue( ).ToString( ) );
 
-						newNotifyData.authorIconGIF = i[ "authorIconGIF" ].GetValue( ).ToString( );
-						newNotifyData.boardName = i[ "boardName" ].GetValue( ).ToString( );
-						newNotifyData.detailTime = i[ "detailTime" ].GetValue( ).ToString( );
-						newNotifyData.detailAuthor = i[ "detailAuthor" ].GetValue( ).ToString( );
+						newNotifyData.threadTime = i[ "threadTime" ].GetValue( ).ToString( );
+						newNotifyData.threadAuthor = i[ "threadAuthor" ].GetValue( ).ToString( );
+						newNotifyData.personaconURL = i[ "personaconURL" ].GetValue( ).ToString( );
+						newNotifyData.articleName = i[ "articleName" ].GetValue( ).ToString( );
 
 						if ( i[ "focused" ] != null )
 							newNotifyData.focused = bool.Parse( i[ "focused" ].GetValue( ).ToString( ) );
 						else
 							newNotifyData.focused = false;
 
-						lists.Add( newNotifyData );
+						LISTS.Add( newNotifyData );
 					}
 
 					RefreshMainNotifyPanel( );
 				}
-				catch ( FormatException )
+				catch ( FormatException ex )
 				{
-					NotifyBox.Show( null, "오류", "죄송합니다, 데이터베이스 파일이 손상되어 불러올 수 없었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+					Utility.WriteErrorLog( "FormatException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+					NotifyBox.Show( null, "오류", "죄송합니다, 알림 데이터 파일이 손상되어 불러올 수 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				}
 				catch ( Exception ex )
 				{
-					NotifyBox.Show( null, "오류", "죄송합니다, 데이터베이스 파일이 손상되어 불러올 수 없었습니다.\n\n" + ex.Message, NotifyBoxType.OK, NotifyBoxIcon.Error );
+					Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+					NotifyBox.Show( null, "오류", "죄송합니다, 알림 데이터 파일이 손상되어 불러올 수 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				}
 			}
 

@@ -135,6 +135,7 @@ namespace CafeMaster_UI.Lib
 	{
 		private static Timer ObserverTimer = null;
 		private static short IntervalTemp = 30;
+		private static bool WORKING = false;
 
 		static Observer( )
 		{
@@ -166,6 +167,12 @@ namespace CafeMaster_UI.Lib
 
 		public static void ChangeInterval( short interval )
 		{
+			if ( interval < 30 || interval > 300 )
+			{
+				Config.Set( "SyncInterval", "30" );
+				interval = 30;
+			}
+
 			IntervalTemp = interval;
 			ObserverTimer.Change( 1000 * interval, 1000 * interval );
 		}
@@ -183,84 +190,88 @@ namespace CafeMaster_UI.Lib
 
 		private static void Progress( object status )
 		{
-			int PAGE = 1;
-			bool newFound = false;
+			if ( WORKING ) return;
 
-			retry:
+			WORKING = true;
 
-			TopProgressMessage.Set( PAGE + "페이지의 새로운 게시글을 확인하고 있습니다 ..." );
+			int currentArticlePage = 1; // 현재 게시판 페이지
+			bool newThreadFound = false;
+			List<string> newThreadNumberTemp = new List<string>( );
+			string[ ] savedDataTable = ThreadDataStore.Get( ); // 최적화 필요;
 
-			string[ ] savedDataTable = Data.Get( ); // 최적화 필요;
-			int newCount = 0;
+			searchThreadPage: // 페이지 루프를 위한 goto
 
-			NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&search.page=" + PAGE, NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
+			int newThreadCount = 0;
+
+			TopProgressMessage.Set( "새로운 게시물을 확인하고 있습니다 ... [" + currentArticlePage + "p]" );
+
+			NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&search.page=" + currentArticlePage, NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
 			{
 				List<TableDataTable> newDataTable = Parse.TotalArticlePageCrawling( value );
 
 				for ( int i = 0; i < newDataTable.Count; i++ )
 				{
-					bool found = false;
+					bool dataStoreFound = false;
 
 					for ( int i2 = 0; i2 < savedDataTable.Length; i2++ )
 					{
 						if ( newDataTable[ i ].number == savedDataTable[ i2 ] )
 						{
-							found = true;
+							dataStoreFound = true;
 							break;
 						}
 					}
 
-					if ( !found )
+					if ( !dataStoreFound ) // 새로운 글
 					{
-						if ( Notify.IsAlreadyAdded( newDataTable[ i ].number ) ) continue;
+						if ( Notify.Exists( newDataTable[ i ].number ) ) continue;
 
-						newFound = true;
+						newThreadFound = true;
 
 						TopProgressMessage.Set( "#" + newDataTable[ i ].number + " 게시글의 정보를 불러오고 있습니다 ... [1/3]" );
 
-						Data.Add( newDataTable[ i ].number );
+						newThreadNumberTemp.Add( newDataTable[ i ].number );
 
-						Notify.Add(
-							newDataTable[ i ].title,
-							newDataTable[ i ].number,
-							newDataTable[ i ].author,
-							newDataTable[ i ].url,
-							newDataTable[ i ].time,
-							newDataTable[ i ].hit
-						);
+						Notify.Add( newDataTable[ i ] );
 
-						newCount++;
+						newThreadCount++;
 					}
 				}
 			} );
 
-			if ( newCount >= 15 )
+			if ( newThreadCount >= 15 ) // 기본 설정으로 게시판 한 페이지 당 15개의 글이 있음, 이상으로 글이 있을 시 새로운 글이 다음 페이지에 있을 수 있으므로 다음 페이지도 검색
 			{
-				PAGE++;
-				goto retry;
+				currentArticlePage++;
+				goto searchThreadPage;
 			}
 
-			if ( newFound )
+			if ( newThreadFound )
 			{
+				ThreadDataStore.Add( newThreadNumberTemp );
 				Notify.Sort( );
 
-				Main main = Utility.GetMainForm( );
+				Utility.FlashWindow.Flash( ); // 작업표시줄 하이라이트 처리
 
-				if ( main != null )
-					FlashWindow.Flash( main );
-
-				if ( Config.Get( "SoundMute", "false" ).ToLower( ) == "false" )
+				if ( Config.Get( "SoundEnable", "1" ) == "1" )
 					SoundNotify.PlayNotify( );
 			}
 
 			Thread.Sleep( 1000 );
 
 			TopProgressMessage.End( );
+			WORKING = false;
 		}
 	}
 
-	static class Data
+	static class ThreadDataStore
 	{
+		private static readonly string DATA_FILE_LOCATION;
+
+		static ThreadDataStore( )
+		{
+			DATA_FILE_LOCATION = GlobalVar.DATA_DIR + @"\dataTable.dat";
+		}
+
 		public static void Initialize( )
 		{
 			try
@@ -268,9 +279,9 @@ namespace CafeMaster_UI.Lib
 				if ( !Directory.Exists( GlobalVar.DATA_DIR ) )
 					Directory.CreateDirectory( GlobalVar.DATA_DIR );
 
-				if ( !File.Exists( GlobalVar.DATA_DIR + @"\dataTable.dat" ) )
+				if ( !File.Exists( DATA_FILE_LOCATION ) ) // 데이터 파일이 없을 시 
 				{
-					NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L", NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
+					NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&userDisplay=15", NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
 					{
 						JsonArrayCollection collection = new JsonArrayCollection( );
 						List<TableDataTable> dataTable = Parse.TotalArticlePageCrawling( value );
@@ -280,7 +291,7 @@ namespace CafeMaster_UI.Lib
 							collection.Add( new JsonStringValue( null, i.number ) );
 						}
 
-						File.WriteAllText( GlobalVar.DATA_DIR + @"\dataTable.dat", collection.ToString( ) );
+						File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
 
 						Thread.Sleep( 1000 );
 
@@ -288,41 +299,64 @@ namespace CafeMaster_UI.Lib
 					} );
 				}
 
-				Notify.Load( );
+				Notify.Initialize( );
 			}
 			catch ( IOException ex )
 			{
-				Utility.LogWrite( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 불러오지 못했습니다, 파일 접근 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 불러오지 못했습니다, 알 수 없는 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 		}
 
-		public static void Add( string number )
+		public static void Add( string threadID )
 		{
 			try
 			{
-				if ( !File.Exists( GlobalVar.DATA_DIR + @"\dataTable.dat" ) ) return;
+				if ( !File.Exists( DATA_FILE_LOCATION ) ) return;
 
-				JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( GlobalVar.DATA_DIR + @"\dataTable.dat" ) );
+				JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
 
-				collection.Insert( 0, new JsonStringValue( null, number ) );
+				collection.Add( new JsonStringValue( null, threadID ) );
 
-				File.WriteAllText( GlobalVar.DATA_DIR + @"\dataTable.dat", collection.ToString( ) );
+				File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
 			}
 			catch ( IOException ex )
 			{
-				Utility.LogWrite( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
-				NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 저장하지 못했습니다, 파일 접근 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
-				NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 저장하지 못했습니다, 알 수 없는 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+			}
+		}
+
+		public static void Add( List<string> threadIDList )
+		{
+			try
+			{
+				if ( !File.Exists( DATA_FILE_LOCATION ) ) return;
+
+				JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+
+				foreach ( string i in threadIDList )
+				{
+					collection.Add( new JsonStringValue( null, i ) );
+				}
+				
+				File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+			}
+			catch ( IOException ex )
+			{
+				Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+			}
+			catch ( Exception ex )
+			{
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 			}
 		}
 
@@ -330,12 +364,12 @@ namespace CafeMaster_UI.Lib
 		{
 			try
 			{
-				if ( File.Exists( GlobalVar.DATA_DIR + @"\dataTable.dat" ) )
+				if ( File.Exists( DATA_FILE_LOCATION ) )
 				{
-					JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( GlobalVar.DATA_DIR + @"\dataTable.dat" ) );
+					JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
 					string[ ] dataTable = new string[ collection.Count ];
-
 					int count = 0;
+
 					foreach ( JsonStringValue i in collection )
 					{
 						dataTable[ count ] = i.Value;
@@ -347,7 +381,7 @@ namespace CafeMaster_UI.Lib
 				else
 					return new string[ ] { };
 			}
-			catch ( Exception ) { return new string[ ] { }; }
+			catch { return new string[ ] { }; }
 		}
 	}
 }

@@ -344,7 +344,7 @@
 			this.OPTION_2_OBJECT_1.TabIndex = 49;
 			this.OPTION_2_OBJECT_1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.OPTION_2_OBJECT_1.Value = new decimal(new int[] {
-            300,
+            30,
             0,
             0,
             0});

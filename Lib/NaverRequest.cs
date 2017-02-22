@@ -11,24 +11,12 @@ using System.Web;
 
 namespace CafeMaster_UI.Lib
 {
-	struct CookieStruct
-	{
-		public string id;
-		public string value;
-
-		public CookieStruct( string id, string value )
-		{
-			this.id = id;
-			this.value = value;
-		}
-	}
-
 	struct ThreadDetailStruct
 	{
-		public string detailTime;
-		public string detailAuthor;
-		public string authorIconGIF;
-		public string boardName;
+		public string threadTime;
+		public string threadAuthor;
+		public string personaconURL;
+		public string articleName;
 	}
 
 	struct NaverAccountInformation
@@ -44,26 +32,6 @@ namespace CafeMaster_UI.Lib
 			this.email = email;
 			this.iconURL = iconURL;
 			this.isOnline = isOnline;
-		}
-	}
-
-	class CookieWork
-	{
-		public List<CookieStruct> Parse( string cookieString )
-		{
-			List<CookieStruct> ret = new List<CookieStruct>( );
-			string[ ] s = cookieString.Split( ';' );
-
-			foreach ( string i in s )
-			{
-				string[ ] t = i.Split( '=' );
-
-				if ( t.Length < 2 ) continue;
-
-				ret.Add( new CookieStruct( t[ 0 ].Trim( ), t[ 1 ].Trim( ) ) );
-			}
-
-			return ret;
 		}
 	}
 
@@ -143,7 +111,7 @@ namespace CafeMaster_UI.Lib
 				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 				request.CookieContainer = new CookieContainer( );
 
-				foreach ( CookieStruct i in GlobalVar.COOKIES_LIST )
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
 				{
 					request.CookieContainer.Add( new System.Net.Cookie( i.id, i.value, "/", request.Host ) );
 				}
@@ -192,7 +160,7 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return "";
 			}
 		}
@@ -222,7 +190,7 @@ namespace CafeMaster_UI.Lib
 				request.CookieContainer = new CookieContainer( );
 				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
-				foreach ( CookieStruct i in GlobalVar.COOKIES_LIST )
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
 				{
 					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
 				}
@@ -267,7 +235,7 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return false;
 			}
 		}
@@ -281,7 +249,7 @@ namespace CafeMaster_UI.Lib
 				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 				request.CookieContainer = new CookieContainer( );
 
-				foreach ( CookieStruct i in GlobalVar.COOKIES_LIST )
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
 				{
 					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
 				}
@@ -306,7 +274,7 @@ namespace CafeMaster_UI.Lib
 							{
 								if ( i.GetAttributeValue( "src", "" ).StartsWith( "http://itemimgs.naver.net/personacon/" ) && i.GetAttributeValue( "width", "" ) == "19" && i.GetAttributeValue( "height", "" ) == "19" )
 								{
-									data.authorIconGIF = i.GetAttributeValue( "src", "" );
+									data.personaconURL = i.GetAttributeValue( "src", "" );
 
 									break;
 								}
@@ -316,7 +284,7 @@ namespace CafeMaster_UI.Lib
 							{
 								if ( i.GetAttributeValue( "class", "" ) == "m-tcol-c date" )
 								{
-									data.detailTime = i.InnerText.Trim( );
+									data.threadTime = i.InnerText.Trim( );
 								}
 								else if ( !foundDetailNick && i.GetAttributeValue( "class", "" ) == "p-nick" )
 								{
@@ -326,7 +294,7 @@ namespace CafeMaster_UI.Lib
 										{
 											string[ ] valTable = i2.GetAttributeValue( "onclick", "" ).Split( new string[ ] { "'" }, StringSplitOptions.RemoveEmptyEntries );
 
-											data.detailAuthor = valTable[ 3 ] + "(" + valTable[ 1 ] + ")";
+											data.threadAuthor = valTable[ 3 ] + "(" + valTable[ 1 ] + ")";
 											break;
 										}
 									}
@@ -335,7 +303,7 @@ namespace CafeMaster_UI.Lib
 								}
 								else if ( !foundCategory && i.GetAttributeValue( "class", "" ) == "m-tcol-c" )
 								{
-									data.boardName = i.InnerText.Trim( );
+									data.articleName = i.InnerText.Trim( );
 									foundCategory = true;
 								}
 							}
@@ -347,7 +315,7 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return new ThreadDetailStruct( );
 			}
 		}
@@ -378,7 +346,7 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				isNetError = true;
 				return false;
 			}
@@ -400,7 +368,7 @@ namespace CafeMaster_UI.Lib
 				request.Headers.Add( HttpRequestHeader.AcceptLanguage, "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4" );
 				request.CookieContainer = new CookieContainer( );
 
-				foreach ( CookieStruct i in GlobalVar.COOKIES_LIST )
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
 				{
 					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
 				}
@@ -415,6 +383,8 @@ namespace CafeMaster_UI.Lib
 
 							JsonObjectCollection jsonCollection = ( JsonObjectCollection ) ( new JsonTextParser( ) ).Parse( htmlString );
 
+							File.WriteAllText( "tt.txt", htmlString, Encoding.UTF8 );
+
 							return new NaverAccountInformation(
 								jsonCollection[ "nickName" ].GetValue( ).ToString( ),
 								jsonCollection[ "loginId" ].GetValue( ).ToString( ),
@@ -427,7 +397,7 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return null;
 			}
 		}
@@ -478,7 +448,7 @@ namespace CafeMaster_UI.Lib
 					}
 					else
 					{
-						Utility.LogWrite( ( ( int ) res.StatusCode ) + " - " + res.StatusCode.ToString( ), Utility.LogSeverity.EXCEPTION );
+						Utility.WriteErrorLog( ( ( int ) res.StatusCode ) + " - " + res.StatusCode.ToString( ), Utility.LogSeverity.EXCEPTION );
 						cookies = null;
 						return NaverLoginResult.RequestError;
 					}
@@ -486,13 +456,13 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( WebException ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				cookies = null;
 				return NaverLoginResult.RequestError;
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				cookies = null;
 				return NaverLoginResult.RequestError;
 			}
@@ -523,12 +493,12 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( WebException ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				ErrorCallBack?.Invoke( );
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				ErrorCallBack?.Invoke( );
 			}
 		}

@@ -243,6 +243,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="APP_ICON.ico" />
+    <None Include="Resources\NOTIFICATION_BASIC.png" />
+    <None Include="Resources\NETWORK_ONLINE.png" />
+    <None Include="Resources\NETWORK_WORKING.png" />
+    <None Include="Resources\NETWORK_OFFLINE.png" />
+    <None Include="Resources\NETWORK_NOT_INIT.png" />
     <None Include="Resources\FLATCHECKBOX_ON.png" />
     <None Include="Resources\FLATCHECKBOX_OFF.png" />
     <None Include="Resources\PROFILE_UNKNOWN_160x160.png" />

@@ -28,7 +28,24 @@ namespace CafeMaster_UI.Interface
 
 			try
 			{
-				this.OPTION_1_OBJECT.Status = Microsoft.Win32.Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run" ).GetValue( "MilkPowerCafeStaff" ) != null ? true : false;
+				// http://blog.suromind.com/85
+				Microsoft.Win32.RegistryKey registryKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey( @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run" );
+
+				if ( registryKey.GetValue( "MilkPowerCafeStaff" ) == null )
+				{
+					this.OPTION_1_OBJECT.Status = false;
+				}
+				else
+				{
+					if ( registryKey.GetValue( "MilkPowerCafeStaff" ).ToString( ).ToLower( ) == ( Application.ExecutablePath.ToString( ).Replace( "/", "\\" ) + " -winstart" ).ToLower( ) )
+					{
+						this.OPTION_1_OBJECT.Status = true;
+					}
+					else
+					{
+						this.OPTION_1_OBJECT.Status = false;
+					}
+				}
 
 				int option1Result = 30;
 
@@ -42,8 +59,8 @@ namespace CafeMaster_UI.Interface
 					Config.Set( "SyncInterval", "30" );
 				}
 
-				this.OPTION_3_OBJECT.Status = Config.Get( "CaptureEnable", "true" ).ToLower( ) == "true" ? true : false;
-				this.OPTION_4_OBJECT.Status = Config.Get( "UXSendEnable", "true" ).ToLower( ) == "true" ? true : false;
+				this.OPTION_3_OBJECT.Status = Config.Get( "CaptureEnable", "1" ) == "1";
+				this.OPTION_4_OBJECT.Status = Config.Get( "UXSendEnable", "1" ) == "1";
 			}
 			catch { }
 
@@ -94,7 +111,7 @@ namespace CafeMaster_UI.Interface
 
 		private void INIT_DB_BUTTON_Click( object sender, EventArgs e )
 		{
-			if ( NotifyBox.Show( this, "데이터 초기화", "모든 설정 사항, 계정 정보, 캡쳐된 이미지, 데이터를 초기화합니다.", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
+			if ( NotifyBox.Show( this, "데이터 초기화", "모든 설정, 계정 정보, 캡처된 이미지, 데이터를 초기화합니다.", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
 			{
 				if ( NotifyBox.Show( this, "데이터 초기화", "이 작업을 실행하면 되돌릴 수 없습니다, 정.말.로 하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
 				{
@@ -115,7 +132,7 @@ namespace CafeMaster_UI.Interface
 					}
 					catch ( Exception ex )
 					{
-						Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+						Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 						NotifyBox.Show( this, "오류", "죄송합니다, 데이터를 초기화하는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 					}
 				}
@@ -153,7 +170,7 @@ namespace CafeMaster_UI.Interface
 		{
 			if ( isInitialize ) return;
 
-			Config.Set( "CaptureEnable", this.OPTION_3_OBJECT.Status.ToString( ) );
+			Config.Set( "CaptureEnable", this.OPTION_3_OBJECT.Status == true ? "1" : "0" );
 		}
 
 		private void OPTION_4_OBJECT_StatusChanged( object sender, EventArgs e )
@@ -169,7 +186,7 @@ namespace CafeMaster_UI.Interface
 				}
 			}
 
-			Config.Set( "UXSendEnable", this.OPTION_4_OBJECT.Status.ToString( ) );
+			Config.Set( "UXSendEnable", this.OPTION_4_OBJECT.Status == true ? "1" : "0" );
 		}
 
 		private void OPTION_5_OBJECT_Click( object sender, EventArgs e )

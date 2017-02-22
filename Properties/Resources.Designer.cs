@@ -233,9 +233,59 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_NOT_INIT {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_NOT_INIT", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_OFFLINE {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_OFFLINE", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_ONLINE {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_ONLINE", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_WORKING {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_WORKING", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap NEW_ARTICLE {
             get {
                 object obj = ResourceManager.GetObject("NEW_ARTICLE", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NOTIFICATION_BASIC {
+            get {
+                object obj = ResourceManager.GetObject("NOTIFICATION_BASIC", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

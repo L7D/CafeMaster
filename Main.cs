@@ -11,6 +11,9 @@ namespace CafeMaster_UI
 {
 	public partial class Main : Form
 	{
+		//맞춤법 검사기 추가하기
+		//게시글 -> 게시물로 수정 바람
+
 		private Point startPoint;
 		private Pen lineDrawer = new Pen( GlobalVar.MasterColor )
 		{
@@ -40,16 +43,75 @@ namespace CafeMaster_UI
 			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
 		}
 
+		public void SetNetworkIcon( int type )
+		{
+			if ( this.InvokeRequired )
+			{
+				this.Invoke( new Action( ( ) =>
+				{
+					switch ( type )
+					{
+						case 0:
+							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+							break;
+						case 1:
+							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ONLINE;
+							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 온라인" );
+							break;
+						case 2:
+							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_WORKING;
+							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 동기화 하는 중 ..." );
+							break;
+						case 3:
+							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_OFFLINE;
+							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 오프라인" );
+							break;
+						default:
+							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+							break;
+					}
+				} ) );
+			}
+			else
+			{
+				switch ( type )
+				{
+					case 0:
+						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+						break;
+					case 1:
+						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ONLINE;
+						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 온라인" );
+						break;
+					case 2:
+						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_WORKING;
+						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 동기화 하는 중 ..." );
+						break;
+					case 3:
+						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_OFFLINE;
+						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 오프라인" );
+						break;
+					default:
+						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+						break;
+				}
+			}
+		}
+
 		public void RefreshNotifyPanel( )
 		{
 			this.NOTIFY_PANEL.Enabled = false;
 
-			int save = this.NOTIFY_PANEL.VerticalScroll.Value;
+			int scrollPosTemp = this.NOTIFY_PANEL.VerticalScroll.Value;
+			int y = 10;
 
 			this.NOTIFY_PANEL.Controls.Clear( );
 
-			int y = 10;
-			foreach ( NotifyData data in Notify.lists )
+			foreach ( NotifyData data in Notify.GetAll( ) )
 			{
 				NotifyChildPanel panel = new NotifyChildPanel( data );
 				panel.Location = new Point( 10, y );
@@ -59,8 +121,7 @@ namespace CafeMaster_UI
 				this.NOTIFY_PANEL.Controls.Add( panel );
 			}
 
-			this.NOTIFY_PANEL.ScrollDown( save );
-
+			this.NOTIFY_PANEL.ScrollDown( scrollPosTemp );
 			this.NOTIFY_PANEL.Enabled = true;
 		}
 
@@ -98,15 +159,15 @@ namespace CafeMaster_UI
 				this.Invoke( new Action( ( ) =>
 				{
 					this.LOADING_GIFIMAGE.Visible = false;
-					this.CURRENT_PROGRESS_LABEL.Text = "";
 					this.CURRENT_PROGRESS_LABEL.Visible = false;
+					this.CURRENT_PROGRESS_LABEL.Text = "";
 				} ) );
 			}
 			else
 			{
 				this.LOADING_GIFIMAGE.Visible = false;
-				this.CURRENT_PROGRESS_LABEL.Text = "";
 				this.CURRENT_PROGRESS_LABEL.Visible = false;
+				this.CURRENT_PROGRESS_LABEL.Text = "";
 			}
 		}
 
@@ -117,11 +178,7 @@ namespace CafeMaster_UI
 				foreach ( Control i in this.NOTIFY_PANEL.Controls )
 				{
 					if ( i.Name != "NotifyChildPanel" ) continue;
-
-					if ( ( ( NotifyChildPanel ) i ).CHECKED )
-					{
-						return;
-					}
+					if ( ( ( NotifyChildPanel ) i ).CHECKED ) return;
 				}
 			}
 
@@ -144,7 +201,7 @@ namespace CafeMaster_UI
 
 		private void Main_Load( object sender, EventArgs e )
 		{
-			new Welcome( ).ShowDialog( );
+			//new Welcome( ).ShowDialog( );
 			//new ProgramAuthForm( ).ShowDialog( );
 			new NaverLoginForm( ).ShowDialog( );
 
@@ -154,9 +211,27 @@ namespace CafeMaster_UI
 
 			Thread preWorkAll = new Thread( ( ) =>
 			{
-				TopProgressMessage.Set( "업데이트를 확인하고 있습니다 ..." );
+				TopProgressMessage.Set( "우유 서버에 연결하고 있습니다 ..." );
 
-				ProgramUpdateCheck( );
+				if ( GlobalServer.Initialize( ) )
+				{
+					GlobalVar.OFFLINE_MODE = false;
+
+					if ( GlobalServer.LATEST_VERSION == GlobalVar.CURRENT_VERSION )
+					{
+						GlobalVar.UPDATE_AVAILABLE = false;
+					}
+					else
+					{
+						GlobalVar.UPDATE_AVAILABLE = true;
+						UpdateAvailable( );
+					}
+				}
+				else
+				{
+					GlobalVar.OFFLINE_MODE = true;
+					NotifyBox.Show( this, "오류", "죄송합니다, 우유 서버에 연결하지 못했습니다, 오프라인 모드로 동작합니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+				}
 
 				TopProgressMessage.Set( "계정 정보를 불러오고 있습니다 ..." );
 
@@ -164,7 +239,7 @@ namespace CafeMaster_UI
 				{
 					TopProgressMessage.Set( "데이터를 불러오고 있습니다 ..." );
 
-					Data.Initialize( );
+					ThreadDataStore.Initialize( );
 
 					Thread.Sleep( 2000 );
 
@@ -186,23 +261,20 @@ namespace CafeMaster_UI
 			preWorkAll.Start( );
 		}
 
-		private void ProgramUpdateCheck( )
+		private void UpdateAvailable( )
 		{
-			if ( Lib.Update.Check( ) )
+			if ( this.InvokeRequired )
 			{
-				if ( this.InvokeRequired )
-				{
-					this.Invoke( new Action( ( ) =>
-					{
-						this.UPDATE_AVAILABLE.Visible = true;
-						this.APP_NOTIFY_ICON.ShowBalloonTip( 5000, "우윳빛깔 카페스탭", "새로운 프로그램 업데이트가 있습니다, 카페 페이지를 참고하세요.", ToolTipIcon.None );
-					} ) );
-				}
-				else
+				this.Invoke( new Action( ( ) =>
 				{
 					this.UPDATE_AVAILABLE.Visible = true;
 					this.APP_NOTIFY_ICON.ShowBalloonTip( 5000, "우윳빛깔 카페스탭", "새로운 프로그램 업데이트가 있습니다, 카페 페이지를 참고하세요.", ToolTipIcon.None );
-				}
+				} ) );
+			}
+			else
+			{
+				this.UPDATE_AVAILABLE.Visible = true;
+				this.APP_NOTIFY_ICON.ShowBalloonTip( 5000, "우윳빛깔 카페스탭", "새로운 프로그램 업데이트가 있습니다, 카페 페이지를 참고하세요.", ToolTipIcon.None );
 			}
 		}
 
@@ -231,7 +303,7 @@ namespace CafeMaster_UI
 
 			if ( !string.IsNullOrEmpty( GlobalVar.COOKIES ) && GlobalVar.COOKIES_LIST.Count != 0 )
 			{
-				Utility.URLSetAllNaverCookie( "http://cafe.naver.com" );
+				Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
 
 				this.STEP_CHATBOX.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
 			}
@@ -239,31 +311,31 @@ namespace CafeMaster_UI
 			{
 				this.STEP_CHATBOX.Document.OpenNew( true );
 				this.STEP_CHATBOX.Document.Write( @"<html>
-				<head>
-					<style>
-						html, body {
-							margin: 0;
-							width: 100%;
-							height: 100%;
-							border: 1px solid #bcbcbc;
-						}
-					</style>
-				</head>
-				<body>
-				</body>
-			</html>" );
+					<head>
+						<style>
+							html, body {
+								margin: 0;
+								width: 100%;
+								height: 100%;
+								border: 1px solid #bcbcbc;
+							}
+						</style>
+					</head>
+					<body>
+					</body>
+				</html>" );
 				this.STEP_CHATBOX.Refresh( );
 			}
 
-			if ( Config.Get( "SoundMute", "false" ).ToLower( ) == "true" )
-			{
-				this.BELL_STATUS_BUTTON.Image = Properties.Resources.BELL_IGNORE;
-			}
-			else
+			if ( Config.Get( "SoundEnable", "1" ) == "1" )
 			{
 				this.BELL_STATUS_BUTTON.Image = Properties.Resources.BELL_NORMAL;
 
 				SoundNotify.PlayWelcome( );
+			}
+			else
+			{
+				this.BELL_STATUS_BUTTON.Image = Properties.Resources.BELL_IGNORE;
 			}
 
 			Theme.Apply( this.BACKGROUND_SPLASH, "main_*.png" );
@@ -276,7 +348,7 @@ namespace CafeMaster_UI
 			{
 				GlobalVar.NAVER_USER_ID = info.email;
 
-				if ( info.iconURL != "N" ) // 프로필 이미지가 설정되지 않으면 URL 이 N임
+				if ( info.iconURL != "N" ) // 프로필 이미지가 설정되지 않으면 이미지 URL 이 N임
 				{
 					try
 					{
@@ -291,7 +363,7 @@ namespace CafeMaster_UI
 						}
 						else
 						{
-							Utility.LogWrite( "NaverProfileImageX80LoadFailed", Utility.LogSeverity.ERROR );
+							Utility.WriteErrorLog( "NaverProfileImageX80LoadFailed", Utility.LogSeverity.ERROR );
 							NotifyBox.Show( this, "오류", "죄송합니다, 계정 프로필을 불러오는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 						}
 
@@ -303,13 +375,13 @@ namespace CafeMaster_UI
 						}
 						else
 						{
-							Utility.LogWrite( "NaverProfileImageX160LoadFailed", Utility.LogSeverity.ERROR );
+							Utility.WriteErrorLog( "NaverProfileImageX160LoadFailed", Utility.LogSeverity.ERROR );
 							NotifyBox.Show( this, "오류", "죄송합니다, 계정 프로필을 불러오는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 						}
 					}
 					catch ( Exception ex )
 					{
-						Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+						Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 						NotifyBox.Show( this, "오류", "죄송합니다, 계정 프로필을 불러오는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 					}
 				}
@@ -358,9 +430,7 @@ namespace CafeMaster_UI
 		private void CLOSE_BUTTON_Click( object sender, EventArgs e )
 		{
 			if ( NotifyBox.Show( this, "우윳빛깔 카페스탭", "우윳빛깔 카페스탭을 종료하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
-			{
 				this.Close( );
-			}
 		}
 
 		private void Main_Paint( object sender, PaintEventArgs e )
@@ -390,9 +460,9 @@ namespace CafeMaster_UI
 
 		private void BELL_STATUS_BUTTON_Click( object sender, EventArgs e )
 		{
-			Config.Set( "SoundMute", Config.Get( "SoundMute", "false" ).ToLower( ) == "true" ? "false" : "true" );
+			Config.Set( "SoundEnable", Config.Get( "SoundEnable", "1" ) == "1" ? "0" : "1" );
 
-			this.BELL_STATUS_BUTTON.Image = Config.Get( "SoundMute", "false" ).ToLower( ) == "true" ? Properties.Resources.BELL_IGNORE : Properties.Resources.BELL_NORMAL;
+			this.BELL_STATUS_BUTTON.Image = Config.Get( "SoundEnable", "1" ) == "1" ? Properties.Resources.BELL_NORMAL : Properties.Resources.BELL_IGNORE;
 		}
 
 		//string[ ] ignoreLockControls =
@@ -499,16 +569,16 @@ namespace CafeMaster_UI
 		{
 			if ( this.FORCE_SYNC_DELAY_TIMER.Enabled )
 			{
-				NotifyBox.Show( this, "오류", "너무 자주 시도했습니다, 잠시 후 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+				NotifyBox.Show( this, "오류", "너무 자주 동기화를 시도했습니다, 잠시 후 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 
 				return;
 			}
 
-			if ( NotifyBox.Show( this, "질문", "지금 데이터를 불러오시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
+			if ( NotifyBox.Show( this, "지금 동기화", "지금 데이터를 동기화하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
 			{
 				Observer.ForceProgress( );
 
-				FORCE_SYNC_DELAY_TIMER.Start( );
+				this.FORCE_SYNC_DELAY_TIMER.Start( );
 			}
 		}
 
@@ -520,7 +590,7 @@ namespace CafeMaster_UI
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( this, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 		}
@@ -533,11 +603,10 @@ namespace CafeMaster_UI
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( this, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 		}
-
 
 		private void UTIL_BUTTON3_Click( object sender, EventArgs e )
 		{
@@ -547,10 +616,11 @@ namespace CafeMaster_UI
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( this, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 		}
+
 		private void UTIL_BUTTON4_Click( object sender, EventArgs e )
 		{
 			try
@@ -559,7 +629,7 @@ namespace CafeMaster_UI
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				NotifyBox.Show( this, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 		}
@@ -606,7 +676,7 @@ namespace CafeMaster_UI
 
 		private void CHILD_PANEL_UTIL_DELETE_Click( object sender, EventArgs e )
 		{
-			if ( NotifyBox.Show( this, "삭제 확인", "선택한 새 게시물 알림을 모두 삭제하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) != NotifyBoxResult.Yes ) return;
+			if ( NotifyBox.Show( this, "삭제 확인", "선택한 새 게시물 알림을 모두 삭제하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) != NotifyBoxResult.Yes ) return;
 
 			int count = 0;
 			foreach ( Control i in this.NOTIFY_PANEL.Controls )
@@ -616,7 +686,7 @@ namespace CafeMaster_UI
 
 				if ( !panel.CHECKED ) continue;
 
-				Notify.Remove( panel.THREAD_NUMBER, true, true );
+				Notify.Remove( panel.THREAD_ID, true, true );
 				count++;
 			}
 
@@ -659,6 +729,11 @@ namespace CafeMaster_UI
 		{
 			Notify.Save( );
 			Config.Save( );
+		}
+
+		private void APP_NOTIFY_ICON_MENU_ITEM_1_Click( object sender, EventArgs e )
+		{
+			this.Close( );
 		}
 	}
 }

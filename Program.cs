@@ -31,7 +31,7 @@ namespace CafeMaster_UI
 				}
 				catch ( Exception )
 				{
-					Utility.LogWrite( "DLLNotFoundOrCrashed", Utility.LogSeverity.ERROR );
+					Utility.WriteErrorLog( "DLLNotFoundOrCrashed", Utility.LogSeverity.ERROR );
 					NotifyBox.Show( null, "오류", "죄송합니다, 프로그램 실행에 필요한 파일을 불러오는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 					Process.GetCurrentProcess( ).Kill( );
 					return;

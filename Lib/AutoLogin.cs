@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CafeMaster_UI.Lib
 {
@@ -51,13 +48,13 @@ namespace CafeMaster_UI.Lib
 				}
 				else
 				{
-					Utility.LogWrite( "AccountFileNotFound", Utility.LogSeverity.ERROR );
+					Utility.WriteErrorLog( "AccountFileNotFound", Utility.LogSeverity.ERROR );
 					return false;
 				}
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return false;
 			}
 		}
@@ -80,9 +77,7 @@ namespace CafeMaster_UI.Lib
 				cryptoStream.FlushFinalBlock( );
 
 				if ( !Directory.Exists( GlobalVar.APP_DIR + @"\data" ) )
-				{
 					Directory.CreateDirectory( GlobalVar.APP_DIR + @"\data" );
-				}
 
 				File.WriteAllBytes( GlobalVar.APP_DIR + @"\data\account.dat", ms.ToArray( ) );
 
@@ -90,22 +85,22 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( CryptographicException ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return SetAccountDataResult.EncryptFailed;
 			}
 			catch ( IOException ex )
 			{
-				Utility.LogWrite( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 				return SetAccountDataResult.FileCreateFailed;
 			}
 			catch ( UnauthorizedAccessException ex )
 			{
-				Utility.LogWrite( "UnauthorizedAccessException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( "UnauthorizedAccessException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
 				return SetAccountDataResult.FileCreateFailed;
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return SetAccountDataResult.Unknown;
 			}
 		}
@@ -153,13 +148,13 @@ namespace CafeMaster_UI.Lib
 			}
 			catch ( CryptographicException ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				accountString = null;
 				return GetAccountDataResult.DecryptFailed;
 			}
 			catch ( Exception ex )
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				accountString = null;
 				return GetAccountDataResult.Unknown;
 			}

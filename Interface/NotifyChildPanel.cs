@@ -14,15 +14,17 @@ namespace CafeMaster_UI.Interface
 
 	public partial class NotifyChildPanel : UserControl
 	{
-		private NotifyData dataTemp;
-		private string accountID;
 		private SolidBrush BackgroundDrawer = new SolidBrush( Color.FromArgb( 0, Color.LightCoral ) );
 		private Pen lineDrawer = new Pen( GlobalVar.MasterColor )
 		{
 			Width = 1
 		};
 		private Timer colorAnimationTimer;
-		public string THREAD_NUMBER;
+
+		private NotifyData dataTemp;
+		private string accountID;
+
+		public string THREAD_ID;
 		public bool CHECKED
 		{
 			get;
@@ -33,20 +35,20 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.THREAD_NUMBER = data.threadNumber;
-			this.accountID = data.detailAuthor.Substring( data.detailAuthor.IndexOf( '(' ) + 1, data.detailAuthor.Length - data.detailAuthor.IndexOf( '(' ) - 2 );
-			this.NUMBER_LABEL.Text = "#" + data.threadNumber;
-			this.BOARD_NAME_LABEL.Text = string.IsNullOrEmpty( data.boardName ) ? "Q&A 또는 기타 게시판" : data.boardName;
+			this.THREAD_ID = data.threadID;
+			this.accountID = data.threadAuthor.Substring( data.threadAuthor.IndexOf( '(' ) + 1, data.threadAuthor.Length - data.threadAuthor.IndexOf( '(' ) - 2 );
+			this.NUMBER_LABEL.Text = "#" + data.threadID;
+			this.BOARD_NAME_LABEL.Text = string.IsNullOrEmpty( data.articleName ) ? "Q&A 또는 기타 게시판" : data.articleName;
 
 			this.TITLE_LABEL.Text = data.threadTitle;
-			this.AUTHOR_LABEL.Text = data.detailAuthor; // data.threadAuthor
-			this.TIME_LABEL.Text = data.detailTime; // data.threadTime
+			this.AUTHOR_LABEL.Text = data.threadAuthor;
+			this.TIME_LABEL.Text = data.threadTime;
 			this.HIT_LABEL.Text = data.threadHit + " V";
 
-			if ( data.authorIconGIF == "" )
+			if ( data.personaconURL == "" )
 				this.AUTHOR_ICON.Image = Properties.Resources.USER_ICON;
 			else
-				this.AUTHOR_ICON.ImageLocation = data.authorIconGIF;
+				this.AUTHOR_ICON.ImageLocation = data.personaconURL;
 
 			if ( GlobalVar.ADMINS[ this.accountID ] != null )
 			{
@@ -78,8 +80,6 @@ namespace CafeMaster_UI.Interface
 
 			this.dataTemp = data;
 
-			this.FocusAnimation( this.dataTemp.focused );
-
 			if ( this.dataTemp.focused )
 			{
 				this.FOCUS_BUTTON.NormalStateBackgroundColor = Color.Gold;
@@ -105,7 +105,7 @@ namespace CafeMaster_UI.Interface
 
 			colorAnimationTimer = new Timer( )
 			{
-				Interval = 10
+				Interval = 50
 			};
 			colorAnimationTimer.Tick += delegate ( object sender, EventArgs e )
 			{
@@ -122,7 +122,6 @@ namespace CafeMaster_UI.Interface
 				a = Utility.Lerp( a, ( enable ? a + 5 : a - 5 ), 0.1F );
 
 				BackgroundDrawer.Color = Color.FromArgb( Utility.Clamp( ( int ) a, 50, 0 ), BackgroundDrawer.Color );
-
 				this.Invalidate( );
 			};
 
@@ -131,10 +130,8 @@ namespace CafeMaster_UI.Interface
 
 		private void REMOVE_BUTTON_Click( object sender, EventArgs e )
 		{
-			if ( NotifyBox.Show( null, "질문", "정말로 이 알림을 삭제하시겠습니까?, 복구할 수 없습니다.", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
-			{
-				Notify.Remove( this.NUMBER_LABEL.Text.Substring( 1 ) );
-			}
+			if ( NotifyBox.Show( null, "삭제 확인", "게시물 #" + this.THREAD_ID + " 알림을 삭제하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
+				Notify.Remove( this.THREAD_ID );
 		}
 
 		private void NotifyChildPanel_Load( object sender, EventArgs e )
@@ -151,46 +148,9 @@ namespace CafeMaster_UI.Interface
 			e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
 		}
 
-		public void FocusAnimation( bool enable )
-		{
-			if ( colorAnimationTimer != null )
-			{
-				colorAnimationTimer.Stop( );
-				colorAnimationTimer.Dispose( );
-				colorAnimationTimer = null;
-			}
-
-			BackgroundDrawer = new SolidBrush( Color.FromArgb( BackgroundDrawer.Color.A, Color.Gold ) );
-
-			colorAnimationTimer = new Timer( )
-			{
-				Interval = 10
-			};
-			colorAnimationTimer.Tick += delegate ( object sender, EventArgs e )
-			{
-				if ( BackgroundDrawer.Color.A == ( enable ? 50 : 0 ) )
-				{
-					colorAnimationTimer.Stop( );
-					colorAnimationTimer.Dispose( );
-					colorAnimationTimer = null;
-					return;
-				}
-
-				float a = BackgroundDrawer.Color.A;
-
-				a = Utility.Lerp( a, ( enable ? a + 5 : a - 5 ), 0.1F );
-
-				BackgroundDrawer.Color = Color.FromArgb( Utility.Clamp( ( int ) a, 50, 0 ), BackgroundDrawer.Color );
-
-				this.Invalidate( );
-			};
-
-			colorAnimationTimer.Start( );
-		}
-
 		private void RefreshData( )
 		{
-			NotifyData? data = Notify.GetDataByNumber( this.dataTemp.threadNumber );
+			NotifyData? data = Notify.GetDataByID( this.THREAD_ID );
 
 			if ( data.HasValue )
 			{
@@ -208,13 +168,12 @@ namespace CafeMaster_UI.Interface
 				this.FOCUS_BUTTON.EnterStateBackgroundColor = Color.Gold;
 			}
 
-			this.FocusAnimation( this.dataTemp.focused );
 			this.Refresh( );
 		}
 
 		private void FOCUS_BUTTON_Click( object sender, EventArgs e )
 		{
-			Notify.SetFocused( this.dataTemp.threadNumber, !this.dataTemp.focused );
+			Notify.SetFocused( this.dataTemp.threadID, !this.dataTemp.focused );
 
 			RefreshData( );
 		}
@@ -223,7 +182,7 @@ namespace CafeMaster_UI.Interface
 		{
 			bool isNetError;
 
-			if ( NaverRequest.IsDeletedThread( this.dataTemp.threadNumber, out isNetError ) )
+			if ( NaverRequest.IsDeletedThread( this.THREAD_ID, out isNetError ) )
 			{
 				if ( isNetError )
 				{
@@ -231,9 +190,16 @@ namespace CafeMaster_UI.Interface
 				}
 				else
 				{
-					if ( NotifyBox.Show( null, "삭제된 글", "이 게시글은 삭제되었습니다, 캡쳐된 이미지를 보시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
+					if ( BrowserCapture.FileAvailable( this.THREAD_ID ) )
 					{
-						BrowserCapture.OpenImage( this.dataTemp.threadNumber );
+						if ( NotifyBox.Show( null, "삭제된 글", "이 게시물은 삭제되었습니다, 캡처된 이미지를 보시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
+						{
+							BrowserCapture.OpenImage( this.THREAD_ID );
+						}
+					}
+					else
+					{
+						NotifyBox.Show( null, "삭제된 글", "이 게시물은 삭제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 					}
 				}
 			}
@@ -245,7 +211,7 @@ namespace CafeMaster_UI.Interface
 				}
 				catch ( Exception ex )
 				{
-					Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
+					Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 					NotifyBox.Show( null, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				}
 			}
@@ -253,6 +219,12 @@ namespace CafeMaster_UI.Interface
 
 		private void WARN_BUTTON_Click( object sender, EventArgs e )
 		{
+			if ( this.accountID == "NULL" )
+			{
+				NotifyBox.Show( null, "오류", "죄송합니다, 올바르지 않은 회원 아이디인 것 같습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				return;
+			}
+
 			if ( this.accountID == GlobalVar.NAVER_USER_ID )
 			{
 				NotifyBox.Show( null, "오류", "자신에게 경고를 줄 순 없죠~ 푸하하핫!", NotifyBoxType.OK, NotifyBoxIcon.Warning );
@@ -265,15 +237,18 @@ namespace CafeMaster_UI.Interface
 				return;
 			}
 
-			( new UserWarnOptionForm( this.dataTemp.detailAuthor ) ).ShowDialog( );
+			( new UserWarnOptionForm( this.dataTemp.threadAuthor ) ).ShowDialog( );
 		}
 
 		private void IMAGE_VIEW_BUTTON_Click( object sender, EventArgs e )
 		{
-			if ( NotifyBox.Show( null, "질문", "저장된 게시글 이미지를 보시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
+			if ( BrowserCapture.FileAvailable( this.THREAD_ID ) )
 			{
-				BrowserCapture.OpenImage( this.dataTemp.threadNumber );
+				if ( NotifyBox.Show( null, "질문", "캡처된 게시물 이미지를 보시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
+					BrowserCapture.OpenImage( this.THREAD_ID );
 			}
+			else
+				NotifyBox.Show( null, "이미지 없음", "이 게시물에 대한 캡처된 이미지가 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 		}
 
 		// 외부 접근 용 THIS_SELECT_BUTTON_Click 메소드 복제품 (Main 호출)
@@ -333,14 +308,28 @@ namespace CafeMaster_UI.Interface
 
 		private void ONLY_COMMENT_BUTTON_Click( object sender, EventArgs e )
 		{
-			try
+			bool isNetError;
+
+			if ( NaverRequest.IsDeletedThread( this.THREAD_ID, out isNetError ) )
 			{
-				System.Diagnostics.Process.Start( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID + "/" + THREAD_NUMBER + "/comment?refferAllArticles=true" );
+				if ( isNetError )
+					NotifyBox.Show( null, "오류", "죄송합니다, 네트워크 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				else
+				{
+					NotifyBox.Show( null, "삭제된 글", "이 게시물은 삭제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+				}
 			}
-			catch ( Exception ex )
+			else
 			{
-				Utility.LogWrite( ex.Message, Utility.LogSeverity.EXCEPTION );
-				NotifyBox.Show( null, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				try
+				{
+					System.Diagnostics.Process.Start( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID + "/" + this.THREAD_ID + "/comment?refferAllArticles=true" );
+				}
+				catch ( Exception ex )
+				{
+					Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+					NotifyBox.Show( null, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				}
 			}
 		}
 	}

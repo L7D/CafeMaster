@@ -82,11 +82,11 @@ namespace CafeMaster_UI.Interface
 							this.USERID_VALUE.Text = dataTable[ 0 ];
 							this.PWD_VALUE.Text = new string( '*', dataTable[ 1 ].Length * 2 );
 
-							if ( System.IO.File.Exists( GlobalVar.APP_DIR + @"\data\profileImage.png" ) )
+							if ( System.IO.File.Exists( GlobalVar.APP_DIR + @"\data\profileImage.jpg" ) )
 							{
 								try
 								{
-									this.PROFILE_IMAGE.BackgroundImage = Image.FromFile( GlobalVar.APP_DIR + @"\data\profileImage.png" );
+									this.PROFILE_IMAGE.BackgroundImage = Image.FromFile( GlobalVar.APP_DIR + @"\data\profileImage.jpg" );
 								}
 								catch ( Exception ) { }
 							}

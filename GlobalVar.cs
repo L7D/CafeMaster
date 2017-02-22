@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace CafeMaster_UI
 {
@@ -14,7 +13,7 @@ namespace CafeMaster_UI
 
 	static class GlobalVar
 	{
-		public static readonly Color MasterColor = Color.Silver;
+		public static readonly System.Drawing.Color MasterColor = System.Drawing.Color.Silver; // 메인 색
 
 		public const string CAFE_ID = "25430492"; // 카페 숫자 아이디
 		public const string CAFE_URL_ID = "revolution232"; // 카페 문자열 아이디
@@ -25,8 +24,10 @@ namespace CafeMaster_UI
 		public const string CAFE_MANAGE_HOME_URL = "http://cafe.naver.com/ManageHome.nhn?clubid=" + CAFE_ID; // 카페 관리 링크
 		public const string CAFE_MANAGE_JOINMANAGE_URL = "http://cafe.naver.com/ManageJoinApplication.nhn?search.clubid=" + CAFE_ID; // 카페 가입 신청 관리 링크
 
+		public static bool UPDATE_AVAILABLE = false; // 새로운 버전 있음
+		public static bool OFFLINE_MODE = true; // 우유서버 연결 불가 -> 오프라인 모드 여부
 		public static string COOKIES = ""; // 네이버 계정 쿠키
-		public static List<Lib.CookieStruct> COOKIES_LIST = new List<Lib.CookieStruct>( ); // 네이버 계정 쿠키 리스트
+		public static List<Lib.CookieTable> COOKIES_LIST = new List<Lib.CookieTable>( ); // 네이버 계정 쿠키 리스트
 
 		public static string NAVER_USER_ID; // 네이버 아이디
 
@@ -38,7 +39,7 @@ namespace CafeMaster_UI
 		public static readonly string DATA_DIR; // DATA 폴더 경로 (아래의 경로들과 상속됨)
 		public static readonly string CONFIG_DIR; // 설정값 파일 경로
 		public static readonly string LAYOUT_DIR; // 테마 폴더 경로
-		public static readonly string CAPTURE_DIR; // 캡쳐 이미지 경로
+		public static readonly string CAPTURE_DIR; // 캡처 폴더 경로
 
 		public static readonly string PROFILE_TEMP_DIR; // 프로필 이미지 TEMP 파일 경로
 
