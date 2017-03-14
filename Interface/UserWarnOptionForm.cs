@@ -37,7 +37,13 @@ namespace CafeMaster_UI.Interface
 
 		private void UserWarnOptionForm_Load( object sender, EventArgs e )
 		{
+			warnCount = NaverRequest.WarnCountRequest( this.onlyID ) + 1;
+
+			this.WARNING_COUNT.Value = warnCount;
 			this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+
+			Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
+			this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )
@@ -74,50 +80,89 @@ namespace CafeMaster_UI.Interface
 
 		private void BlockAllControls( )
 		{
+			this.CANCEL_BUTTON.Enabled = false;
 			this.REASON_TEXTBOX.Enabled = false;
 			this.WARN_RUN_BUTTON.Enabled = false;
 		}
 
 		private void ReleaseAllControls( )
 		{
-			this.REASON_TEXTBOX.Enabled = false;
-			this.WARN_RUN_BUTTON.Enabled = false;
+			//nope
+			//this.CANCEL_BUTTON.Enabled = false;
+			//this.REASON_TEXTBOX.Enabled = false;
+			//this.WARN_RUN_BUTTON.Enabled = false;
+		}
+
+		private void ChatSendUsingHelper( string message )
+		{
+			HtmlElement chatbox = this.chatSendHelper.Document.GetElementById( "msgInputArea" );
+
+			if ( chatbox != null )
+			{
+				chatbox.InnerText = message;
+
+				HtmlElementCollection buttons = this.chatSendHelper.Document.GetElementsByTagName( "button" );
+
+				foreach ( HtmlElement i in buttons )
+				{
+					if ( i.GetAttribute( "type" ) == "button" && i.InnerText.Trim( ) == "전송" )
+					{
+						i.InvokeMember( "Click" );
+					}
+				}
+			}
 		}
 
 		private void WARN_RUN_BUTTON_Click( object sender, EventArgs e )
 		{
-			if ( this.WARNING_COUNT.Value == 0 )
+			if ( warnCount == 0 )
 			{
-				NotifyBox.Show( this, "오류", "경고 횟수는 0이 될 수 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				NotifyBox.Show( this, "오류", "경고 횟수는 1~10 사이여야 합니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 				return;
 			}
 
 			if ( this.REASON_TEXTBOX.Text.Trim( ).Length == 0 )
 			{
-				NotifyBox.Show( this, "오류", "경고 사유를 작성하세요.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				NotifyBox.Show( this, "오류", "경고 진술을 작성해야 합니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 				return;
 			}
 
-			if ( NotifyBox.Show( this, "경고", "경고를 부여하기 전 모든 정보를 다시 확인하십시오, 확인을 하셨으면 확인 버튼을 눌러주세요.", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
+			if ( NotifyBox.Show( this, "경고", "닉네임 : " + this.nickName + "\n경고 횟수 : " + this.warnCount + "회\n진술 : " + this.REASON_TEXTBOX.Text + "\n\n모든 정보를 다시 확인하시고 확인 버튼을 눌러주세요 ^.^", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
 			{
-				if ( NotifyBox.Show( this, "경고", "정말로 really 혼또니 경고를 부여하시겠습니까 ???", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
+				if ( NotifyBox.Show( this, "경고", "정말로 정말로!!! " + this.nickName + " 님께 경고를 부여하시길 원하십니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
 				{
-
-					this.WARN_RUN_BUTTON.ButtonText = "서버에 요청하는 중 ...";
+					this.WARN_RUN_BUTTON.ButtonText = "서버와 통신하는 중 ...";
 
 					bool success = NaverRequest.WarnThreadRequest( nickName, warnCount, this.REASON_TEXTBOX.Text.Trim( ) );
 
 					if ( success )
 					{
-						NotifyBox.Show( this, "완료", "경고 부여를 성공적으로 완료했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Information );
+						//switch ( warnCount )
+						//{
+						//	case 3:
+						//		ChatSendUsingHelper( "<우윳빛깔 카페스탭 경고 안내>\r\n\r\n용의자 닉네임 : " + this.nickName + "\r\n경고 횟수 : " + this.warnCount + "회\r\n진술 : " + this.REASON_TEXTBOX.Text + "\r\n\r\n경고 처리했습니다, 지정된 규정에 따라 <활동정지 7일> 처리 바랍니다. >.<~" );
+						//		break;
+						//	case 6:
+						//		ChatSendUsingHelper( "<우윳빛깔 카페스탭 경고 안내>\r\n\r\n용의자 닉네임 : " + this.nickName + "\r\n경고 횟수 : " + this.warnCount + "회\r\n진술 : " + this.REASON_TEXTBOX.Text + "\r\n\r\n경고 처리했습니다, 지정된 규정에 따라 <활동정지 30일> 처리 바랍니다. >.o~" );
+						//		break;
+						//	case 10:
+						//		ChatSendUsingHelper( "<우윳빛깔 카페스탭 경고 안내>\r\n\r\n용의자 닉네임 : " + this.nickName + "\r\n경고 횟수 : " + this.warnCount + "회\r\n진술 : " + this.REASON_TEXTBOX.Text + "\r\n\r\n경고 처리했습니다, 지정된 규정에 따라 <강제탈퇴> 처리 바랍니다. -.-;;" );
+						//		break;
+						//}
+
+						NotifyBox.Show( this, "경고 부여 완료", "경고 부여를 성공적으로 완료했습니다, 경고 게시판 페이지가 열립니다, 아래 사항을 꼭 확인해주세요!\n\n> 다른 스탭 분들이 이미 경고를 부여했는지 여부\n> 게시물 알림을 뒤늦게 확인한 후 경고를 부여할 시 용의자 닉네임이 다를 수 있으니 닉네임 변경 여부 확인", NotifyBoxType.OK, NotifyBoxIcon.Danger );
 
 						ReleaseAllControls( );
 
 						try
 						{
-							System.Diagnostics.Process.Start( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.menuid=20&search.boardtype=L" );
+							System.Diagnostics.Process.Start( GlobalVar.CAFE_WARNING_ARTICLE_URL );
 						}
-						catch ( Exception ) { }
+						catch ( Exception ex )
+						{
+							Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+							NotifyBox.Show( this, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+						}
 
 						this.Close( );
 					}
@@ -152,6 +197,22 @@ namespace CafeMaster_UI.Interface
 		{
 			warnCount = ( int ) this.WARNING_COUNT.Value;
 			this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+
+			switch ( warnCount )
+			{
+				case 3:
+					this.WARNING_COUNT_AFTERDESC.Text = "경고 3회를 부여할 시 '활동정지 7일' 처리를 해야 합니다.";
+					break;
+				case 6:
+					this.WARNING_COUNT_AFTERDESC.Text = "경고 6회를 부여할 시 '활동정지 30일' 처리를 해야 합니다.";
+					break;
+				case 10:
+					this.WARNING_COUNT_AFTERDESC.Text = "경고 10회를 부여할 시 이 사용자는 강제탈퇴 해야 합니다.";
+					break;
+				default:
+					this.WARNING_COUNT_AFTERDESC.Text = "";
+					break;
+			}
 			//연혁덕후초키랑(jang8575)님 경고 (총 1회)
 		}
 
@@ -162,6 +223,11 @@ namespace CafeMaster_UI.Interface
 				System.Diagnostics.Process.Start( "http://cafe.naver.com/ArticleSearchList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.searchdate=all&search.searchBy=0&search.query=" + onlyID + "&search.menuid=20" );
 			}
 			catch ( Exception ) { }
+		}
+
+		private void CANCEL_BUTTON_Click( object sender, EventArgs e )
+		{
+			this.Close( );
 		}
 	}
 }

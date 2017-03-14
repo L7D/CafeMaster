@@ -75,10 +75,10 @@
 			// MESSAGE_LABEL
 			// 
 			this.MESSAGE_LABEL.BackColor = System.Drawing.Color.Transparent;
-			this.MESSAGE_LABEL.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.MESSAGE_LABEL.Location = new System.Drawing.Point(76, 50);
+			this.MESSAGE_LABEL.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.MESSAGE_LABEL.Location = new System.Drawing.Point(86, 50);
 			this.MESSAGE_LABEL.Name = "MESSAGE_LABEL";
-			this.MESSAGE_LABEL.Size = new System.Drawing.Size(512, 105);
+			this.MESSAGE_LABEL.Size = new System.Drawing.Size(500, 105);
 			this.MESSAGE_LABEL.TabIndex = 11;
 			this.MESSAGE_LABEL.Text = "메세지";
 			this.MESSAGE_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -112,12 +112,13 @@
 			this.OK_Button.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.OK_Button.EnterStateBackgroundColor = System.Drawing.Color.Gainsboro;
 			this.OK_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.OK_Button.Font = new System.Drawing.Font("나눔고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.OK_Button.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.OK_Button.Location = new System.Drawing.Point(382, 158);
 			this.OK_Button.Name = "OK_Button";
 			this.OK_Button.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
 			this.OK_Button.Size = new System.Drawing.Size(206, 30);
 			this.OK_Button.TabIndex = 18;
+			this.OK_Button.TabStop = false;
 			this.OK_Button.Text = "확인";
 			this.OK_Button.UseVisualStyleBackColor = false;
 			this.OK_Button.Click += new System.EventHandler(this.OK_Button_Click);
@@ -137,6 +138,7 @@
 			this.NO_Button.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
 			this.NO_Button.Size = new System.Drawing.Size(100, 30);
 			this.NO_Button.TabIndex = 17;
+			this.NO_Button.TabStop = false;
 			this.NO_Button.Text = "취소";
 			this.NO_Button.UseVisualStyleBackColor = false;
 			this.NO_Button.Click += new System.EventHandler(this.NO_Button_Click);
@@ -146,16 +148,17 @@
 			this.Yes_Button.AnimationLerpP = 0.8F;
 			this.Yes_Button.BackColor = System.Drawing.Color.Transparent;
 			this.Yes_Button.ButtonText = "확인";
-			this.Yes_Button.ButtonTextColor = System.Drawing.Color.Black;
+			this.Yes_Button.ButtonTextColor = System.Drawing.Color.White;
 			this.Yes_Button.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.Yes_Button.EnterStateBackgroundColor = System.Drawing.Color.Gainsboro;
+			this.Yes_Button.EnterStateBackgroundColor = System.Drawing.Color.Red;
 			this.Yes_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.Yes_Button.Font = new System.Drawing.Font("나눔고딕", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.Yes_Button.Location = new System.Drawing.Point(382, 158);
 			this.Yes_Button.Name = "Yes_Button";
-			this.Yes_Button.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
+			this.Yes_Button.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
 			this.Yes_Button.Size = new System.Drawing.Size(100, 30);
 			this.Yes_Button.TabIndex = 16;
+			this.Yes_Button.TabStop = false;
 			this.Yes_Button.Text = "확인";
 			this.Yes_Button.UseVisualStyleBackColor = false;
 			this.Yes_Button.Click += new System.EventHandler(this.Yes_Button_Click);
@@ -165,13 +168,13 @@
 			this.COPY_TEXT_BUTTON.BackColor = System.Drawing.Color.Transparent;
 			this.COPY_TEXT_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.COPY_TEXT_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLIPBOARD;
-			this.COPY_TEXT_BUTTON.Location = new System.Drawing.Point(12, 163);
+			this.COPY_TEXT_BUTTON.Location = new System.Drawing.Point(12, 173);
 			this.COPY_TEXT_BUTTON.Name = "COPY_TEXT_BUTTON";
-			this.COPY_TEXT_BUTTON.Size = new System.Drawing.Size(25, 25);
+			this.COPY_TEXT_BUTTON.Size = new System.Drawing.Size(15, 15);
 			this.COPY_TEXT_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.COPY_TEXT_BUTTON.TabIndex = 20;
 			this.COPY_TEXT_BUTTON.TabStop = false;
-			this.TOOL_TIP.SetToolTip(this.COPY_TEXT_BUTTON, "오류 메세지를 클립보드에 복사합니다.");
+			this.TOOL_TIP.SetToolTip(this.COPY_TEXT_BUTTON, "텍스트를 클립보드에 복사합니다.");
 			this.COPY_TEXT_BUTTON.Click += new System.EventHandler(this.COPY_TEXT_BUTTON_Click);
 			// 
 			// NotifyBoxInterface

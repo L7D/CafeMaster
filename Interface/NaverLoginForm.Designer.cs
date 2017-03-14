@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent( )
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NaverLoginForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
 			this.APP_TITLE = new System.Windows.Forms.Label();
@@ -35,6 +36,7 @@
 			this.AUTOLOGIN_DESC = new System.Windows.Forms.Label();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
 			this.PROFILE_IMAGE = new System.Windows.Forms.PictureBox();
+			this.DotAnimationTimer = new System.Windows.Forms.Timer(this.components);
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE)).BeginInit();
@@ -126,6 +128,10 @@
 			this.PROFILE_IMAGE.TabStop = false;
 			this.PROFILE_IMAGE.Visible = false;
 			// 
+			// DotAnimationTimer
+			// 
+			this.DotAnimationTimer.Tick += new System.EventHandler(this.DotAnimationTimer_Tick);
+			// 
 			// NaverLoginForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -161,5 +167,6 @@
 		private System.Windows.Forms.PictureBox CLOSE_BUTTON;
 		private System.Windows.Forms.Label AUTOLOGIN_DESC;
 		private System.Windows.Forms.PictureBox PROFILE_IMAGE;
+		private System.Windows.Forms.Timer DotAnimationTimer;
 	}
 }

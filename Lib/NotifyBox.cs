@@ -26,7 +26,8 @@ namespace CafeMaster_UI.Lib
 		Warning,
 		Error,
 		Information,
-		Question
+		Question,
+		Danger
 	}
 
 	public static class NotifyBox

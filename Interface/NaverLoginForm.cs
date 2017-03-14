@@ -53,7 +53,7 @@ namespace CafeMaster_UI.Interface
 
 		private void CLOSE_BUTTON_Click( object sender, EventArgs e )
 		{
-			this.Close( );
+			Application.Exit( );
 		}
 
 		private void NaverLoginForm_Paint( object sender, PaintEventArgs e )
@@ -99,7 +99,16 @@ namespace CafeMaster_UI.Interface
 						GlobalVar.COOKIES = cookiesString.ToString( ).Substring( 0, cookiesString.Length - 2 );
 						GlobalVar.COOKIES_LIST = Utility.CookieParse( GlobalVar.COOKIES );
 
-						this.Close( );
+						bool isValidAccount = NaverRequest.AccountPermissionCheck( );
+
+						if ( isValidAccount )
+							this.Close( );
+						else
+						{
+							NotifyBox.Show( this, "오류", "죄송합니다, 해당 계정은 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+							System.Diagnostics.Process.GetCurrentProcess( ).Kill( );
+							//Application.Exit( );
+						}
 					}
 					else
 					{
@@ -117,18 +126,28 @@ namespace CafeMaster_UI.Interface
 			}
 		}
 
-		private void SetMessage( string text )
+		private void SetMessage( string text, bool end = false )
 		{
 			if ( this.InvokeRequired )
 			{
 				this.Invoke( new Action( ( ) =>
 				{
 					this.AUTOLOGIN_DESC.Text = text;
+
+					if ( end )
+						this.DotAnimationTimer.Stop( );
+					else
+						this.DotAnimationTimer.Start( );
 				} ) );
 			}
 			else
 			{
 				this.AUTOLOGIN_DESC.Text = text;
+
+				if ( end )
+					this.DotAnimationTimer.Stop( );
+				else
+					this.DotAnimationTimer.Start( );
 			}
 		}
 
@@ -150,7 +169,7 @@ namespace CafeMaster_UI.Interface
 							{
 								this.PROFILE_IMAGE.BackgroundImage = new Bitmap( Utility.FileToMemoryStream( GlobalVar.APP_DIR + @"\data\profileImage.jpg" ) );
 							}
-							catch ( Exception ) { }
+							catch { }
 						}
 					}
 					else
@@ -175,7 +194,7 @@ namespace CafeMaster_UI.Interface
 						{
 							this.PROFILE_IMAGE.BackgroundImage = new Bitmap( Utility.FileToMemoryStream( GlobalVar.APP_DIR + @"\data\profileImage.jpg" ) );
 						}
-						catch ( Exception ) { }
+						catch { }
 					}
 				}
 				else
@@ -194,7 +213,7 @@ namespace CafeMaster_UI.Interface
 				if ( AutoLogin.IsEnabled( ) )
 				{
 					SetMode( true );
-					SetMessage( "계정 자동 로그인 정보를 불러오는 중 ..." );
+					SetMessage( "계정 자동 로그인 정보를 불러오는 중 " );
 
 					string accountString = null;
 					AutoLogin.GetAccountDataResult result = AutoLogin.GetAccountData( out accountString );
@@ -208,7 +227,7 @@ namespace CafeMaster_UI.Interface
 
 								if ( dataTable.Length == 2 )
 								{
-									SetMessage( "계정 자동 로그인을 시도하고 있습니다, 조금만 기다려주세요 ..." );
+									SetMessage( "계정 자동 로그인을 시도하고 있습니다, 조금만 기다려주세요 " );
 
 									Thread.Sleep( 1000 );
 
@@ -228,16 +247,30 @@ namespace CafeMaster_UI.Interface
 											GlobalVar.COOKIES = sb.ToString( ).Substring( 0, sb.Length - 2 );
 											GlobalVar.COOKIES_LIST = Utility.CookieParse( GlobalVar.COOKIES );
 
-											SetMessage( dataTable[ 0 ] + " 계정 자동 로그인을 성공했습니다 ㅇ.ㅇ!" );
+											bool isValidAccount = NaverRequest.AccountPermissionCheck( );
 
-											Thread.Sleep( 1000 );
+											if ( isValidAccount )
+											{
+												SetMessage( dataTable[ 0 ] + " 계정 자동 로그인을 성공했습니다.", true );
 
-											if ( this.InvokeRequired )
-												this.Invoke( new Action( ( ) => this.Close( ) ) );
+												Thread.Sleep( 1000 );
+
+												if ( this.InvokeRequired )
+													this.Invoke( new Action( ( ) => this.Close( ) ) );
+												else
+													this.Close( );
+
+												break;
+											}
 											else
-												this.Close( );
+											{
+												NotifyBox.Show( this, "오류", "죄송합니다, 해당 계정은 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다, 자동 로그인 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+												AutoLogin.DeleteAccountData( );
+												System.Diagnostics.Process.GetCurrentProcess( ).Kill( );
+												//Application.Exit( );
 
-											break;
+												return;
+											}
 										case NaverRequest.NaverLoginResult.IDorPWDError:
 											NotifyBox.Show( this, "오류", "죄송합니다, 로그인에 실패했습니다, 아이디 또는 비밀번호가 올바르지 않습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 											AutoLogin.DeleteAccountData( );
@@ -312,6 +345,22 @@ namespace CafeMaster_UI.Interface
 			};
 
 			thread.Start( );
+		}
+
+		byte dotCount = 0;
+		private void DotAnimationTimer_Tick( object sender, EventArgs e )
+		{
+			if ( dotCount > 2 )
+			{
+				dotCount = 0;
+				if ( this.AUTOLOGIN_DESC.Text.Length > 3 )
+					this.AUTOLOGIN_DESC.Text = this.AUTOLOGIN_DESC.Text.Substring( 0, this.AUTOLOGIN_DESC.Text.Length - 3 );
+			}
+			else
+			{
+				this.AUTOLOGIN_DESC.Text = this.AUTOLOGIN_DESC.Text + ".";
+				dotCount++;
+			}
 		}
 	}
 }

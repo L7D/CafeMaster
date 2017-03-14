@@ -110,7 +110,7 @@ namespace CafeMaster_UI.Lib
 
 		public static void Reset( )
 		{
-			string configValue = "# 우윳빛깔 카페스탭 설정 파일 ver " + GlobalVar.CURRENT_VERSION + " #$# 이 파일을 함부로 수정하지 마세요! #$$SoundEnable -> 1$SyncInterval -> 30$CaptureEnable -> 1$UXSendEnable -> 1".Replace( "$", Environment.NewLine );
+			string configValue = "# 우윳빛깔 카페스탭 설정 파일 ver " + GlobalVar.CURRENT_VERSION + " #$# 이 파일을 함부로 수정하지 마세요! #$$SoundEnable -> 1$SyncInterval -> 30$CaptureEnable -> 1$UXSendEnable -> 1&ThemeEnable -> 1".Replace( "$", Environment.NewLine );
 
 			try
 			{

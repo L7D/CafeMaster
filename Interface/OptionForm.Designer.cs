@@ -50,12 +50,16 @@
 			this.OPTION_3_OBJECT = new CafeMaster_UI.Interface.FlatCheckBox();
 			this.OPTION_4_OBJECT = new CafeMaster_UI.Interface.FlatCheckBox();
 			this.OPTION_2_OBJECT_1 = new System.Windows.Forms.NumericUpDown();
+			this.OPTION_6_OBJECT = new CafeMaster_UI.Interface.FlatCheckBox();
+			this.OPTION_6_DESC = new System.Windows.Forms.Label();
+			this.OPTION_6_TITLE = new System.Windows.Forms.Label();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_1_OBJECT)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_3_OBJECT)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_4_OBJECT)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_2_OBJECT_1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.OPTION_6_OBJECT)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// APP_TITLE_BAR
@@ -217,7 +221,7 @@
 			this.INIT_DB_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Tomato;
 			this.INIT_DB_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.INIT_DB_BUTTON.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.INIT_DB_BUTTON.Location = new System.Drawing.Point(238, 448);
+			this.INIT_DB_BUTTON.Location = new System.Drawing.Point(240, 497);
 			this.INIT_DB_BUTTON.Name = "INIT_DB_BUTTON";
 			this.INIT_DB_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Salmon;
 			this.INIT_DB_BUTTON.Size = new System.Drawing.Size(250, 40);
@@ -232,7 +236,7 @@
 			this.OPTION_5_DESC.BackColor = System.Drawing.Color.Transparent;
 			this.OPTION_5_DESC.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.OPTION_5_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.OPTION_5_DESC.Location = new System.Drawing.Point(10, 382);
+			this.OPTION_5_DESC.Location = new System.Drawing.Point(12, 439);
 			this.OPTION_5_DESC.Name = "OPTION_5_DESC";
 			this.OPTION_5_DESC.Size = new System.Drawing.Size(238, 28);
 			this.OPTION_5_DESC.TabIndex = 43;
@@ -244,7 +248,7 @@
 			this.OPTION_5_TITLE.BackColor = System.Drawing.Color.Transparent;
 			this.OPTION_5_TITLE.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.OPTION_5_TITLE.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.OPTION_5_TITLE.Location = new System.Drawing.Point(10, 358);
+			this.OPTION_5_TITLE.Location = new System.Drawing.Point(12, 415);
 			this.OPTION_5_TITLE.Name = "OPTION_5_TITLE";
 			this.OPTION_5_TITLE.Size = new System.Drawing.Size(82, 17);
 			this.OPTION_5_TITLE.TabIndex = 42;
@@ -260,7 +264,7 @@
 			this.OPTION_5_OBJECT.EnterStateBackgroundColor = System.Drawing.Color.Silver;
 			this.OPTION_5_OBJECT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.OPTION_5_OBJECT.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.OPTION_5_OBJECT.Location = new System.Drawing.Point(291, 356);
+			this.OPTION_5_OBJECT.Location = new System.Drawing.Point(293, 413);
 			this.OPTION_5_OBJECT.Name = "OPTION_5_OBJECT";
 			this.OPTION_5_OBJECT.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
 			this.OPTION_5_OBJECT.Size = new System.Drawing.Size(197, 64);
@@ -275,7 +279,7 @@
 			this.INIT_DB_TIP.BackColor = System.Drawing.Color.Transparent;
 			this.INIT_DB_TIP.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.INIT_DB_TIP.ForeColor = System.Drawing.Color.Red;
-			this.INIT_DB_TIP.Location = new System.Drawing.Point(25, 461);
+			this.INIT_DB_TIP.Location = new System.Drawing.Point(27, 510);
 			this.INIT_DB_TIP.Name = "INIT_DB_TIP";
 			this.INIT_DB_TIP.Size = new System.Drawing.Size(185, 14);
 			this.INIT_DB_TIP.TabIndex = 45;
@@ -350,12 +354,53 @@
             0});
 			this.OPTION_2_OBJECT_1.ValueChanged += new System.EventHandler(this.OPTION_2_OBJECT_1_ValueChanged);
 			// 
+			// OPTION_6_OBJECT
+			// 
+			this.OPTION_6_OBJECT.BackColor = System.Drawing.Color.Transparent;
+			this.OPTION_6_OBJECT.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.OPTION_6_OBJECT.Image = ((System.Drawing.Image)(resources.GetObject("OPTION_6_OBJECT.Image")));
+			this.OPTION_6_OBJECT.Location = new System.Drawing.Point(443, 349);
+			this.OPTION_6_OBJECT.Name = "OPTION_6_OBJECT";
+			this.OPTION_6_OBJECT.Size = new System.Drawing.Size(30, 30);
+			this.OPTION_6_OBJECT.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.OPTION_6_OBJECT.Status = false;
+			this.OPTION_6_OBJECT.TabIndex = 52;
+			this.OPTION_6_OBJECT.TabStop = false;
+			this.OPTION_6_OBJECT.StatusChanged += new System.EventHandler(this.OPTION_6_OBJECT_StatusChanged);
+			// 
+			// OPTION_6_DESC
+			// 
+			this.OPTION_6_DESC.AutoSize = true;
+			this.OPTION_6_DESC.BackColor = System.Drawing.Color.Transparent;
+			this.OPTION_6_DESC.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.OPTION_6_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.OPTION_6_DESC.Location = new System.Drawing.Point(12, 373);
+			this.OPTION_6_DESC.Name = "OPTION_6_DESC";
+			this.OPTION_6_DESC.Size = new System.Drawing.Size(127, 14);
+			this.OPTION_6_DESC.TabIndex = 51;
+			this.OPTION_6_DESC.Text = "예쁜 테마를 표시합니다.";
+			// 
+			// OPTION_6_TITLE
+			// 
+			this.OPTION_6_TITLE.AutoSize = true;
+			this.OPTION_6_TITLE.BackColor = System.Drawing.Color.Transparent;
+			this.OPTION_6_TITLE.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.OPTION_6_TITLE.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.OPTION_6_TITLE.Location = new System.Drawing.Point(12, 349);
+			this.OPTION_6_TITLE.Name = "OPTION_6_TITLE";
+			this.OPTION_6_TITLE.Size = new System.Drawing.Size(36, 17);
+			this.OPTION_6_TITLE.TabIndex = 50;
+			this.OPTION_6_TITLE.Text = "테마";
+			// 
 			// OptionForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
-			this.ClientSize = new System.Drawing.Size(500, 500);
+			this.ClientSize = new System.Drawing.Size(500, 550);
+			this.Controls.Add(this.OPTION_6_OBJECT);
+			this.Controls.Add(this.OPTION_6_DESC);
+			this.Controls.Add(this.OPTION_6_TITLE);
 			this.Controls.Add(this.OPTION_2_OBJECT_1);
 			this.Controls.Add(this.OPTION_4_OBJECT);
 			this.Controls.Add(this.OPTION_3_OBJECT);
@@ -392,6 +437,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_3_OBJECT)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_4_OBJECT)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_2_OBJECT_1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.OPTION_6_OBJECT)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -420,5 +466,8 @@
 		private FlatCheckBox OPTION_3_OBJECT;
 		private FlatCheckBox OPTION_4_OBJECT;
 		private System.Windows.Forms.NumericUpDown OPTION_2_OBJECT_1;
+		private FlatCheckBox OPTION_6_OBJECT;
+		private System.Windows.Forms.Label OPTION_6_DESC;
+		private System.Windows.Forms.Label OPTION_6_TITLE;
 	}
 }

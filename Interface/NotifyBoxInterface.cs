@@ -42,6 +42,10 @@ namespace CafeMaster_UI.Interface
 					TYPE_ICON.Image = Properties.Resources.QUESTION_ICON;
 					System.Media.SystemSounds.Beep.Play( );
 					break;
+				case NotifyBoxIcon.Danger:
+					TYPE_ICON.Image = Properties.Resources.DANGER_ICON;
+					System.Media.SystemSounds.Hand.Play( );
+					break;
 			}
 
 			switch ( type )
@@ -50,6 +54,8 @@ namespace CafeMaster_UI.Interface
 					OK_Button.Visible = true;
 					Yes_Button.Visible = false;
 					NO_Button.Visible = false;
+
+					OK_Button.Focus( );
 
 					this.FormClosing += delegate ( object sender, FormClosingEventArgs e )
 					{
@@ -137,7 +143,7 @@ namespace CafeMaster_UI.Interface
 			this.NO_Button.Parent = centerNotifyImageBox;
 			this.COPY_TEXT_BUTTON.Parent = centerNotifyImageBox;
 
-			this.MESSAGE_LABEL.BackColor = Color.FromArgb( 200, 255, 255, 255 );
+			//this.MESSAGE_LABEL.BackColor = Color.FromArgb( 200, 255, 255, 255 );
 
 			Theme.Apply( this.centerNotifyImageBox, "notifyBox_*.png" );
 		}
@@ -145,6 +151,8 @@ namespace CafeMaster_UI.Interface
 		private void COPY_TEXT_BUTTON_Click( object sender, EventArgs e )
 		{
 			Clipboard.SetText( this.MESSAGE_LABEL.Text );
+
+			this.TOOL_TIP.SetToolTip( this.COPY_TEXT_BUTTON, "텍스트가 클립보드에 복사되었습니다!" );
 		}
 	}
 }

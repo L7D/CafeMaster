@@ -447,7 +447,7 @@ namespace CafeMaster_UI.Interface
 				( int ) ( ( this.Height / 2 ) - ( textSize.Height / 2 ) )
 			);
 
-			e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+			//e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
 			e.Graphics.DrawString( this.ButtonText, this.Font, this.TextDrawer, location );
 		}
 	}

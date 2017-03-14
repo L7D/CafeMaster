@@ -11,6 +11,14 @@ using System.Web;
 
 namespace CafeMaster_UI.Lib
 {
+	struct SignUpRequestStruct
+	{
+		public string id;
+		public string age;
+		public string sss;
+		public string time;
+	}
+
 	struct ThreadDetailStruct
 	{
 		public string threadTime;
@@ -51,53 +59,58 @@ namespace CafeMaster_UI.Lib
 			RequestError
 		}
 
+		public static bool IsCafeErrorPage( string html )
+		{
+			return html.Contains( "<title>네이버 카페</title>" ) || html.Contains( "<p>등록된 네이버 카페가 아닙니다.<br />" );
+		}
+
 		//[Obsolete( "이 메소드는 사용할 수 없습니다." )]
-		//public static int WarnCountRequest( string id )
-		//{
-		//	string url = "http://cafe.naver.com/ArticleSearchList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.searchdate=all&search.searchBy=0&search.query=" + id + "&search.menuid=20";
+		public static int WarnCountRequest( string id )
+		{
+			string url = "http://cafe.naver.com/ArticleSearchList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.searchdate=all&search.searchBy=0&search.query=" + id + "&search.menuid=20";
 
-		//	try
-		//	{
-		//		HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( url );
-		//		request.Method = "GET";
-		//		request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
-		//		request.CookieContainer = new CookieContainer( );
+			try
+			{
+				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( url );
+				request.Method = "GET";
+				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+				request.CookieContainer = new CookieContainer( );
 
-		//		foreach ( CookieStruct i in GlobalVar.COOKIES_LIST )
-		//		{
-		//			request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
-		//		}
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
 
-		//		using ( WebResponse res = request.GetResponse( ) )
-		//		{
-		//			using ( Stream responseStream = res.GetResponseStream( ) )
-		//			{
-		//				using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
-		//				{
-		//					string html = reader.ReadToEnd( );
+				using ( WebResponse res = request.GetResponse( ) )
+				{
+					using ( Stream responseStream = res.GetResponseStream( ) )
+					{
+						using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
+						{
+							string html = reader.ReadToEnd( );
 
-		//					HtmlDocument document = new HtmlDocument( );
-		//					document.LoadHtml( html );
+							HtmlDocument document = new HtmlDocument( );
+							document.LoadHtml( html );
 
-		//					int count = 0;
-		//					foreach ( HtmlNode i in document.DocumentNode.SelectNodes( "//tr" ) )
-		//					{
-		//						if ( i.GetAttributeValue( "align", "" ) == "center" && i.GetAttributeValue( "class", "" ) != "bg-color" )
-		//						{
-		//							count++;
-		//						}
-		//					}
+							int count = 0;
+							foreach ( HtmlNode i in document.DocumentNode.SelectNodes( "//tr" ) )
+							{
+								if ( i.GetAttributeValue( "align", "" ) == "center" && i.GetAttributeValue( "class", "" ) != "bg-color" )
+								{
+									count++;
+								}
+							}
 
-		//					return count;
-		//				}
-		//			}
-		//		}
-		//	}
-		//	catch ( Exception )
-		//	{
-		//		return 0;
-		//	}
-		//}
+							return count;
+						}
+					}
+				}
+			}
+			catch ( Exception )
+			{
+				return 0;
+			}
+		}
 
 		private static string GetPersonaconID( )
 		{
@@ -113,7 +126,7 @@ namespace CafeMaster_UI.Lib
 
 				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
 				{
-					request.CookieContainer.Add( new System.Net.Cookie( i.id, i.value, "/", request.Host ) );
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
 				}
 
 				using ( WebResponse res = request.GetResponse( ) )
@@ -240,6 +253,57 @@ namespace CafeMaster_UI.Lib
 			}
 		}
 
+		public static bool ThreadDelete( string threadNumber )
+		{
+			try
+			{
+				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( "http://cafe.naver.com/ArticleDelete.nhn?boardtype=L&articleid=" + threadNumber + "&clubid=" + GlobalVar.CAFE_ID + "&referrerAllArticles=true" );
+				request.Method = "POST";
+				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+				request.CookieContainer = new CookieContainer( );
+				request.Referer = "http://cafe.naver.com/ArticleRead.nhn";
+				request.Headers.Add( HttpRequestHeader.CacheControl, "max-age=0" );
+				request.UserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36";
+				request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+				request.Headers.Add( "Origin", "http://m.cafe.naver.com" );
+				request.Headers.Add( "DNT", "1" );
+				request.Headers.Add( "Upgrade-Insecure-Requests", "1" );
+				request.Headers.Add( HttpRequestHeader.AcceptLanguage, "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4" );
+
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
+
+				using ( WebResponse res = request.GetResponse( ) )
+				{
+					using ( Stream responseStream = res.GetResponseStream( ) )
+					{
+						using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
+						{
+							string value = reader.ReadToEnd( );
+
+							if ( IsCafeErrorPage( value ) )
+							{
+								return false;
+							}
+							else
+							{
+								return true;
+							}
+
+							//File.WriteAllText( "log2222.txt", value, Encoding.Default );
+						}
+					}
+				}
+			}
+			catch ( Exception ex )
+			{
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+				return false;
+			}
+		}
+
 		public static ThreadDetailStruct ThreadDetailRequest( string threadNumber )
 		{
 			try
@@ -327,7 +391,14 @@ namespace CafeMaster_UI.Lib
 			try
 			{
 				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( url );
+				request.Method = "GET";
 				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+				request.CookieContainer = new CookieContainer( );
+
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
 
 				using ( WebResponse res = request.GetResponse( ) )
 				{
@@ -383,7 +454,7 @@ namespace CafeMaster_UI.Lib
 
 							JsonObjectCollection jsonCollection = ( JsonObjectCollection ) ( new JsonTextParser( ) ).Parse( htmlString );
 
-							File.WriteAllText( "tt.txt", htmlString, Encoding.UTF8 );
+							//File.WriteAllText( "tt.txt", htmlString, Encoding.UTF8 );
 
 							return new NaverAccountInformation(
 								jsonCollection[ "nickName" ].GetValue( ).ToString( ),
@@ -399,6 +470,199 @@ namespace CafeMaster_UI.Lib
 			{
 				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
 				return null;
+			}
+		}
+
+		public static List<SignUpRequestStruct> SignUpListRequest( )
+		{
+			try
+			{
+				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( "http://cafe.naver.com/ManageJoinApplication.nhn?search.clubid=25430492" );
+				request.Method = "GET";
+				request.Referer = "http://section.cafe.naver.com/";
+				request.KeepAlive = true;
+				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+				request.Accept = "*/*";
+				request.Headers.Add( "DNT", "1" );
+				request.Headers.Add( HttpRequestHeader.AcceptLanguage, "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4" );
+				request.CookieContainer = new CookieContainer( );
+
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
+
+				using ( HttpWebResponse response = ( HttpWebResponse ) request.GetResponse( ) )
+				{
+					using ( Stream responseStream = response.GetResponseStream( ) )
+					{
+						using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
+						{
+							string html = reader.ReadToEnd( );
+							List<SignUpRequestStruct> signUpList = new List<SignUpRequestStruct>( );
+
+							HtmlDocument document = new HtmlDocument( );
+							document.LoadHtml( html );
+
+							foreach ( HtmlNode i in document.DocumentNode.SelectNodes( "//tbody" ) )
+							{
+								if ( i.GetAttributeValue( "id", "" ) == "applymemberList" )
+								{
+
+									foreach ( HtmlNode i2 in i.ChildNodes )
+									{
+										if ( i2.Name == "tr" )
+										{
+											int count = 0;
+											SignUpRequestStruct data = new SignUpRequestStruct( );
+
+											foreach ( HtmlNode i3 in i2.ChildNodes )
+											{
+												if ( i3.Name == "td" )
+												{
+													count++;
+
+													switch ( count )
+													{
+														case 2:
+															data.id = i3.InnerText.Trim( );
+															break;
+														case 3:
+															data.age = i3.InnerText.Trim( );
+															break;
+														case 4:
+															data.sss = i3.InnerText.Trim( );
+															break;
+														case 5:
+															data.time = i3.InnerText.Trim( );
+															break;
+
+													}
+												}
+											}
+
+											signUpList.Add( data );
+
+											//File.WriteAllText( "dx2.txt", nickName + Environment.NewLine + age + Environment.NewLine + ss + Environment.NewLine + time );
+
+										}
+									}
+								}
+							}
+
+							return signUpList;
+						}
+					}
+				}
+			}
+			catch ( Exception ex )
+			{
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+
+				return null;
+			}
+		}
+
+		public static bool AccountPermissionCheck( )
+		{
+			try
+			{
+				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( GlobalVar.CAFE_MANAGE_HOME_URL );
+				request.Method = "GET";
+				request.Referer = "http://section.cafe.naver.com/";
+				request.KeepAlive = true;
+				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+				request.Accept = "*/*";
+				request.Headers.Add( "DNT", "1" );
+				request.Headers.Add( HttpRequestHeader.AcceptLanguage, "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4" );
+				request.CookieContainer = new CookieContainer( );
+
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
+
+				using ( HttpWebResponse response = ( HttpWebResponse ) request.GetResponse( ) )
+				{
+					using ( Stream responseStream = response.GetResponseStream( ) )
+					{
+						using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
+						{
+							string html = reader.ReadToEnd( );
+
+							HtmlDocument document = new HtmlDocument( );
+							document.LoadHtml( html );
+
+							//File.WriteAllText( "test.txt", html, Encoding.Default );
+
+							if ( html.Contains( "top.location.href = '/soulmatetour.cafe';" ) || html.Contains( "top.location.href = '/" + GlobalVar.CAFE_URL_ID + ".cafe';" ) )
+							{
+								return false;
+							}
+							else
+								return true;
+						}
+					}
+				}
+			}
+			catch ( Exception ex )
+			{
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+
+				return false;
+			}
+		}
+
+		public static bool CheckMemberExists( string id )
+		{
+			string url = "http://cafe.naver.com/CafeMemberExistCheck.nhn?clubid=" + GlobalVar.CAFE_ID + "&memberid=" + id;
+
+			try
+			{
+				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( url );
+				request.Method = "GET";
+				request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
+				request.KeepAlive = true;
+				//request.Referer = "http://cafe.naver.com/ManageActivityStopPopupView.nhn?clubid=25016505";
+				request.CookieContainer = new CookieContainer( );
+
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
+
+				using ( WebResponse res = request.GetResponse( ) )
+				{
+					using ( Stream responseStream = res.GetResponseStream( ) )
+					{
+						using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
+						{
+							string html = reader.ReadToEnd( );
+
+							HtmlDocument document = new HtmlDocument( );
+							document.LoadHtml( html );
+
+							JsonObject obj = ( new JsonTextParser( ) ).Parse( html );
+							JsonObjectCollection col = ( JsonObjectCollection ) obj;
+
+							if ( col[ "exist" ].GetValue( ).ToString( ) == "true" ) // 멤버 잇음
+							{
+								return true;
+								//if ( col[ "activityStop" ].GetValue( ).ToString( ) == "true" ) // 이미 활동정지 된 멤버
+								//{
+
+								//}
+							}
+							else
+								return false;
+						}
+					}
+				}
+			}
+			catch ( Exception ex )
+			{
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+				return false;
 			}
 		}
 

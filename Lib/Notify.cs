@@ -30,6 +30,15 @@ namespace CafeMaster_UI.Lib
 	{
 		private static List<NotifyData> LISTS = new List<NotifyData>( );
 		private static Main mainForm = null;
+		private static readonly string NOTIFY_FILE_LOCATION;
+
+		// 외부에서 데이터를 설정하는 SetData 메소드를 위해서 대리자 생성
+		public delegate void DataSettingDelegate( ref NotifyData data );
+
+		static Notify( )
+		{
+			NOTIFY_FILE_LOCATION = GlobalVar.DATA_DIR + @"\notify.db";
+		}
 
 		public static bool Exists( string threadNumber )
 		{
@@ -148,7 +157,8 @@ namespace CafeMaster_UI.Lib
 
 		public static NotifyData? GetDataByID( string threadID )
 		{
-			NotifyData data = LISTS.Find( ( NotifyData v ) => {
+			NotifyData data = LISTS.Find( ( NotifyData v ) =>
+			{
 				return v.threadID == threadID;
 			} );
 
@@ -160,10 +170,35 @@ namespace CafeMaster_UI.Lib
 			return LISTS;
 		}
 
+		public static void SetData( string threadID, DataSettingDelegate setCallBack )
+		{
+			int index = LISTS.FindIndex( ( NotifyData data ) =>
+			{
+				return data.threadID == threadID;
+			} );
+
+			if ( index > -1 && LISTS?[ index ] != null )
+			{
+				NotifyData oldData = LISTS[ index ];
+
+				setCallBack.Invoke( ref oldData );
+
+				LISTS[ index ] = oldData;
+
+				Save( );
+			}
+			else
+			{
+				Utility.WriteErrorLog( "NotifyIndexError", Utility.LogSeverity.EXCEPTION );
+				NotifyBox.Show( null, "오류", "죄송합니다, 데이터 조작 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+			}
+		}
+
 		public static void SetFocused( string threadID, bool newFocusValue )
 		{
 			//Predicate<NotifyData> finder = ( NotifyData data ) => { return data.threadID == threadNumber; };
-			int index = LISTS.FindIndex( ( NotifyData data ) => {
+			int index = LISTS.FindIndex( ( NotifyData data ) =>
+			{
 				return data.threadID == threadID;
 			} );
 
@@ -196,6 +231,8 @@ namespace CafeMaster_UI.Lib
 				collection2.Add( new JsonStringValue( "threadURL", i.threadURL ) );
 				collection2.Add( new JsonStringValue( "threadTime", i.threadTime ) );
 				collection2.Add( new JsonNumericValue( "threadHit", i.threadHit ) );
+
+				// Boolean
 				collection2.Add( new JsonBooleanValue( "focused", i.focused ) );
 
 				collection2.Add( new JsonStringValue( "personaconURL", i.personaconURL ) );
@@ -204,7 +241,7 @@ namespace CafeMaster_UI.Lib
 				collection.Add( collection2 );
 			}
 
-			File.WriteAllText( GlobalVar.APP_DIR + @"\data\notify.db", collection.ToString( ) );
+			File.WriteAllText( NOTIFY_FILE_LOCATION, collection.ToString( ) );
 
 			//StringBuilder dataTable = new StringBuilder( );
 
@@ -220,11 +257,11 @@ namespace CafeMaster_UI.Lib
 		{
 			mainForm = Utility.GetMainForm( );
 
-			if ( File.Exists( GlobalVar.APP_DIR + @"\data\notify.db" ) )
+			if ( File.Exists( NOTIFY_FILE_LOCATION ) )
 			{
 				try
 				{
-					string data = File.ReadAllText( GlobalVar.APP_DIR + @"\data\notify.db" );
+					string data = File.ReadAllText( NOTIFY_FILE_LOCATION );
 
 					JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( data );
 

@@ -13,6 +13,9 @@ namespace CafeMaster_UI
 	{
 		//맞춤법 검사기 추가하기
 		//게시글 -> 게시물로 수정 바람
+		
+		//게시글 없는 유저 활동정지 처리방법
+		//http://cafe.naver.com/ManageActivityStopPopupView.nhn?clubid=25430492&memberids=ljh100154
 
 		private Point startPoint;
 		private Pen lineDrawer = new Pen( GlobalVar.MasterColor )
@@ -43,64 +46,64 @@ namespace CafeMaster_UI
 			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
 		}
 
-		public void SetNetworkIcon( int type )
-		{
-			if ( this.InvokeRequired )
-			{
-				this.Invoke( new Action( ( ) =>
-				{
-					switch ( type )
-					{
-						case 0:
-							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
-							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
-							break;
-						case 1:
-							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ONLINE;
-							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 온라인" );
-							break;
-						case 2:
-							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_WORKING;
-							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 동기화 하는 중 ..." );
-							break;
-						case 3:
-							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_OFFLINE;
-							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 오프라인" );
-							break;
-						default:
-							this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
-							this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
-							break;
-					}
-				} ) );
-			}
-			else
-			{
-				switch ( type )
-				{
-					case 0:
-						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
-						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
-						break;
-					case 1:
-						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ONLINE;
-						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 온라인" );
-						break;
-					case 2:
-						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_WORKING;
-						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 동기화 하는 중 ..." );
-						break;
-					case 3:
-						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_OFFLINE;
-						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 오프라인" );
-						break;
-					default:
-						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
-						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
-						break;
-				}
-			}
-		}
+		//public void SetNetworkIcon( int type )
+		//{
+		//	if ( this.InvokeRequired )
+		//	{
+		//		this.Invoke( new Action( ( ) =>
+		//		{
+		//			switch ( type )
+		//			{
+		//				case 0:
+		//					this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+		//					this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+		//					break;
+		//				case 1:
+		//					this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ONLINE;
+		//					this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 온라인" );
+		//					break;
+		//				case 2:
+		//					this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_WORKING;
+		//					this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 동기화 하는 중 ..." );
+		//					break;
+		//				case 3:
+		//					this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_OFFLINE;
+		//					this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 오프라인" );
+		//					break;
+		//				default:
+		//					this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+		//					this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+		//					break;
+		//			}
+		//		} ) );
+		//	}
+		//	else
+		//	{
+		//		switch ( type )
+		//		{
+		//			case 0:
+		//				this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+		//				this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+		//				break;
+		//			case 1:
+		//				this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ONLINE;
+		//				this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 온라인" );
+		//				break;
+		//			case 2:
+		//				this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_WORKING;
+		//				this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 동기화 하는 중 ..." );
+		//				break;
+		//			case 3:
+		//				this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_OFFLINE;
+		//				this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 오프라인" );
+		//				break;
+		//			default:
+		//				this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_NOT_INIT;
+		//				this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "우유 서버 연결 상태 : 초기화 하는 중 ..." );
+		//				break;
+		//		}
+		//	}
+		//}
 
 		public void RefreshNotifyPanel( )
 		{
@@ -204,6 +207,9 @@ namespace CafeMaster_UI
 			//new Welcome( ).ShowDialog( );
 			//new ProgramAuthForm( ).ShowDialog( );
 			new NaverLoginForm( ).ShowDialog( );
+			new MemberActivityStopForm( ).ShowDialog( );
+
+			if ( this.Disposing || this.IsDisposed ) return;
 
 			MainInitialize( );
 
@@ -211,26 +217,16 @@ namespace CafeMaster_UI
 
 			Thread preWorkAll = new Thread( ( ) =>
 			{
-				TopProgressMessage.Set( "우유 서버에 연결하고 있습니다 ..." );
+				TopProgressMessage.Set( "업데이트를 확인하고 있습니다 ..." );
 
-				if ( GlobalServer.Initialize( ) )
+				if ( Lib.Update.Check() )
 				{
-					GlobalVar.OFFLINE_MODE = false;
-
-					if ( GlobalServer.LATEST_VERSION == GlobalVar.CURRENT_VERSION )
-					{
-						GlobalVar.UPDATE_AVAILABLE = false;
-					}
-					else
-					{
-						GlobalVar.UPDATE_AVAILABLE = true;
-						UpdateAvailable( );
-					}
+					GlobalVar.UPDATE_AVAILABLE = true;
+					UpdateAvailable( );
 				}
 				else
 				{
-					GlobalVar.OFFLINE_MODE = true;
-					NotifyBox.Show( this, "오류", "죄송합니다, 우유 서버에 연결하지 못했습니다, 오프라인 모드로 동작합니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+					GlobalVar.UPDATE_AVAILABLE = false;
 				}
 
 				TopProgressMessage.Set( "계정 정보를 불러오고 있습니다 ..." );
@@ -249,6 +245,7 @@ namespace CafeMaster_UI
 				}
 				else
 				{
+					//Utility.WriteErrorLog( res.ToString( ) + " / " + ( string.IsNullOrEmpty( GlobalVar.COOKIES ).ToString( ) ) + " / " + ( GlobalVar.COOKIES_LIST.Count != 0 ).ToString( ) );
 					TopProgressMessage.End( );
 
 					NotifyBox.Show( this, "오류", "죄송합니다, 네이버 계정 인증을 실패했습니다, 프로그램을 다시 시작하면 해결될 수 있습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
@@ -678,6 +675,8 @@ namespace CafeMaster_UI
 		{
 			if ( NotifyBox.Show( this, "삭제 확인", "선택한 새 게시물 알림을 모두 삭제하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) != NotifyBoxResult.Yes ) return;
 
+			CHILD_PANEL_UTIL_ALL_SELECT_privClicked = false;
+
 			int count = 0;
 			foreach ( Control i in this.NOTIFY_PANEL.Controls )
 			{
@@ -734,6 +733,11 @@ namespace CafeMaster_UI
 		private void APP_NOTIFY_ICON_MENU_ITEM_1_Click( object sender, EventArgs e )
 		{
 			this.Close( );
+		}
+
+		private void NOTIFICATION_BUTTON_Click( object sender, EventArgs e )
+		{
+
 		}
 	}
 }

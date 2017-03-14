@@ -5,12 +5,75 @@ using System.Windows.Forms;
 
 namespace CafeMaster_UI.Lib
 {
+	static class ChatSender
+	{
+		public static bool SendChat( string message )
+		{
+			string url = GlobalVar.CAFE_CHAT_URL;
+
+			WebBrowser wb = new WebBrowser( );
+			wb.ScrollBarsEnabled = false;
+			wb.ScriptErrorsSuppressed = true;
+			wb.AllowNavigation = true;
+			WinAPI.CoInternetSetFeatureEnabled( 21, 0x00000002, true );
+			Utility.SetUriCookieContainerToNaverCookies( url );
+			wb.Navigated += ( e, d ) =>
+			{
+				wb.Width = wb.Document.Body.ScrollRectangle.Width;
+				wb.Height = wb.Document.Body.ScrollRectangle.Height;
+
+				Bitmap bitmap = new Bitmap( wb.Width, wb.Height );
+				wb.DrawToBitmap( bitmap, new Rectangle( 0, 0, wb.Width, wb.Height ) );
+
+				bitmap.Save( GlobalVar.CAPTURE_DIR + "\\lol.png", System.Drawing.Imaging.ImageFormat.Png );
+				bitmap.Dispose( );
+			};
+			wb.Navigate( url );
+
+
+			//while ( wb.ReadyState != WebBrowserReadyState.Complete )
+			//{
+			//	Application.DoEvents( );
+			//}
+
+
+			return true;
+			//HtmlElement chatbox = wb.Document.GetElementById( "msgInputArea" );
+
+			//if ( chatbox !=null)
+			//{
+			//	chatbox.InnerText = message;
+
+			//	HtmlElementCollection buttons = wb.Document.GetElementsByTagName( "button" );
+
+			//	foreach ( HtmlElement i in buttons )
+			//	{
+			//		if ( i.InnerText == "전송" )
+			//		{
+			//			MessageBox.Show( i.GetAttribute( "class" ) );
+			//			i.InvokeMember( "onclick" );
+
+			//			return true;
+			//		}
+			//	}
+
+			//	return false;
+			//}
+			//else
+			//{
+			//	return false;
+			//}
+		}
+	}
+
 	// http://pietschsoft.com/post/2008/07/C-Generate-WebPage-Thumbmail-Screenshot-Image
 	static class BrowserCapture
 	{
+		private static readonly object locker = new object( );
+		
 		public static void Capture( string threadNumber )
 		{
-			lock ( typeof( BrowserCapture ) )
+			lock ( locker )
 			{
 				try
 				{

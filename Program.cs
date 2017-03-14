@@ -21,8 +21,25 @@ namespace CafeMaster_UI
 		[STAThread]
 		static void Main( )
 		{
+			// TODO : 폰트 exists 체크문 추가바람
+
 			if ( mutex.WaitOne( TimeSpan.Zero, true ) )
 			{
+				foreach ( System.Drawing.FontFamily ix in ( new System.Drawing.Text.InstalledFontCollection( )).Families )
+				{
+					if ( ix.Name == "나눔고딕" & ix.IsStyleAvailable( System.Drawing.FontStyle.Bold ) )
+					{
+						goto fontFinded;
+					}
+				}
+
+				Utility.WriteErrorLog( "FontNotFound", Utility.LogSeverity.ERROR );
+				NotifyBox.Show( null, "오류", "죄송합니다, 프로그램 실행에 필요한 폰트가 설치되지 않았습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				Process.GetCurrentProcess( ).Kill( );
+				return;
+
+				fontFinded:
+
 				try
 				{
 					System.Reflection.Assembly.Load( "HtmlAgilityPack" ).GetName( );
@@ -31,7 +48,7 @@ namespace CafeMaster_UI
 				}
 				catch ( Exception )
 				{
-					Utility.WriteErrorLog( "DLLNotFoundOrCrashed", Utility.LogSeverity.ERROR );
+					Utility.WriteErrorLog( "DLLNotFound", Utility.LogSeverity.ERROR );
 					NotifyBox.Show( null, "오류", "죄송합니다, 프로그램 실행에 필요한 파일을 불러오는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 					Process.GetCurrentProcess( ).Kill( );
 					return;

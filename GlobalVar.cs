@@ -20,16 +20,20 @@ namespace CafeMaster_UI
 
 		public const string CAFE_RULE_URL = "http://cafe.naver.com/revolution232/6894"; // 카페 공지사항 링크
 		public const string CAFE_CHAT_URL = "https://chat.cafe.naver.com/room/25430492/lolori_:1484751066552?ssId=2"; // 카페 채팅 링크
-		public const string CAFE_TOTAL_ARTICLE_URL = "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + CAFE_ID + "&search.boardtype=L"; // 전체 글 보기 링크
-		public const string CAFE_MANAGE_HOME_URL = "http://cafe.naver.com/ManageHome.nhn?clubid=" + CAFE_ID; // 카페 관리 링크
-		public const string CAFE_MANAGE_JOINMANAGE_URL = "http://cafe.naver.com/ManageJoinApplication.nhn?search.clubid=" + CAFE_ID; // 카페 가입 신청 관리 링크
+		public const string CAFE_TOTAL_ARTICLE_URL = "http://cafe.naver.com/ArticleList.nhn?search.clubid=25430492&search.boardtype=L"; // 전체 글 보기 링크
+		public const string CAFE_MANAGE_HOME_URL = "http://cafe.naver.com/ManageHome.nhn?clubid=25430492"; // 카페 관리 링크
+		public const string CAFE_MANAGE_JOINMANAGE_URL = "http://cafe.naver.com/ManageJoinApplication.nhn?search.clubid=25430492"; // 카페 가입 신청 관리 링크
+		public const string CAFE_WARNING_ARTICLE_URL = "http://cafe.naver.com/ArticleList.nhn?search.clubid=25430492&search.menuid=20&search.boardtype=L"; // 카페 경고 게시판 주소
+		public const string CAFE_MEMBER_NETWORK_VIEW_URL = "http://cafe.naver.com/CafeMemberNetworkView.nhn?m=view&clubid=25430492&memberid=";
 
 		public static bool UPDATE_AVAILABLE = false; // 새로운 버전 있음
-		public static bool OFFLINE_MODE = true; // 우유서버 연결 불가 -> 오프라인 모드 여부
+		//public static bool OFFLINE_MODE = true; // 우유서버 연결 불가 -> 오프라인 모드 여부
 		public static string COOKIES = ""; // 네이버 계정 쿠키
 		public static List<Lib.CookieTable> COOKIES_LIST = new List<Lib.CookieTable>( ); // 네이버 계정 쿠키 리스트
 
 		public static string NAVER_USER_ID; // 네이버 아이디
+
+		public static bool notPermissionAccount = false;
 
 		public static Hashtable ADMINS = new Hashtable( ); // 스탭 리스트
 
@@ -66,7 +70,7 @@ namespace CafeMaster_UI
 			ADMINS.Add( "hwanjun1032", AdminRanks.Staff ); // 최멋짐님
 			ADMINS.Add( "0404239", AdminRanks.Staff ); // 혜무리님
 			ADMINS.Add( "jwon5366", AdminRanks.Staff ); // 꼼푸님
-			ADMINS.Add( "wldn824", AdminRanks.Staff ); // 레알님
+			//ADMINS.Add( "wldn824", AdminRanks.Staff ); // 레알님 (그분은 갔슴다ㅠ)
 			ADMINS.Add( "smhjyh2007", AdminRanks.Staff ); // 나
 		}
 	}

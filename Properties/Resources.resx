@@ -253,4 +253,7 @@
   <data name="NOTIFICATION_BASIC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NOTIFICATION_BASIC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DANGER_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DANGER_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

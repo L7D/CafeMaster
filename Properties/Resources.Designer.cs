@@ -153,6 +153,16 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap DANGER_ICON {
+            get {
+                object obj = ResourceManager.GetObject("DANGER_ICON", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap EMPTY {
             get {
                 object obj = ResourceManager.GetObject("EMPTY", resourceCulture);

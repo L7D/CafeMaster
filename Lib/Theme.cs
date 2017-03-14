@@ -12,6 +12,8 @@ namespace CafeMaster_UI.Lib
 	{
 		public static void Apply( Control imageForm, string layoutFileFormat )
 		{
+			if ( Config.Get( "ThemeEnable", "1" ) == "0" ) return;
+
 			if ( Directory.Exists( GlobalVar.LAYOUT_DIR ) )
 			{
 				try
@@ -20,6 +22,8 @@ namespace CafeMaster_UI.Lib
 
 					if ( files.Length > 0 )
 					{
+						imageForm.Visible = true;
+
 						( ( PictureBox ) imageForm ).Image = new System.Drawing.Bitmap(
 							Utility.FileToMemoryStream(
 								files[ new Random( DateTime.Now.Second ).Next( 0, files.Length ) ]
@@ -29,6 +33,11 @@ namespace CafeMaster_UI.Lib
 				}
 				catch ( Exception ) { }
 			}
+		}
+
+		public static void DisApply( Control imageForm )
+		{
+			imageForm.Visible = false;
 		}
 	}
 }

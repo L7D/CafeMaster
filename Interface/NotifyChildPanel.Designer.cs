@@ -43,7 +43,7 @@
 			this.REMOVE_BUTTON = new CafeMaster_UI.Interface.FlatImageButton();
 			this.ADMIN_ICON = new System.Windows.Forms.PictureBox();
 			this.ONLY_COMMENT_BUTTON = new CafeMaster_UI.Interface.FlatButton();
-			this.RANK_LABEL = new System.Windows.Forms.Label();
+			this.THREAD_DELETE_BUTTON = new CafeMaster_UI.Interface.FlatImageButton();
 			this.BOARD_NAME_LABEL = new System.Windows.Forms.Label();
 			this.BOARD_ICON = new System.Windows.Forms.PictureBox();
 			this.TIME_ICON = new System.Windows.Forms.PictureBox();
@@ -53,6 +53,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.FOCUS_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.REMOVE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.ADMIN_ICON)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.THREAD_DELETE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.BOARD_ICON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.TIME_ICON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.AUTHOR_ICON)).BeginInit();
@@ -76,7 +77,7 @@
 			this.NUMBER_LABEL.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.NUMBER_LABEL.Location = new System.Drawing.Point(3, 118);
 			this.NUMBER_LABEL.Name = "NUMBER_LABEL";
-			this.NUMBER_LABEL.Size = new System.Drawing.Size(160, 29);
+			this.NUMBER_LABEL.Size = new System.Drawing.Size(202, 29);
 			this.NUMBER_LABEL.TabIndex = 1;
 			this.NUMBER_LABEL.Text = "#000000";
 			this.NUMBER_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -84,21 +85,23 @@
 			// AUTHOR_LABEL
 			// 
 			this.AUTHOR_LABEL.BackColor = System.Drawing.Color.Transparent;
+			this.AUTHOR_LABEL.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.AUTHOR_LABEL.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.AUTHOR_LABEL.Location = new System.Drawing.Point(34, 59);
 			this.AUTHOR_LABEL.Name = "AUTHOR_LABEL";
-			this.AUTHOR_LABEL.Size = new System.Drawing.Size(209, 26);
+			this.AUTHOR_LABEL.Size = new System.Drawing.Size(347, 26);
 			this.AUTHOR_LABEL.TabIndex = 2;
 			this.AUTHOR_LABEL.Text = "USER";
 			this.AUTHOR_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.AUTHOR_LABEL.Click += new System.EventHandler(this.AUTHOR_LABEL_Click);
 			// 
 			// HIT_LABEL
 			// 
 			this.HIT_LABEL.BackColor = System.Drawing.Color.Transparent;
 			this.HIT_LABEL.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.HIT_LABEL.Location = new System.Drawing.Point(315, 120);
+			this.HIT_LABEL.Location = new System.Drawing.Point(211, 120);
 			this.HIT_LABEL.Name = "HIT_LABEL";
-			this.HIT_LABEL.Size = new System.Drawing.Size(104, 27);
+			this.HIT_LABEL.Size = new System.Drawing.Size(208, 27);
 			this.HIT_LABEL.TabIndex = 5;
 			this.HIT_LABEL.Text = "1 V";
 			this.HIT_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -109,7 +112,7 @@
 			this.TIME_LABEL.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.TIME_LABEL.Location = new System.Drawing.Point(34, 90);
 			this.TIME_LABEL.Name = "TIME_LABEL";
-			this.TIME_LABEL.Size = new System.Drawing.Size(138, 25);
+			this.TIME_LABEL.Size = new System.Drawing.Size(347, 25);
 			this.TIME_LABEL.TabIndex = 8;
 			this.TIME_LABEL.Text = "TIME";
 			this.TIME_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -123,7 +126,7 @@
 			this.THIS_SELECT_BUTTON.AnimationLerpP = 0.8F;
 			this.THIS_SELECT_BUTTON.BackColor = System.Drawing.Color.Transparent;
 			this.THIS_SELECT_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Tomato;
+			this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Gold;
 			this.THIS_SELECT_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CHECK;
 			this.THIS_SELECT_BUTTON.Location = new System.Drawing.Point(3, 3);
 			this.THIS_SELECT_BUTTON.Name = "THIS_SELECT_BUTTON";
@@ -156,19 +159,19 @@
 			// 
 			this.WARN_BUTTON.AnimationLerpP = 0.8F;
 			this.WARN_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.WARN_BUTTON.ButtonText = "아수라 팡팡";
-			this.WARN_BUTTON.ButtonTextColor = System.Drawing.Color.Black;
+			this.WARN_BUTTON.ButtonText = "경고 팡팡";
+			this.WARN_BUTTON.ButtonTextColor = System.Drawing.Color.White;
 			this.WARN_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.WARN_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.DarkOrange;
+			this.WARN_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Red;
 			this.WARN_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.WARN_BUTTON.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.WARN_BUTTON.Location = new System.Drawing.Point(425, 37);
 			this.WARN_BUTTON.Name = "WARN_BUTTON";
-			this.WARN_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Orange;
+			this.WARN_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
 			this.WARN_BUTTON.Size = new System.Drawing.Size(102, 27);
 			this.WARN_BUTTON.TabIndex = 14;
-			this.WARN_BUTTON.Text = "아수라 팡팡";
-			this.TOOL_TIP.SetToolTip(this.WARN_BUTTON, "경고(아수라 팡팡)를 부여합니다.");
+			this.WARN_BUTTON.Text = "경고 팡팡";
+			this.TOOL_TIP.SetToolTip(this.WARN_BUTTON, "경고를 팡팡 때립니다. (별모양)");
 			this.WARN_BUTTON.UseVisualStyleBackColor = false;
 			this.WARN_BUTTON.Click += new System.EventHandler(this.WARN_BUTTON_Click);
 			// 
@@ -199,7 +202,7 @@
 			this.FOCUS_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.FOCUS_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Gold;
 			this.FOCUS_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.THUNDER;
-			this.FOCUS_BUTTON.Location = new System.Drawing.Point(461, 3);
+			this.FOCUS_BUTTON.Location = new System.Drawing.Point(389, 23);
 			this.FOCUS_BUTTON.Name = "FOCUS_BUTTON";
 			this.FOCUS_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Gray;
 			this.FOCUS_BUTTON.Size = new System.Drawing.Size(30, 30);
@@ -207,6 +210,7 @@
 			this.FOCUS_BUTTON.TabIndex = 11;
 			this.FOCUS_BUTTON.TabStop = false;
 			this.TOOL_TIP.SetToolTip(this.FOCUS_BUTTON, "주시 활성화 / 비활성화");
+			this.FOCUS_BUTTON.Visible = false;
 			this.FOCUS_BUTTON.Click += new System.EventHandler(this.FOCUS_BUTTON_Click);
 			// 
 			// REMOVE_BUTTON
@@ -214,11 +218,11 @@
 			this.REMOVE_BUTTON.AnimationLerpP = 0.8F;
 			this.REMOVE_BUTTON.BackColor = System.Drawing.Color.Transparent;
 			this.REMOVE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.REMOVE_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Red;
+			this.REMOVE_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.OrangeRed;
 			this.REMOVE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.REMOVE_ICON;
-			this.REMOVE_BUTTON.Location = new System.Drawing.Point(497, 3);
+			this.REMOVE_BUTTON.Location = new System.Drawing.Point(461, 3);
 			this.REMOVE_BUTTON.Name = "REMOVE_BUTTON";
-			this.REMOVE_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.IndianRed;
+			this.REMOVE_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Orange;
 			this.REMOVE_BUTTON.Size = new System.Drawing.Size(30, 30);
 			this.REMOVE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.REMOVE_BUTTON.TabIndex = 9;
@@ -236,8 +240,9 @@
 			this.ADMIN_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.ADMIN_ICON.TabIndex = 21;
 			this.ADMIN_ICON.TabStop = false;
-			this.TOOL_TIP.SetToolTip(this.ADMIN_ICON, "이 사용자는 스탭 이상입니다.");
+			this.TOOL_TIP.SetToolTip(this.ADMIN_ICON, "스탭 게시물");
 			this.ADMIN_ICON.Visible = false;
+			this.ADMIN_ICON.Click += new System.EventHandler(this.ADMIN_ICON_Click);
 			// 
 			// ONLY_COMMENT_BUTTON
 			// 
@@ -259,17 +264,22 @@
 			this.ONLY_COMMENT_BUTTON.UseVisualStyleBackColor = false;
 			this.ONLY_COMMENT_BUTTON.Click += new System.EventHandler(this.ONLY_COMMENT_BUTTON_Click);
 			// 
-			// RANK_LABEL
+			// THREAD_DELETE_BUTTON
 			// 
-			this.RANK_LABEL.BackColor = System.Drawing.Color.Transparent;
-			this.RANK_LABEL.Font = new System.Drawing.Font("나눔고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.RANK_LABEL.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.RANK_LABEL.Location = new System.Drawing.Point(296, 3);
-			this.RANK_LABEL.Name = "RANK_LABEL";
-			this.RANK_LABEL.Size = new System.Drawing.Size(100, 20);
-			this.RANK_LABEL.TabIndex = 18;
-			this.RANK_LABEL.Text = "1 V";
-			this.RANK_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.THREAD_DELETE_BUTTON.AnimationLerpP = 0.8F;
+			this.THREAD_DELETE_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.THREAD_DELETE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.THREAD_DELETE_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Red;
+			this.THREAD_DELETE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.REMOVE_ICON;
+			this.THREAD_DELETE_BUTTON.Location = new System.Drawing.Point(497, 3);
+			this.THREAD_DELETE_BUTTON.Name = "THREAD_DELETE_BUTTON";
+			this.THREAD_DELETE_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
+			this.THREAD_DELETE_BUTTON.Size = new System.Drawing.Size(30, 30);
+			this.THREAD_DELETE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+			this.THREAD_DELETE_BUTTON.TabIndex = 23;
+			this.THREAD_DELETE_BUTTON.TabStop = false;
+			this.TOOL_TIP.SetToolTip(this.THREAD_DELETE_BUTTON, "게시물과 알림 삭제");
+			this.THREAD_DELETE_BUTTON.Click += new System.EventHandler(this.THREAD_DELETE_BUTTON_Click);
 			// 
 			// BOARD_NAME_LABEL
 			// 
@@ -277,7 +287,7 @@
 			this.BOARD_NAME_LABEL.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.BOARD_NAME_LABEL.Location = new System.Drawing.Point(59, 3);
 			this.BOARD_NAME_LABEL.Name = "BOARD_NAME_LABEL";
-			this.BOARD_NAME_LABEL.Size = new System.Drawing.Size(228, 20);
+			this.BOARD_NAME_LABEL.Size = new System.Drawing.Size(334, 20);
 			this.BOARD_NAME_LABEL.TabIndex = 20;
 			this.BOARD_NAME_LABEL.Text = "TEST";
 			this.BOARD_NAME_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -320,10 +330,10 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
+			this.Controls.Add(this.THREAD_DELETE_BUTTON);
 			this.Controls.Add(this.ONLY_COMMENT_BUTTON);
 			this.Controls.Add(this.ADMIN_ICON);
 			this.Controls.Add(this.BOARD_NAME_LABEL);
-			this.Controls.Add(this.RANK_LABEL);
 			this.Controls.Add(this.THIS_SELECT_BUTTON);
 			this.Controls.Add(this.IMAGE_VIEW_BUTTON);
 			this.Controls.Add(this.WARN_BUTTON);
@@ -341,7 +351,7 @@
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.Name = "NotifyChildPanel";
-			this.Size = new System.Drawing.Size(530, 150);
+			this.Size = new System.Drawing.Size(530, 155);
 			this.Load += new System.EventHandler(this.NotifyChildPanel_Load);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.NotifyChildPanel_Paint);
 			((System.ComponentModel.ISupportInitialize)(this.THIS_SELECT_BUTTON)).EndInit();
@@ -349,6 +359,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.FOCUS_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.REMOVE_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.ADMIN_ICON)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.THREAD_DELETE_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.BOARD_ICON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.TIME_ICON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.AUTHOR_ICON)).EndInit();
@@ -373,9 +384,9 @@
 		private FlatButton WARN_BUTTON;
 		private FlatImageButton IMAGE_VIEW_BUTTON;
 		private FlatImageButton THIS_SELECT_BUTTON;
-		private System.Windows.Forms.Label RANK_LABEL;
 		private System.Windows.Forms.Label BOARD_NAME_LABEL;
 		private System.Windows.Forms.PictureBox ADMIN_ICON;
 		private FlatButton ONLY_COMMENT_BUTTON;
+		private FlatImageButton THREAD_DELETE_BUTTON;
 	}
 }

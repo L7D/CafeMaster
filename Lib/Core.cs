@@ -283,6 +283,8 @@ namespace CafeMaster_UI.Lib
 				{
 					NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&userDisplay=15", NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
 					{
+						//File.WriteAllText( "log.txt", value, Encoding.Default );
+
 						JsonArrayCollection collection = new JsonArrayCollection( );
 						List<TableDataTable> dataTable = Parse.TotalArticlePageCrawling( value );
 

@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserWarnOptionForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
 			this.APP_TITLE = new System.Windows.Forms.Label();
+			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.USERNICK_TITLE = new System.Windows.Forms.Label();
 			this.REASON_TITLE = new System.Windows.Forms.Label();
 			this.REASON_TEXTBOX = new System.Windows.Forms.TextBox();
@@ -42,18 +43,19 @@
 			this.WARN_TEXT = new System.Windows.Forms.Label();
 			this.WARNING_COUNT = new System.Windows.Forms.NumericUpDown();
 			this.COUNT_TITLE = new System.Windows.Forms.Label();
-			this.COUNT_DESC = new System.Windows.Forms.Label();
-			this.SEARCH_COUNT_BUTTON = new CafeMaster_UI.Interface.FlatButton();
 			this.WARN_RUN_BUTTON = new CafeMaster_UI.Interface.FlatButton();
 			this.WARN_ICON = new System.Windows.Forms.PictureBox();
 			this.WARN_EXAMPLE = new System.Windows.Forms.PictureBox();
-			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.BACKGROUND_SPLASH = new System.Windows.Forms.PictureBox();
+			this.WARNING_COUNT_AFTERDESC = new System.Windows.Forms.Label();
+			this.COUNT_DESC = new System.Windows.Forms.Label();
+			this.chatSendHelper = new System.Windows.Forms.WebBrowser();
+			this.CANCEL_BUTTON = new CafeMaster_UI.Interface.FlatButton();
 			this.APP_TITLE_BAR.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARNING_COUNT)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARN_ICON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARN_EXAMPLE)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.BACKGROUND_SPLASH)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -83,6 +85,19 @@
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "경고 부여";
 			// 
+			// CLOSE_BUTTON
+			// 
+			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
+			this.CLOSE_BUTTON.Location = new System.Drawing.Point(565, 10);
+			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
+			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
+			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.CLOSE_BUTTON.TabIndex = 4;
+			this.CLOSE_BUTTON.TabStop = false;
+			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
+			// 
 			// USERNICK_TITLE
 			// 
 			this.USERNICK_TITLE.BackColor = System.Drawing.Color.Transparent;
@@ -92,7 +107,7 @@
 			this.USERNICK_TITLE.Name = "USERNICK_TITLE";
 			this.USERNICK_TITLE.Size = new System.Drawing.Size(551, 35);
 			this.USERNICK_TITLE.TabIndex = 4;
-			this.USERNICK_TITLE.Text = "L7D(smhjyh2007)";
+			this.USERNICK_TITLE.Text = "용의자 이름 : NULL(NULL)";
 			this.USERNICK_TITLE.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// REASON_TITLE
@@ -115,7 +130,7 @@
 			this.REASON_TEXTBOX.Location = new System.Drawing.Point(40, 167);
 			this.REASON_TEXTBOX.MaxLength = 200;
 			this.REASON_TEXTBOX.Name = "REASON_TEXTBOX";
-			this.REASON_TEXTBOX.Size = new System.Drawing.Size(411, 22);
+			this.REASON_TEXTBOX.Size = new System.Drawing.Size(502, 22);
 			this.REASON_TEXTBOX.TabIndex = 6;
 			this.REASON_TEXTBOX.TextChanged += new System.EventHandler(this.REASON_TEXTBOX_TextChanged);
 			// 
@@ -160,11 +175,11 @@
 			this.REASON_DESC.BackColor = System.Drawing.Color.Transparent;
 			this.REASON_DESC.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.REASON_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.REASON_DESC.Location = new System.Drawing.Point(38, 194);
+			this.REASON_DESC.Location = new System.Drawing.Point(38, 195);
 			this.REASON_DESC.Name = "REASON_DESC";
 			this.REASON_DESC.Size = new System.Drawing.Size(127, 14);
 			this.REASON_DESC.TabIndex = 12;
-			this.REASON_DESC.Text = "경고 사유를 작성하세요.";
+			this.REASON_DESC.Text = "경고 진술을 작성하세요.";
 			// 
 			// THREAD_TITLE_EXAMPLE
 			// 
@@ -196,7 +211,12 @@
 			this.WARNING_COUNT.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.WARNING_COUNT.Font = new System.Drawing.Font("나눔고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.WARNING_COUNT.ForeColor = System.Drawing.Color.Red;
-			this.WARNING_COUNT.Location = new System.Drawing.Point(111, 230);
+			this.WARNING_COUNT.Location = new System.Drawing.Point(110, 230);
+			this.WARNING_COUNT.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
 			this.WARNING_COUNT.Minimum = new decimal(new int[] {
             1,
             0,
@@ -219,59 +239,28 @@
 			this.COUNT_TITLE.BackColor = System.Drawing.Color.Transparent;
 			this.COUNT_TITLE.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.COUNT_TITLE.ForeColor = System.Drawing.Color.Red;
-			this.COUNT_TITLE.Location = new System.Drawing.Point(37, 241);
+			this.COUNT_TITLE.Location = new System.Drawing.Point(37, 244);
 			this.COUNT_TITLE.Name = "COUNT_TITLE";
 			this.COUNT_TITLE.Size = new System.Drawing.Size(68, 17);
 			this.COUNT_TITLE.TabIndex = 20;
 			this.COUNT_TITLE.Text = "경고 횟수";
 			// 
-			// COUNT_DESC
-			// 
-			this.COUNT_DESC.AutoSize = true;
-			this.COUNT_DESC.BackColor = System.Drawing.Color.Transparent;
-			this.COUNT_DESC.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.COUNT_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.COUNT_DESC.Location = new System.Drawing.Point(203, 230);
-			this.COUNT_DESC.Name = "COUNT_DESC";
-			this.COUNT_DESC.Size = new System.Drawing.Size(318, 14);
-			this.COUNT_DESC.TabIndex = 21;
-			this.COUNT_DESC.Text = "경고 횟수를 설정하기 전 꼭 경고게시판을 검색해서 확인하세요.";
-			// 
-			// SEARCH_COUNT_BUTTON
-			// 
-			this.SEARCH_COUNT_BUTTON.AnimationLerpP = 0.8F;
-			this.SEARCH_COUNT_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.SEARCH_COUNT_BUTTON.ButtonText = "횟수 확인하기";
-			this.SEARCH_COUNT_BUTTON.ButtonTextColor = System.Drawing.Color.Black;
-			this.SEARCH_COUNT_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.SEARCH_COUNT_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Silver;
-			this.SEARCH_COUNT_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.SEARCH_COUNT_BUTTON.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.SEARCH_COUNT_BUTTON.Location = new System.Drawing.Point(407, 250);
-			this.SEARCH_COUNT_BUTTON.Name = "SEARCH_COUNT_BUTTON";
-			this.SEARCH_COUNT_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
-			this.SEARCH_COUNT_BUTTON.Size = new System.Drawing.Size(111, 24);
-			this.SEARCH_COUNT_BUTTON.TabIndex = 22;
-			this.SEARCH_COUNT_BUTTON.Text = "횟수 확인하기";
-			this.SEARCH_COUNT_BUTTON.UseVisualStyleBackColor = false;
-			this.SEARCH_COUNT_BUTTON.Click += new System.EventHandler(this.SEARCH_COUNT_BUTTON_Click);
-			// 
 			// WARN_RUN_BUTTON
 			// 
 			this.WARN_RUN_BUTTON.AnimationLerpP = 0.8F;
 			this.WARN_RUN_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.WARN_RUN_BUTTON.ButtonText = "경고 부여";
-			this.WARN_RUN_BUTTON.ButtonTextColor = System.Drawing.Color.Black;
+			this.WARN_RUN_BUTTON.ButtonText = "경고 팡팡";
+			this.WARN_RUN_BUTTON.ButtonTextColor = System.Drawing.Color.White;
 			this.WARN_RUN_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.WARN_RUN_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.DarkOrange;
+			this.WARN_RUN_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Red;
 			this.WARN_RUN_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.WARN_RUN_BUTTON.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.WARN_RUN_BUTTON.Location = new System.Drawing.Point(393, 488);
+			this.WARN_RUN_BUTTON.Location = new System.Drawing.Point(36, 494);
 			this.WARN_RUN_BUTTON.Name = "WARN_RUN_BUTTON";
-			this.WARN_RUN_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Orange;
-			this.WARN_RUN_BUTTON.Size = new System.Drawing.Size(195, 50);
+			this.WARN_RUN_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
+			this.WARN_RUN_BUTTON.Size = new System.Drawing.Size(195, 35);
 			this.WARN_RUN_BUTTON.TabIndex = 7;
-			this.WARN_RUN_BUTTON.Text = "경고 부여";
+			this.WARN_RUN_BUTTON.Text = "경고 팡팡";
 			this.WARN_RUN_BUTTON.UseVisualStyleBackColor = false;
 			this.WARN_RUN_BUTTON.Click += new System.EventHandler(this.WARN_RUN_BUTTON_Click);
 			// 
@@ -297,19 +286,6 @@
 			this.WARN_EXAMPLE.TabIndex = 8;
 			this.WARN_EXAMPLE.TabStop = false;
 			// 
-			// CLOSE_BUTTON
-			// 
-			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
-			this.CLOSE_BUTTON.Location = new System.Drawing.Point(565, 10);
-			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
-			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
-			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.CLOSE_BUTTON.TabIndex = 4;
-			this.CLOSE_BUTTON.TabStop = false;
-			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
-			// 
 			// BACKGROUND_SPLASH
 			// 
 			this.BACKGROUND_SPLASH.BackColor = System.Drawing.Color.Transparent;
@@ -320,13 +296,66 @@
 			this.BACKGROUND_SPLASH.TabIndex = 16;
 			this.BACKGROUND_SPLASH.TabStop = false;
 			// 
+			// WARNING_COUNT_AFTERDESC
+			// 
+			this.WARNING_COUNT_AFTERDESC.BackColor = System.Drawing.Color.Transparent;
+			this.WARNING_COUNT_AFTERDESC.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.WARNING_COUNT_AFTERDESC.ForeColor = System.Drawing.Color.Red;
+			this.WARNING_COUNT_AFTERDESC.Location = new System.Drawing.Point(203, 260);
+			this.WARNING_COUNT_AFTERDESC.Name = "WARNING_COUNT_AFTERDESC";
+			this.WARNING_COUNT_AFTERDESC.Size = new System.Drawing.Size(373, 15);
+			this.WARNING_COUNT_AFTERDESC.TabIndex = 23;
+			this.WARNING_COUNT_AFTERDESC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// COUNT_DESC
+			// 
+			this.COUNT_DESC.AutoSize = true;
+			this.COUNT_DESC.BackColor = System.Drawing.Color.Transparent;
+			this.COUNT_DESC.Font = new System.Drawing.Font("나눔고딕", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.COUNT_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.COUNT_DESC.Location = new System.Drawing.Point(203, 230);
+			this.COUNT_DESC.Name = "COUNT_DESC";
+			this.COUNT_DESC.Size = new System.Drawing.Size(373, 13);
+			this.COUNT_DESC.TabIndex = 21;
+			this.COUNT_DESC.Text = "경고 횟수는 정보를 가져와서 설정됩니다, 보통 기본 설정된 횟수로 하시면 됩니다.";
+			// 
+			// chatSendHelper
+			// 
+			this.chatSendHelper.Location = new System.Drawing.Point(453, 354);
+			this.chatSendHelper.MinimumSize = new System.Drawing.Size(20, 20);
+			this.chatSendHelper.Name = "chatSendHelper";
+			this.chatSendHelper.Size = new System.Drawing.Size(123, 118);
+			this.chatSendHelper.TabIndex = 24;
+			this.chatSendHelper.Visible = false;
+			// 
+			// CANCEL_BUTTON
+			// 
+			this.CANCEL_BUTTON.AnimationLerpP = 0.8F;
+			this.CANCEL_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.CANCEL_BUTTON.ButtonText = "취소";
+			this.CANCEL_BUTTON.ButtonTextColor = System.Drawing.Color.Black;
+			this.CANCEL_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.CANCEL_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Gainsboro;
+			this.CANCEL_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.CANCEL_BUTTON.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.CANCEL_BUTTON.Location = new System.Drawing.Point(238, 502);
+			this.CANCEL_BUTTON.Name = "CANCEL_BUTTON";
+			this.CANCEL_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
+			this.CANCEL_BUTTON.Size = new System.Drawing.Size(102, 27);
+			this.CANCEL_BUTTON.TabIndex = 25;
+			this.CANCEL_BUTTON.Text = "취소";
+			this.CANCEL_BUTTON.UseVisualStyleBackColor = false;
+			this.CANCEL_BUTTON.Click += new System.EventHandler(this.CANCEL_BUTTON_Click);
+			// 
 			// UserWarnOptionForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(600, 550);
-			this.Controls.Add(this.SEARCH_COUNT_BUTTON);
+			this.Controls.Add(this.CANCEL_BUTTON);
+			this.Controls.Add(this.chatSendHelper);
+			this.Controls.Add(this.WARNING_COUNT_AFTERDESC);
 			this.Controls.Add(this.COUNT_DESC);
 			this.Controls.Add(this.COUNT_TITLE);
 			this.Controls.Add(this.WARNING_COUNT);
@@ -355,10 +384,10 @@
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.UserWarnOptionForm_Paint);
 			this.APP_TITLE_BAR.ResumeLayout(false);
 			this.APP_TITLE_BAR.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARNING_COUNT)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARN_ICON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARN_EXAMPLE)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.BACKGROUND_SPLASH)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -385,7 +414,9 @@
 		private System.Windows.Forms.Label WARN_TEXT;
 		private System.Windows.Forms.NumericUpDown WARNING_COUNT;
 		private System.Windows.Forms.Label COUNT_TITLE;
+		private System.Windows.Forms.Label WARNING_COUNT_AFTERDESC;
 		private System.Windows.Forms.Label COUNT_DESC;
-		private FlatButton SEARCH_COUNT_BUTTON;
+		private System.Windows.Forms.WebBrowser chatSendHelper;
+		private FlatButton CANCEL_BUTTON;
 	}
 }
