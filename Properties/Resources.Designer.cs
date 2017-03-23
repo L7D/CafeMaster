@@ -83,6 +83,16 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Background04 {
+            get {
+                object obj = ResourceManager.GetObject("Background04", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap BELL_IGNORE {
             get {
                 object obj = ResourceManager.GetObject("BELL_IGNORE", resourceCulture);
@@ -363,9 +373,29 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap PROFILE_UNKNOWN_V2_120x120 {
+            get {
+                object obj = ResourceManager.GetObject("PROFILE_UNKNOWN_V2_120x120", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap PROGRAM_ICON_150x150 {
             get {
                 object obj = ResourceManager.GetObject("PROGRAM_ICON_150x150", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap PROGRAM_ICON_25x25 {
+            get {
+                object obj = ResourceManager.GetObject("PROGRAM_ICON_25x25", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -516,6 +546,16 @@ namespace CafeMaster_UI.Properties {
         internal static System.Drawing.Bitmap WELCOME_SPLASH {
             get {
                 object obj = ResourceManager.GetObject("WELCOME_SPLASH", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap WELCOME_SPLASH_V2 {
+            get {
+                object obj = ResourceManager.GetObject("WELCOME_SPLASH_V2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

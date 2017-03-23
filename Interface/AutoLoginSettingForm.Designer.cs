@@ -31,13 +31,13 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoLoginSettingForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
 			this.APP_TITLE = new System.Windows.Forms.Label();
+			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.TIP_LABEL = new System.Windows.Forms.Label();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
 			this.TIP_IMAGE = new System.Windows.Forms.PictureBox();
-			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.TIP_IMAGE)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.TIP_IMAGE)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// APP_TITLE_BAR
@@ -65,6 +65,20 @@
 			this.APP_TITLE.Size = new System.Drawing.Size(90, 14);
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "자동 로그인 설정";
+			// 
+			// CLOSE_BUTTON
+			// 
+			this.CLOSE_BUTTON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
+			this.CLOSE_BUTTON.Location = new System.Drawing.Point(560, 10);
+			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
+			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
+			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.CLOSE_BUTTON.TabIndex = 4;
+			this.CLOSE_BUTTON.TabStop = false;
+			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
 			// 
 			// TIP_LABEL
 			// 
@@ -109,30 +123,16 @@
 			this.TIP_IMAGE.TabIndex = 5;
 			this.TIP_IMAGE.TabStop = false;
 			// 
-			// CLOSE_BUTTON
-			// 
-			this.CLOSE_BUTTON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
-			this.CLOSE_BUTTON.Location = new System.Drawing.Point(560, 10);
-			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
-			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
-			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.CLOSE_BUTTON.TabIndex = 4;
-			this.CLOSE_BUTTON.TabStop = false;
-			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
-			// 
 			// AutoLoginSettingForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(595, 525);
+			this.Controls.Add(this.browserBehind);
 			this.Controls.Add(this.TIP_IMAGE);
 			this.Controls.Add(this.TIP_LABEL);
 			this.Controls.Add(this.APP_TITLE_BAR);
-			this.Controls.Add(this.browserBehind);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -144,8 +144,8 @@
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.AutoLoginSettingForm_Paint);
 			this.APP_TITLE_BAR.ResumeLayout(false);
 			this.APP_TITLE_BAR.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.TIP_IMAGE)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.TIP_IMAGE)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

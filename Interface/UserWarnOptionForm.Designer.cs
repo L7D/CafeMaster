@@ -44,13 +44,13 @@
 			this.WARNING_COUNT = new System.Windows.Forms.NumericUpDown();
 			this.COUNT_TITLE = new System.Windows.Forms.Label();
 			this.WARN_RUN_BUTTON = new CafeMaster_UI.Interface.FlatButton();
-			this.WARN_ICON = new System.Windows.Forms.PictureBox();
-			this.WARN_EXAMPLE = new System.Windows.Forms.PictureBox();
-			this.BACKGROUND_SPLASH = new System.Windows.Forms.PictureBox();
 			this.WARNING_COUNT_AFTERDESC = new System.Windows.Forms.Label();
 			this.COUNT_DESC = new System.Windows.Forms.Label();
 			this.chatSendHelper = new System.Windows.Forms.WebBrowser();
 			this.CANCEL_BUTTON = new CafeMaster_UI.Interface.FlatButton();
+			this.WARN_ICON = new System.Windows.Forms.PictureBox();
+			this.WARN_EXAMPLE = new System.Windows.Forms.PictureBox();
+			this.BACKGROUND_SPLASH = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARNING_COUNT)).BeginInit();
@@ -264,38 +264,6 @@
 			this.WARN_RUN_BUTTON.UseVisualStyleBackColor = false;
 			this.WARN_RUN_BUTTON.Click += new System.EventHandler(this.WARN_RUN_BUTTON_Click);
 			// 
-			// WARN_ICON
-			// 
-			this.WARN_ICON.BackColor = System.Drawing.Color.Transparent;
-			this.WARN_ICON.Image = global::CafeMaster_UI.Properties.Resources.WARNING_ICON;
-			this.WARN_ICON.Location = new System.Drawing.Point(40, 60);
-			this.WARN_ICON.Name = "WARN_ICON";
-			this.WARN_ICON.Size = new System.Drawing.Size(25, 25);
-			this.WARN_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.WARN_ICON.TabIndex = 17;
-			this.WARN_ICON.TabStop = false;
-			// 
-			// WARN_EXAMPLE
-			// 
-			this.WARN_EXAMPLE.BackColor = System.Drawing.Color.Transparent;
-			this.WARN_EXAMPLE.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.WARN_EXAMPLE.Image = global::CafeMaster_UI.Properties.Resources.WARN_EXAMPLE;
-			this.WARN_EXAMPLE.Location = new System.Drawing.Point(36, 354);
-			this.WARN_EXAMPLE.Name = "WARN_EXAMPLE";
-			this.WARN_EXAMPLE.Size = new System.Drawing.Size(411, 118);
-			this.WARN_EXAMPLE.TabIndex = 8;
-			this.WARN_EXAMPLE.TabStop = false;
-			// 
-			// BACKGROUND_SPLASH
-			// 
-			this.BACKGROUND_SPLASH.BackColor = System.Drawing.Color.Transparent;
-			this.BACKGROUND_SPLASH.Image = global::CafeMaster_UI.Properties.Resources.Background03;
-			this.BACKGROUND_SPLASH.Location = new System.Drawing.Point(1, 99);
-			this.BACKGROUND_SPLASH.Name = "BACKGROUND_SPLASH";
-			this.BACKGROUND_SPLASH.Size = new System.Drawing.Size(598, 448);
-			this.BACKGROUND_SPLASH.TabIndex = 16;
-			this.BACKGROUND_SPLASH.TabStop = false;
-			// 
 			// WARNING_COUNT_AFTERDESC
 			// 
 			this.WARNING_COUNT_AFTERDESC.BackColor = System.Drawing.Color.Transparent;
@@ -315,9 +283,9 @@
 			this.COUNT_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.COUNT_DESC.Location = new System.Drawing.Point(203, 230);
 			this.COUNT_DESC.Name = "COUNT_DESC";
-			this.COUNT_DESC.Size = new System.Drawing.Size(373, 13);
+			this.COUNT_DESC.Size = new System.Drawing.Size(258, 13);
 			this.COUNT_DESC.TabIndex = 21;
-			this.COUNT_DESC.Text = "경고 횟수는 정보를 가져와서 설정됩니다, 보통 기본 설정된 횟수로 하시면 됩니다.";
+			this.COUNT_DESC.Text = "기본 경고 횟수는 서버에서 정보를 가져와서 설정됩니다.";
 			// 
 			// chatSendHelper
 			// 
@@ -346,6 +314,38 @@
 			this.CANCEL_BUTTON.Text = "취소";
 			this.CANCEL_BUTTON.UseVisualStyleBackColor = false;
 			this.CANCEL_BUTTON.Click += new System.EventHandler(this.CANCEL_BUTTON_Click);
+			// 
+			// WARN_ICON
+			// 
+			this.WARN_ICON.BackColor = System.Drawing.Color.Transparent;
+			this.WARN_ICON.Image = global::CafeMaster_UI.Properties.Resources.DANGER_ICON;
+			this.WARN_ICON.Location = new System.Drawing.Point(40, 60);
+			this.WARN_ICON.Name = "WARN_ICON";
+			this.WARN_ICON.Size = new System.Drawing.Size(25, 25);
+			this.WARN_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.WARN_ICON.TabIndex = 17;
+			this.WARN_ICON.TabStop = false;
+			// 
+			// WARN_EXAMPLE
+			// 
+			this.WARN_EXAMPLE.BackColor = System.Drawing.Color.Transparent;
+			this.WARN_EXAMPLE.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.WARN_EXAMPLE.Image = global::CafeMaster_UI.Properties.Resources.WARN_EXAMPLE;
+			this.WARN_EXAMPLE.Location = new System.Drawing.Point(36, 354);
+			this.WARN_EXAMPLE.Name = "WARN_EXAMPLE";
+			this.WARN_EXAMPLE.Size = new System.Drawing.Size(411, 118);
+			this.WARN_EXAMPLE.TabIndex = 8;
+			this.WARN_EXAMPLE.TabStop = false;
+			// 
+			// BACKGROUND_SPLASH
+			// 
+			this.BACKGROUND_SPLASH.BackColor = System.Drawing.Color.Transparent;
+			this.BACKGROUND_SPLASH.Image = global::CafeMaster_UI.Properties.Resources.Background03;
+			this.BACKGROUND_SPLASH.Location = new System.Drawing.Point(1, 1);
+			this.BACKGROUND_SPLASH.Name = "BACKGROUND_SPLASH";
+			this.BACKGROUND_SPLASH.Size = new System.Drawing.Size(598, 548);
+			this.BACKGROUND_SPLASH.TabIndex = 16;
+			this.BACKGROUND_SPLASH.TabStop = false;
 			// 
 			// UserWarnOptionForm
 			// 

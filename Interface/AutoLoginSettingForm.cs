@@ -94,7 +94,7 @@ namespace CafeMaster_UI.Interface
 						switch ( result )
 						{
 							case AutoLogin.SetAccountDataResult.Success:
-								NotifyBox.Show( this, "자동 로그인 설정 완료", "자동 로그인 설정을 완료했습니다, 다음 로그인 시 부터 적용됩니다.", NotifyBoxType.OK, NotifyBoxIcon.Information );
+								NotifyBox.Show( this, "자동 로그인 설정 완료", "자동 로그인 설정을 완료했습니다, 다음 로그인 시 부터 자동 로그인이 적용됩니다.", NotifyBoxType.OK, NotifyBoxIcon.Information );
 								this.Close( );
 								break;
 							case AutoLogin.SetAccountDataResult.FileCreateFailed:
@@ -146,13 +146,11 @@ namespace CafeMaster_UI.Interface
 			{
 				if ( i.GetAttribute( "type" ) == "text" && i.GetAttribute( "id" ) == "id" ) // 아이디 폼
 				{
-					if ( IDTemp == "" )
-						IDTemp = i.GetAttribute( "value" );
+					IDTemp = i.GetAttribute( "value" );
 				}
 				else if ( i.GetAttribute( "type" ) == "password" && i.GetAttribute( "id" ) == "pw" ) // 암호 폼
 				{
-					if ( PWDTemp == "" )
-						PWDTemp = i.GetAttribute( "value" );
+					PWDTemp = i.GetAttribute( "value" );
 				}
 			}
 		}

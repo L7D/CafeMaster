@@ -32,11 +32,12 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NaverLoginForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
 			this.APP_TITLE = new System.Windows.Forms.Label();
-			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.AUTOLOGIN_DESC = new System.Windows.Forms.Label();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
-			this.PROFILE_IMAGE = new System.Windows.Forms.PictureBox();
 			this.DotAnimationTimer = new System.Windows.Forms.Timer(this.components);
+			this.AUTOLOGIN_TITLE = new System.Windows.Forms.Label();
+			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
+			this.PROFILE_IMAGE = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE)).BeginInit();
@@ -68,26 +69,12 @@
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "네이버 로그인";
 			// 
-			// CLOSE_BUTTON
-			// 
-			this.CLOSE_BUTTON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
-			this.CLOSE_BUTTON.Location = new System.Drawing.Point(560, 10);
-			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
-			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
-			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.CLOSE_BUTTON.TabIndex = 4;
-			this.CLOSE_BUTTON.TabStop = false;
-			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
-			// 
 			// AUTOLOGIN_DESC
 			// 
 			this.AUTOLOGIN_DESC.BackColor = System.Drawing.Color.Transparent;
-			this.AUTOLOGIN_DESC.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.AUTOLOGIN_DESC.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.AUTOLOGIN_DESC.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.AUTOLOGIN_DESC.Location = new System.Drawing.Point(0, 305);
+			this.AUTOLOGIN_DESC.Location = new System.Drawing.Point(0, 300);
 			this.AUTOLOGIN_DESC.Name = "AUTOLOGIN_DESC";
 			this.AUTOLOGIN_DESC.Size = new System.Drawing.Size(595, 20);
 			this.AUTOLOGIN_DESC.TabIndex = 5;
@@ -114,13 +101,44 @@
 			this.browserBehind.WebBrowserShortcutsEnabled = false;
 			this.browserBehind.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.browserBehind_Navigating);
 			// 
+			// DotAnimationTimer
+			// 
+			this.DotAnimationTimer.Tick += new System.EventHandler(this.DotAnimationTimer_Tick);
+			// 
+			// AUTOLOGIN_TITLE
+			// 
+			this.AUTOLOGIN_TITLE.BackColor = System.Drawing.Color.Transparent;
+			this.AUTOLOGIN_TITLE.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.AUTOLOGIN_TITLE.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.AUTOLOGIN_TITLE.Location = new System.Drawing.Point(0, 250);
+			this.AUTOLOGIN_TITLE.Name = "AUTOLOGIN_TITLE";
+			this.AUTOLOGIN_TITLE.Size = new System.Drawing.Size(595, 46);
+			this.AUTOLOGIN_TITLE.TabIndex = 50;
+			this.AUTOLOGIN_TITLE.Text = "NULL";
+			this.AUTOLOGIN_TITLE.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.AUTOLOGIN_TITLE.Visible = false;
+			// 
+			// CLOSE_BUTTON
+			// 
+			this.CLOSE_BUTTON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
+			this.CLOSE_BUTTON.Location = new System.Drawing.Point(560, 10);
+			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
+			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
+			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.CLOSE_BUTTON.TabIndex = 4;
+			this.CLOSE_BUTTON.TabStop = false;
+			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
+			// 
 			// PROFILE_IMAGE
 			// 
 			this.PROFILE_IMAGE.BackColor = System.Drawing.Color.Transparent;
-			this.PROFILE_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_160x160;
+			this.PROFILE_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_V2_120x120;
 			this.PROFILE_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.PROFILE_IMAGE.Image = global::CafeMaster_UI.Properties.Resources.PROFILE_IMAGE_CIRCLE_160x160;
-			this.PROFILE_IMAGE.Location = new System.Drawing.Point(217, 120);
+			this.PROFILE_IMAGE.Location = new System.Drawing.Point(217, 80);
 			this.PROFILE_IMAGE.Name = "PROFILE_IMAGE";
 			this.PROFILE_IMAGE.Size = new System.Drawing.Size(160, 160);
 			this.PROFILE_IMAGE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -128,16 +146,13 @@
 			this.PROFILE_IMAGE.TabStop = false;
 			this.PROFILE_IMAGE.Visible = false;
 			// 
-			// DotAnimationTimer
-			// 
-			this.DotAnimationTimer.Tick += new System.EventHandler(this.DotAnimationTimer_Tick);
-			// 
 			// NaverLoginForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(595, 470);
+			this.Controls.Add(this.AUTOLOGIN_TITLE);
 			this.Controls.Add(this.AUTOLOGIN_DESC);
 			this.Controls.Add(this.APP_TITLE_BAR);
 			this.Controls.Add(this.PROFILE_IMAGE);
@@ -168,5 +183,6 @@
 		private System.Windows.Forms.Label AUTOLOGIN_DESC;
 		private System.Windows.Forms.PictureBox PROFILE_IMAGE;
 		private System.Windows.Forms.Timer DotAnimationTimer;
+		private System.Windows.Forms.Label AUTOLOGIN_TITLE;
 	}
 }

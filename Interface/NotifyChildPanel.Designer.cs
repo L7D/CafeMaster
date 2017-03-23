@@ -44,6 +44,7 @@
 			this.ADMIN_ICON = new System.Windows.Forms.PictureBox();
 			this.ONLY_COMMENT_BUTTON = new CafeMaster_UI.Interface.FlatButton();
 			this.THREAD_DELETE_BUTTON = new CafeMaster_UI.Interface.FlatImageButton();
+			this.MEMBER_ACTIVITY_STOP_BUTTON = new CafeMaster_UI.Interface.FlatButton();
 			this.BOARD_NAME_LABEL = new System.Windows.Forms.Label();
 			this.BOARD_ICON = new System.Windows.Forms.PictureBox();
 			this.TIME_ICON = new System.Windows.Forms.PictureBox();
@@ -77,7 +78,7 @@
 			this.NUMBER_LABEL.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.NUMBER_LABEL.Location = new System.Drawing.Point(3, 118);
 			this.NUMBER_LABEL.Name = "NUMBER_LABEL";
-			this.NUMBER_LABEL.Size = new System.Drawing.Size(202, 29);
+			this.NUMBER_LABEL.Size = new System.Drawing.Size(131, 29);
 			this.NUMBER_LABEL.TabIndex = 1;
 			this.NUMBER_LABEL.Text = "#000000";
 			this.NUMBER_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -89,7 +90,7 @@
 			this.AUTHOR_LABEL.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.AUTHOR_LABEL.Location = new System.Drawing.Point(34, 59);
 			this.AUTHOR_LABEL.Name = "AUTHOR_LABEL";
-			this.AUTHOR_LABEL.Size = new System.Drawing.Size(347, 26);
+			this.AUTHOR_LABEL.Size = new System.Drawing.Size(277, 26);
 			this.AUTHOR_LABEL.TabIndex = 2;
 			this.AUTHOR_LABEL.Text = "USER";
 			this.AUTHOR_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -99,9 +100,9 @@
 			// 
 			this.HIT_LABEL.BackColor = System.Drawing.Color.Transparent;
 			this.HIT_LABEL.Font = new System.Drawing.Font("나눔고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.HIT_LABEL.Location = new System.Drawing.Point(211, 120);
+			this.HIT_LABEL.Location = new System.Drawing.Point(140, 120);
 			this.HIT_LABEL.Name = "HIT_LABEL";
-			this.HIT_LABEL.Size = new System.Drawing.Size(208, 27);
+			this.HIT_LABEL.Size = new System.Drawing.Size(171, 27);
 			this.HIT_LABEL.TabIndex = 5;
 			this.HIT_LABEL.Text = "1 V";
 			this.HIT_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -112,7 +113,7 @@
 			this.TIME_LABEL.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.TIME_LABEL.Location = new System.Drawing.Point(34, 90);
 			this.TIME_LABEL.Name = "TIME_LABEL";
-			this.TIME_LABEL.Size = new System.Drawing.Size(347, 25);
+			this.TIME_LABEL.Size = new System.Drawing.Size(277, 25);
 			this.TIME_LABEL.TabIndex = 8;
 			this.TIME_LABEL.Text = "TIME";
 			this.TIME_LABEL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -254,7 +255,7 @@
 			this.ONLY_COMMENT_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Gainsboro;
 			this.ONLY_COMMENT_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ONLY_COMMENT_BUTTON.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.ONLY_COMMENT_BUTTON.Location = new System.Drawing.Point(425, 70);
+			this.ONLY_COMMENT_BUTTON.Location = new System.Drawing.Point(317, 120);
 			this.ONLY_COMMENT_BUTTON.Name = "ONLY_COMMENT_BUTTON";
 			this.ONLY_COMMENT_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.WhiteSmoke;
 			this.ONLY_COMMENT_BUTTON.Size = new System.Drawing.Size(102, 27);
@@ -280,6 +281,26 @@
 			this.THREAD_DELETE_BUTTON.TabStop = false;
 			this.TOOL_TIP.SetToolTip(this.THREAD_DELETE_BUTTON, "게시물과 알림 삭제");
 			this.THREAD_DELETE_BUTTON.Click += new System.EventHandler(this.THREAD_DELETE_BUTTON_Click);
+			// 
+			// MEMBER_ACTIVITY_STOP_BUTTON
+			// 
+			this.MEMBER_ACTIVITY_STOP_BUTTON.AnimationLerpP = 0.8F;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.ButtonText = "활동 정지";
+			this.MEMBER_ACTIVITY_STOP_BUTTON.ButtonTextColor = System.Drawing.Color.White;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Red;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Location = new System.Drawing.Point(425, 70);
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Name = "MEMBER_ACTIVITY_STOP_BUTTON";
+			this.MEMBER_ACTIVITY_STOP_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Size = new System.Drawing.Size(102, 27);
+			this.MEMBER_ACTIVITY_STOP_BUTTON.TabIndex = 24;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Text = "활동 정지";
+			this.TOOL_TIP.SetToolTip(this.MEMBER_ACTIVITY_STOP_BUTTON, "활동 정지를 부여합니다.");
+			this.MEMBER_ACTIVITY_STOP_BUTTON.UseVisualStyleBackColor = false;
+			this.MEMBER_ACTIVITY_STOP_BUTTON.Click += new System.EventHandler(this.MEMBER_ACTIVITY_STOP_BUTTON_Click);
 			// 
 			// BOARD_NAME_LABEL
 			// 
@@ -330,6 +351,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
+			this.Controls.Add(this.MEMBER_ACTIVITY_STOP_BUTTON);
 			this.Controls.Add(this.THREAD_DELETE_BUTTON);
 			this.Controls.Add(this.ONLY_COMMENT_BUTTON);
 			this.Controls.Add(this.ADMIN_ICON);
@@ -388,5 +410,6 @@
 		private System.Windows.Forms.PictureBox ADMIN_ICON;
 		private FlatButton ONLY_COMMENT_BUTTON;
 		private FlatImageButton THREAD_DELETE_BUTTON;
+		private FlatButton MEMBER_ACTIVITY_STOP_BUTTON;
 	}
 }

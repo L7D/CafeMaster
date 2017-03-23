@@ -105,7 +105,7 @@ namespace CafeMaster_UI.Interface
 							this.Close( );
 						else
 						{
-							NotifyBox.Show( this, "오류", "죄송합니다, 해당 계정은 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+							NotifyBox.Show( this, "오류", "죄송합니다, 귀하는 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 							System.Diagnostics.Process.GetCurrentProcess( ).Kill( );
 							//Application.Exit( );
 						}
@@ -160,6 +160,7 @@ namespace CafeMaster_UI.Interface
 					if ( isAutoLogin )
 					{
 						this.browserBehind.Visible = false;
+						this.AUTOLOGIN_TITLE.Visible = true;
 						this.AUTOLOGIN_DESC.Visible = true;
 						this.PROFILE_IMAGE.Visible = true;
 
@@ -175,6 +176,7 @@ namespace CafeMaster_UI.Interface
 					else
 					{
 						this.browserBehind.Visible = true;
+						this.AUTOLOGIN_TITLE.Visible = false;
 						this.AUTOLOGIN_DESC.Visible = false;
 						this.PROFILE_IMAGE.Visible = false;
 					}
@@ -186,6 +188,7 @@ namespace CafeMaster_UI.Interface
 				{
 					this.browserBehind.Visible = false;
 					this.AUTOLOGIN_DESC.Visible = true;
+					this.AUTOLOGIN_TITLE.Visible = true;
 					this.PROFILE_IMAGE.Visible = true;
 
 					if ( System.IO.File.Exists( GlobalVar.APP_DIR + @"\data\profileImage.jpg" ) )
@@ -201,6 +204,7 @@ namespace CafeMaster_UI.Interface
 				{
 					this.browserBehind.Visible = true;
 					this.AUTOLOGIN_DESC.Visible = false;
+					this.AUTOLOGIN_TITLE.Visible = false;
 					this.PROFILE_IMAGE.Visible = false;
 				}
 			}
@@ -210,29 +214,34 @@ namespace CafeMaster_UI.Interface
 		{
 			Thread thread = new Thread( ( ) =>
 			{
-				if ( AutoLogin.IsEnabled( ) )
+			if ( AutoLogin.IsEnabled( ) )
+			{
+				SetMode( true );
+				SetMessage( "계정 자동 로그인 정보를 불러오는 중 " );
+
+				string accountString = null;
+				AutoLogin.GetAccountDataResult result = AutoLogin.GetAccountData( out accountString );
+
+				switch ( result )
 				{
-					SetMode( true );
-					SetMessage( "계정 자동 로그인 정보를 불러오는 중 " );
+					case AutoLogin.GetAccountDataResult.Success:
+						if ( !string.IsNullOrEmpty( accountString ) )
+						{
+							string[ ] dataTable = accountString.Trim( ).Split( '\n' );
 
-					string accountString = null;
-					AutoLogin.GetAccountDataResult result = AutoLogin.GetAccountData( out accountString );
-
-					switch ( result )
-					{
-						case AutoLogin.GetAccountDataResult.Success:
-							if ( !string.IsNullOrEmpty( accountString ) )
+							if ( dataTable.Length == 2 )
 							{
-								string[ ] dataTable = accountString.Trim( ).Split( '\n' );
+									if ( this.InvokeRequired )
+										this.Invoke( new Action( ( ) => this.AUTOLOGIN_TITLE.Text = dataTable[ 0 ].Trim( ) ) );
+									else
+										this.AUTOLOGIN_TITLE.Text = dataTable[ 0 ].Trim( );
 
-								if ( dataTable.Length == 2 )
-								{
-									SetMessage( "계정 자동 로그인을 시도하고 있습니다, 조금만 기다려주세요 " );
+									SetMessage( "자동 로그인을 시도하고 있습니다, 잠시만.. 기다려주세요 " );
 
-									Thread.Sleep( 1000 );
+									//Thread.Sleep( 1000 );
 
 									CookieCollection collection;
-									NaverRequest.NaverLoginResult result2 = NaverRequest.LoginHttp( dataTable[ 0 ], dataTable[ 1 ], out collection );
+									NaverRequest.NaverLoginResult result2 = NaverRequest.NaverAccountLogin( dataTable[ 0 ], dataTable[ 1 ], out collection );
 
 									switch ( result2 )
 									{
@@ -251,9 +260,9 @@ namespace CafeMaster_UI.Interface
 
 											if ( isValidAccount )
 											{
-												SetMessage( dataTable[ 0 ] + " 계정 자동 로그인을 성공했습니다.", true );
+												SetMessage( "계정 로그인을 완료했습니다.", true );
 
-												Thread.Sleep( 1000 );
+												Thread.Sleep( 500 );
 
 												if ( this.InvokeRequired )
 													this.Invoke( new Action( ( ) => this.Close( ) ) );
@@ -272,14 +281,15 @@ namespace CafeMaster_UI.Interface
 												return;
 											}
 										case NaverRequest.NaverLoginResult.IDorPWDError:
-											NotifyBox.Show( this, "오류", "죄송합니다, 로그인에 실패했습니다, 아이디 또는 비밀번호가 올바르지 않습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+											NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인에 실패했습니다, 아이디 또는 비밀번호가 올바르지 않습니다\n자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 											AutoLogin.DeleteAccountData( );
 
 											SetMode( false );
 
 											break;
 										case NaverRequest.NaverLoginResult.SecurityBlocked:
-											NotifyBox.Show( this, "오류", "죄송합니다, 로그인에 실패했습니다, 보안 설정을 확인하세요.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+											Utility.OpenWebPage( "https://nid.naver.com/user2/help/myInfo.nhn?m=viewSecurity&menu=security", this );
+											NotifyBox.Show( this, "알림", "죄송합니다, 자동 로그인에 실패했습니다\n자동 로그인을 사용하시려면 네이버 계정 보안 설정에서 '로그인 차단 설정' 또는 '새로운 기기 로그인 알림 설정'을 해제해주세요.", NotifyBoxType.OK, NotifyBoxIcon.Information );
 
 											SetMode( false );
 

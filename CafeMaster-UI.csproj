@@ -78,12 +78,6 @@
     <Compile Include="Interface\AutoLoginSettingForm.Designer.cs">
       <DependentUpon>AutoLoginSettingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interface\MemberActivityStopForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Interface\MemberActivityStopForm.Designer.cs">
-      <DependentUpon>MemberActivityStopForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Interface\NotifyBoxInterface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +101,12 @@
     </Compile>
     <Compile Include="Interface\ProgramInformation.Designer.cs">
       <DependentUpon>ProgramInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\MemberActivityStopForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\MemberActivityStopForm.Designer.cs">
+      <DependentUpon>MemberActivityStopForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Interface\UserWarnOptionForm.cs">
       <SubType>Form</SubType>
@@ -155,9 +155,6 @@
     <EmbeddedResource Include="Interface\AutoLoginSettingForm.resx">
       <DependentUpon>AutoLoginSettingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Interface\MemberActivityStopForm.resx">
-      <DependentUpon>MemberActivityStopForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Interface\NaverLoginForm.resx">
       <DependentUpon>NaverLoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -172,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\ProgramInformation.resx">
       <DependentUpon>ProgramInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\MemberActivityStopForm.resx">
+      <DependentUpon>MemberActivityStopForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\UserWarnOptionForm.resx">
       <DependentUpon>UserWarnOptionForm.cs</DependentUpon>
@@ -256,8 +256,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="APP_ICON.ico" />
-    <None Include="Resources\DANGER_ICON.png" />
+    <None Include="Resources\WELCOME_SPLASH_V2.png" />
+    <None Include="WELCOME_SPLASH_V2.png" />
+    <None Include="Resources\PROGRAM_ICON_25x25.png" />
+    <None Include="Resources\PROFILE_UNKNOWN_V2_120x120.png" />
     <None Include="Resources\Background03.png" />
+    <None Include="Resources\Background04.png" />
+    <None Include="Resources\DANGER_ICON.png" />
     <None Include="Resources\REMOVE_ICON.png" />
     <None Include="Resources\NOTIFICATION_BASIC.png" />
     <None Include="Resources\NETWORK_ONLINE.png" />

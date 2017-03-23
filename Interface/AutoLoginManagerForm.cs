@@ -80,7 +80,7 @@ namespace CafeMaster_UI.Interface
 						if ( dataTable.Length == 2 )
 						{
 							this.USERID_VALUE.Text = dataTable[ 0 ];
-							this.PWD_VALUE.Text = new string( '*', dataTable[ 1 ].Length * 2 );
+							this.PWD_VALUE.Text = new string( '*', dataTable[ 1 ].Length * new Random( DateTime.Now.Second ).Next( 2, 4 ) );
 
 							if ( System.IO.File.Exists( GlobalVar.APP_DIR + @"\data\profileImage.jpg" ) )
 							{
@@ -128,6 +128,8 @@ namespace CafeMaster_UI.Interface
 
 		private void RESET_AUTOLOGIN_BUTTON_Click( object sender, EventArgs e )
 		{
+			if ( NotifyBox.Show( this, "경고", "자동 로그인을 다시 설정하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.No ) return;
+			
 			this.Close( );
 			AutoLoginSettingForm Form = new AutoLoginSettingForm( );
 			Form.ShowDialog( );
@@ -135,6 +137,8 @@ namespace CafeMaster_UI.Interface
 
 		private void DISABLE_AUTOLOGIN_BUTTON_Click( object sender, EventArgs e )
 		{
+			if ( NotifyBox.Show( this, "경고", "자동 로그인 설정을 해제하면 다음 실행시 부터 자동 로그인이 적용되지 않습니다\n자동 로그인 설정을 해제하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.No ) return;
+
 			if ( AutoLogin.DeleteAccountData( ) )
 			{
 				NotifyBox.Show( this, "자동 로그인 해제", "자동 로그인 설정이 해제되었습니다, 다음 실행시 부터 자동 로그인이 적용되지 않습니다.", NotifyBoxType.OK, NotifyBoxIcon.Information );

@@ -47,6 +47,8 @@ namespace CafeMaster_UI
 
 		public static readonly string PROFILE_TEMP_DIR; // 프로필 이미지 TEMP 파일 경로
 
+		public static readonly string CUSTOM_STYLESHEET_DIR; // 카페채팅 커스텀 스타일시트 파일 경로
+
 		static GlobalVar( )
 		{
 			Version version = System.Reflection.Assembly.GetExecutingAssembly( ).GetName( ).Version;
@@ -59,6 +61,8 @@ namespace CafeMaster_UI
 			CAPTURE_DIR = APP_DIR + @"\captures";
 
 			PROFILE_TEMP_DIR = DATA_DIR + @"\profileImage.jpg";
+
+			CUSTOM_STYLESHEET_DIR = APP_DIR + @"\cafeChat.css";
 
 			CURRENT_VERSION = version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
 

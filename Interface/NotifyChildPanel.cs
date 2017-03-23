@@ -6,20 +6,19 @@ using CafeMaster_UI.Lib;
 
 namespace CafeMaster_UI.Interface
 {
-	public enum NotifyChildPanelColorAnimation
-	{
-		None,
-		Selected
-	}
+	//public enum NotifyChildPanelColorAnimation
+	//{
+	//	None,
+	//	Selected
+	//}
 
 	public partial class NotifyChildPanel : UserControl
 	{
-		private SolidBrush BackgroundDrawer = new SolidBrush( Color.FromArgb( 0, Color.LightCoral ) );
 		private Pen lineDrawer = new Pen( GlobalVar.MasterColor )
 		{
 			Width = 1
 		};
-		private Pen lineDrawer2 = new Pen( Color.Gold )
+		private Pen selectedLineDrawer = new Pen( Color.Gold )
 		{
 			Width = 2
 		};
@@ -49,7 +48,7 @@ namespace CafeMaster_UI.Interface
 			this.TIME_LABEL.Text = data.threadTime;
 			this.HIT_LABEL.Text = data.threadHit + " V";
 
-			if ( data.personaconURL == "" )
+			if ( string.IsNullOrEmpty( data.personaconURL ) )
 				this.AUTHOR_ICON.Image = Properties.Resources.USER_ICON;
 			else
 				this.AUTHOR_ICON.ImageLocation = data.personaconURL;
@@ -82,8 +81,8 @@ namespace CafeMaster_UI.Interface
 			this.dataTemp = data;
 		}
 
-		private void ColorAnimation( NotifyChildPanelColorAnimation type, bool enable )
-		{
+		//private void ColorAnimation( NotifyChildPanelColorAnimation type, bool enable )
+		//{
 			//if ( colorAnimationTimer != null )
 			//{
 			//	colorAnimationTimer.Stop( );
@@ -116,7 +115,7 @@ namespace CafeMaster_UI.Interface
 			//};
 
 			//colorAnimationTimer.Start( );
-		}
+		//}
 
 		private void REMOVE_BUTTON_Click( object sender, EventArgs e )
 		{
@@ -138,7 +137,7 @@ namespace CafeMaster_UI.Interface
 
 			if ( this.CHECKED )
 			{
-				e.Graphics.DrawLine( lineDrawer2, 0, h - lineDrawer2.Width, w, h - lineDrawer2.Width ); // 아래
+				e.Graphics.DrawLine( selectedLineDrawer, 0, h - selectedLineDrawer.Width, w, h - selectedLineDrawer.Width ); // 아래
 			}
 			else
 			{
@@ -152,7 +151,7 @@ namespace CafeMaster_UI.Interface
 
 			if ( data.HasValue )
 				this.dataTemp = data.Value;
-			
+
 			this.Refresh( );
 		}
 
@@ -168,11 +167,11 @@ namespace CafeMaster_UI.Interface
 
 		private void OPEN_BUTTON_Click( object sender, EventArgs e )
 		{
-			bool isNetError;
+			bool isNetworkError;
 
-			if ( NaverRequest.IsDeletedThread( this.THREAD_ID, out isNetError ) )
+			if ( NaverRequest.IsDeletedThread( this.THREAD_ID, out isNetworkError ) )
 			{
-				if ( isNetError )
+				if ( isNetworkError )
 				{
 					NotifyBox.Show( null, "오류", "죄송합니다, 네트워크 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				}
@@ -219,7 +218,7 @@ namespace CafeMaster_UI.Interface
 				return;
 			}
 
-			if ( GlobalVar.ADMINS[ this.accountID ] != null )
+			if ( GlobalVar.ADMINS.ContainsKey( this.accountID ) )
 			{
 				NotifyBox.Show( null, "오류", "다른 스탭분들께 경고를 주는 행위는 불가능합니다!", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 				return;
@@ -262,9 +261,6 @@ namespace CafeMaster_UI.Interface
 			if ( main != null )
 			{
 				main.IS_NOTIFY_CHILD_PANEL_SELECTED_MODE = status;
-
-				//ColorAnimation( NotifyChildPanelColorAnimation.Selected, this.CHECKED );
-
 				main.NotifyChildSelectedChanged( this );
 			}
 		}
@@ -286,36 +282,22 @@ namespace CafeMaster_UI.Interface
 
 			this.Refresh( );
 
-			//if ( this.CHECKED )
-			//{
-			//	this.THIS_SELECT_BUTTON.NormalStateBackgroundColor = Color.Tomato;
-			//	this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = Color.DimGray;
-			//}
-			//else
-			//{
-			//	this.THIS_SELECT_BUTTON.NormalStateBackgroundColor = Color.DimGray;
-			//	this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = Color.Tomato;
-			//}
-
 			Main main = Utility.GetMainForm( );
 
 			if ( main != null )
 			{
 				main.IS_NOTIFY_CHILD_PANEL_SELECTED_MODE = true;
-
-				//ColorAnimation( NotifyChildPanelColorAnimation.Selected, this.CHECKED );
-
 				main.NotifyChildSelectedChanged( this );
 			}
 		}
 
 		private void ONLY_COMMENT_BUTTON_Click( object sender, EventArgs e )
 		{
-			bool isNetError;
+			bool isNetworkError;
 
-			if ( NaverRequest.IsDeletedThread( this.THREAD_ID, out isNetError ) )
+			if ( NaverRequest.IsDeletedThread( this.THREAD_ID, out isNetworkError ) )
 			{
-				if ( isNetError )
+				if ( isNetworkError )
 					NotifyBox.Show( null, "오류", "죄송합니다, 네트워크 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 				else
 				{
@@ -324,15 +306,7 @@ namespace CafeMaster_UI.Interface
 			}
 			else
 			{
-				try
-				{
-					System.Diagnostics.Process.Start( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID + "/" + this.THREAD_ID + "/comment?refferAllArticles=true" );
-				}
-				catch ( Exception ex )
-				{
-					Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
-					NotifyBox.Show( null, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-				}
+				Utility.OpenWebPage( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID + "/" + this.THREAD_ID + "/comment?refferAllArticles=true" );
 			}
 		}
 
@@ -371,15 +345,13 @@ namespace CafeMaster_UI.Interface
 
 		private void AUTHOR_LABEL_Click( object sender, EventArgs e )
 		{
-			try
-			{
-				System.Diagnostics.Process.Start( GlobalVar.CAFE_MEMBER_NETWORK_VIEW_URL + this.accountID );
-			}
-			catch ( Exception ex )
-			{
-				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
-				NotifyBox.Show( null, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-			}
+			Utility.OpenWebPage( GlobalVar.CAFE_MEMBER_NETWORK_VIEW_URL + this.accountID );
+		}
+
+		private void MEMBER_ACTIVITY_STOP_BUTTON_Click( object sender, EventArgs e )
+		{
+			MemberActivityStopForm Form = new MemberActivityStopForm( this.accountID );
+			Form.ShowDialog( );
 		}
 	}
 }

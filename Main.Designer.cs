@@ -33,6 +33,7 @@
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
 			this.NETWORK_STATUS_ICON = new System.Windows.Forms.PictureBox();
 			this.LOADING_GIFIMAGE = new System.Windows.Forms.WebBrowser();
+			this.INFO_BUTTON = new System.Windows.Forms.PictureBox();
 			this.OPTION_BUTTON = new System.Windows.Forms.PictureBox();
 			this.FORCE_REFRESH_BUTTON = new System.Windows.Forms.PictureBox();
 			this.BELL_STATUS_BUTTON = new System.Windows.Forms.PictureBox();
@@ -45,7 +46,6 @@
 			this.APP_NOTIFY_ICON_MENU = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.APP_NOTIFY_ICON_MENU_ITEM_1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.TOOL_TIP = new System.Windows.Forms.ToolTip(this.components);
-			this.INFO_BUTTON = new System.Windows.Forms.PictureBox();
 			this.NOTIFY_PANEL_ICON = new System.Windows.Forms.PictureBox();
 			this.STEP_CHATBOX_ICON = new System.Windows.Forms.PictureBox();
 			this.UPDATE_AVAILABLE = new System.Windows.Forms.PictureBox();
@@ -54,6 +54,7 @@
 			this.UTIL_BUTTON4 = new CafeMaster_UI.Interface.FlatButton();
 			this.UTIL_BUTTON3 = new CafeMaster_UI.Interface.FlatButton();
 			this.UTIL_BUTTON2 = new CafeMaster_UI.Interface.FlatButton();
+			this.UTIL_BUTTON5 = new CafeMaster_UI.Interface.FlatButton();
 			this.NOTIFYBOX_EMPTY_TITLE = new System.Windows.Forms.Label();
 			this.NOTIFYBOX_EMPTY_DESC = new System.Windows.Forms.Label();
 			this.NOTIFY_PANEL_TITLE = new System.Windows.Forms.Label();
@@ -66,13 +67,13 @@
 			this.NOTIFY_PANEL = new CafeMaster_UI.Interface.DoubleBufferPanel();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NETWORK_STATUS_ICON)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.INFO_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.FORCE_REFRESH_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.BELL_STATUS_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.HIDE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			this.APP_NOTIFY_ICON_MENU.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.INFO_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.NOTIFY_PANEL_ICON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.STEP_CHATBOX_ICON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.UPDATE_AVAILABLE)).BeginInit();
@@ -86,6 +87,7 @@
 			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
 			this.APP_TITLE_BAR.Controls.Add(this.NETWORK_STATUS_ICON);
 			this.APP_TITLE_BAR.Controls.Add(this.LOADING_GIFIMAGE);
+			this.APP_TITLE_BAR.Controls.Add(this.INFO_BUTTON);
 			this.APP_TITLE_BAR.Controls.Add(this.OPTION_BUTTON);
 			this.APP_TITLE_BAR.Controls.Add(this.FORCE_REFRESH_BUTTON);
 			this.APP_TITLE_BAR.Controls.Add(this.BELL_STATUS_BUTTON);
@@ -130,6 +132,20 @@
 			this.LOADING_GIFIMAGE.TabIndex = 15;
 			this.LOADING_GIFIMAGE.Visible = false;
 			this.LOADING_GIFIMAGE.WebBrowserShortcutsEnabled = false;
+			// 
+			// INFO_BUTTON
+			// 
+			this.INFO_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.INFO_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.INFO_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.PROGRAM_ICON_25x25;
+			this.INFO_BUTTON.Location = new System.Drawing.Point(10, 10);
+			this.INFO_BUTTON.Name = "INFO_BUTTON";
+			this.INFO_BUTTON.Size = new System.Drawing.Size(25, 25);
+			this.INFO_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.INFO_BUTTON.TabIndex = 23;
+			this.INFO_BUTTON.TabStop = false;
+			this.TOOL_TIP.SetToolTip(this.INFO_BUTTON, "프로그램 정보");
+			this.INFO_BUTTON.Click += new System.EventHandler(this.INFO_BUTTON_Click);
 			// 
 			// OPTION_BUTTON
 			// 
@@ -193,7 +209,7 @@
 			this.APP_TITLE.BackColor = System.Drawing.Color.Transparent;
 			this.APP_TITLE.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.APP_TITLE.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.APP_TITLE.Location = new System.Drawing.Point(10, 16);
+			this.APP_TITLE.Location = new System.Drawing.Point(40, 15);
 			this.APP_TITLE.Name = "APP_TITLE";
 			this.APP_TITLE.Size = new System.Drawing.Size(143, 14);
 			this.APP_TITLE.TabIndex = 3;
@@ -266,20 +282,6 @@
 			this.APP_NOTIFY_ICON_MENU_ITEM_1.ToolTipText = "우윳빛깔 카페스탭을 종료합니다.";
 			this.APP_NOTIFY_ICON_MENU_ITEM_1.Click += new System.EventHandler(this.APP_NOTIFY_ICON_MENU_ITEM_1_Click);
 			// 
-			// INFO_BUTTON
-			// 
-			this.INFO_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.INFO_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.INFO_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.HELP;
-			this.INFO_BUTTON.Location = new System.Drawing.Point(1138, 320);
-			this.INFO_BUTTON.Name = "INFO_BUTTON";
-			this.INFO_BUTTON.Size = new System.Drawing.Size(25, 25);
-			this.INFO_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.INFO_BUTTON.TabIndex = 23;
-			this.INFO_BUTTON.TabStop = false;
-			this.TOOL_TIP.SetToolTip(this.INFO_BUTTON, "프로그램 정보");
-			this.INFO_BUTTON.Click += new System.EventHandler(this.INFO_BUTTON_Click);
-			// 
 			// NOTIFY_PANEL_ICON
 			// 
 			this.NOTIFY_PANEL_ICON.BackColor = System.Drawing.Color.Transparent;
@@ -291,7 +293,6 @@
 			this.NOTIFY_PANEL_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.NOTIFY_PANEL_ICON.TabIndex = 43;
 			this.NOTIFY_PANEL_ICON.TabStop = false;
-			this.TOOL_TIP.SetToolTip(this.NOTIFY_PANEL_ICON, "지금 동기화");
 			// 
 			// STEP_CHATBOX_ICON
 			// 
@@ -304,14 +305,13 @@
 			this.STEP_CHATBOX_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.STEP_CHATBOX_ICON.TabIndex = 41;
 			this.STEP_CHATBOX_ICON.TabStop = false;
-			this.TOOL_TIP.SetToolTip(this.STEP_CHATBOX_ICON, "지금 동기화");
 			// 
 			// UPDATE_AVAILABLE
 			// 
 			this.UPDATE_AVAILABLE.BackColor = System.Drawing.Color.Transparent;
 			this.UPDATE_AVAILABLE.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.UPDATE_AVAILABLE.Image = global::CafeMaster_UI.Properties.Resources.UPDATE_HAVE;
-			this.UPDATE_AVAILABLE.Location = new System.Drawing.Point(1169, 320);
+			this.UPDATE_AVAILABLE.Location = new System.Drawing.Point(1169, 395);
 			this.UPDATE_AVAILABLE.Name = "UPDATE_AVAILABLE";
 			this.UPDATE_AVAILABLE.Size = new System.Drawing.Size(25, 25);
 			this.UPDATE_AVAILABLE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -421,6 +421,26 @@
 			this.UTIL_BUTTON2.UseVisualStyleBackColor = false;
 			this.UTIL_BUTTON2.Click += new System.EventHandler(this.UTIL_BUTTON2_Click);
 			// 
+			// UTIL_BUTTON5
+			// 
+			this.UTIL_BUTTON5.AnimationLerpP = 0.8F;
+			this.UTIL_BUTTON5.BackColor = System.Drawing.Color.Transparent;
+			this.UTIL_BUTTON5.ButtonText = "회원 활동 정지";
+			this.UTIL_BUTTON5.ButtonTextColor = System.Drawing.Color.White;
+			this.UTIL_BUTTON5.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.UTIL_BUTTON5.EnterStateBackgroundColor = System.Drawing.Color.Red;
+			this.UTIL_BUTTON5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.UTIL_BUTTON5.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.UTIL_BUTTON5.Location = new System.Drawing.Point(1035, 321);
+			this.UTIL_BUTTON5.Name = "UTIL_BUTTON5";
+			this.UTIL_BUTTON5.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
+			this.UTIL_BUTTON5.Size = new System.Drawing.Size(159, 40);
+			this.UTIL_BUTTON5.TabIndex = 44;
+			this.UTIL_BUTTON5.Text = "회원 활동 정지";
+			this.TOOL_TIP.SetToolTip(this.UTIL_BUTTON5, "회원을 검색해서 활동 정지 처리합니다.");
+			this.UTIL_BUTTON5.UseVisualStyleBackColor = false;
+			this.UTIL_BUTTON5.Click += new System.EventHandler(this.UTIL_BUTTON5_Click);
+			// 
 			// NOTIFYBOX_EMPTY_TITLE
 			// 
 			this.NOTIFYBOX_EMPTY_TITLE.AutoSize = true;
@@ -488,8 +508,8 @@
 			// 
 			// NAVER_ICON_IMAGE
 			// 
-			this.NAVER_ICON_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN;
-			this.NAVER_ICON_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.NAVER_ICON_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_V2_120x120;
+			this.NAVER_ICON_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.NAVER_ICON_IMAGE.Image = global::CafeMaster_UI.Properties.Resources.PROFILE_IMAGE_CIRCLE;
 			this.NAVER_ICON_IMAGE.Location = new System.Drawing.Point(1114, 51);
 			this.NAVER_ICON_IMAGE.Name = "NAVER_ICON_IMAGE";
@@ -546,7 +566,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(1200, 685);
-			this.Controls.Add(this.INFO_BUTTON);
+			this.Controls.Add(this.UTIL_BUTTON5);
 			this.Controls.Add(this.NOTIFY_PANEL_ICON);
 			this.Controls.Add(this.NOTIFY_PANEL_TITLE);
 			this.Controls.Add(this.STEP_CHATBOX_ICON);
@@ -579,13 +599,13 @@
 			this.APP_TITLE_BAR.ResumeLayout(false);
 			this.APP_TITLE_BAR.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.NETWORK_STATUS_ICON)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.INFO_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.FORCE_REFRESH_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.BELL_STATUS_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.HIDE_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).EndInit();
 			this.APP_NOTIFY_ICON_MENU.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.INFO_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.NOTIFY_PANEL_ICON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.STEP_CHATBOX_ICON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.UPDATE_AVAILABLE)).EndInit();
@@ -633,6 +653,7 @@
 		private System.Windows.Forms.ContextMenuStrip APP_NOTIFY_ICON_MENU;
 		private System.Windows.Forms.ToolStripMenuItem APP_NOTIFY_ICON_MENU_ITEM_1;
 		public System.Windows.Forms.PictureBox BACKGROUND_SPLASH;
+		private Interface.FlatButton UTIL_BUTTON5;
 	}
 }
 

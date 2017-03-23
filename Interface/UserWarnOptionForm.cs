@@ -20,9 +20,9 @@ namespace CafeMaster_UI.Interface
 			Width = 1
 		};
 
-		string nickName;
-		string onlyID;
-		int warnCount = 1;
+		private string nickName;
+		private string onlyID;
+		private int warnCount = 1;
 
 		public UserWarnOptionForm( string nickName )
 		{
@@ -33,17 +33,51 @@ namespace CafeMaster_UI.Interface
 
 			this.USERNICK_EXAMPLE.Text = nickName;
 			this.USERNICK_TITLE.Text = "용의자 닉네임 : " + nickName;
+
+			this.SetStyle( ControlStyles.ResizeRedraw, true );
+			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
 		}
 
 		private void UserWarnOptionForm_Load( object sender, EventArgs e )
 		{
-			warnCount = NaverRequest.WarnCountRequest( this.onlyID ) + 1;
+			this.WARN_RUN_BUTTON.Enabled = false;
+			this.WARNING_COUNT.Enabled = false;
+			this.WARNING_COUNT_AFTERDESC.Text = "경고 횟수를 서버에서 가져오고 있습니다 ...";
 
-			this.WARNING_COUNT.Value = warnCount;
-			this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+			Thread thread = new Thread( ( ) =>
+			  {
+				  int countFetch = NaverRequest.WarnCountRequest( this.onlyID );
 
-			Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
-			this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
+				  warnCount = ++countFetch;
+
+				  Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
+
+				  if ( this.InvokeRequired )
+				  {
+					  this.Invoke( new Action( ( ) =>
+					  {
+						  this.WARNING_COUNT.Enabled = true;
+						  this.WARNING_COUNT_AFTERDESC.Text = "";
+						  this.WARNING_COUNT.Value = warnCount;
+						  this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+						  this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
+						  this.WARN_RUN_BUTTON.Enabled = true;
+					  } ) );
+				  }
+				  else
+				  {
+					  this.WARNING_COUNT.Enabled = true;
+					  this.WARNING_COUNT_AFTERDESC.Text = "";
+					  this.WARNING_COUNT.Value = warnCount;
+					  this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+					  this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
+					  this.WARN_RUN_BUTTON.Enabled = true;
+				  }
+			  } )
+			{
+				IsBackground = true
+			};
+			thread.Start( );
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )

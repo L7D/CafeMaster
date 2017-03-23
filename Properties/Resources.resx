@@ -256,4 +256,16 @@
   <data name="DANGER_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DANGER_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Background04" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background04.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PROFILE_UNKNOWN_V2_120x120" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PROFILE_UNKNOWN_V2_120x120.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PROGRAM_ICON_25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PROGRAM_ICON_25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WELCOME_SPLASH_V2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WELCOME_SPLASH_V2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

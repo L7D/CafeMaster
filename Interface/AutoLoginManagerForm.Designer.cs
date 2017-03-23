@@ -157,7 +157,7 @@
 			// PROFILE_IMAGE
 			// 
 			this.PROFILE_IMAGE.BackColor = System.Drawing.Color.Transparent;
-			this.PROFILE_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_160x160;
+			this.PROFILE_IMAGE.BackgroundImage = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_V2_120x120;
 			this.PROFILE_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.PROFILE_IMAGE.Image = global::CafeMaster_UI.Properties.Resources.PROFILE_IMAGE_CIRCLE_160x160;
 			this.PROFILE_IMAGE.Location = new System.Drawing.Point(10, 55);
@@ -175,9 +175,9 @@
 			this.TIP_LABEL.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.TIP_LABEL.Location = new System.Drawing.Point(40, 231);
 			this.TIP_LABEL.Name = "TIP_LABEL";
-			this.TIP_LABEL.Size = new System.Drawing.Size(307, 15);
+			this.TIP_LABEL.Size = new System.Drawing.Size(435, 15);
 			this.TIP_LABEL.TabIndex = 49;
-			this.TIP_LABEL.Text = "귀하의 소중한 계정 정보는 AES-128bit 암호화 됩니다.";
+			this.TIP_LABEL.Text = "귀하의 계정 정보는 로컬 드라이브에 AES-128bit 암호화 처리되어 저장됩니다.";
 			// 
 			// TIP_IMAGE
 			// 

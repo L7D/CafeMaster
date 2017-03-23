@@ -22,13 +22,16 @@ namespace CafeMaster_UI.Interface
 		public ProgramInformation( )
 		{
 			InitializeComponent( );
+
+			this.SetStyle( ControlStyles.ResizeRedraw, true );
+			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
 		}
 
 		private void ProgramInformation_Load( object sender, EventArgs e )
 		{
 			Version version = System.Reflection.Assembly.GetExecutingAssembly( ).GetName( ).Version;
 
-			this.VERSION.Text = "버전 " + version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
+			this.VERSION.Text = "버전 " + version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision + ( GlobalVar.UPDATE_AVAILABLE ? " - 새로운 업데이트가 있습니다." : "최신 버전 입니다." );
 			this.COPYRIGHT_2.Text = "자른이미지 by 잰(cony****)님, on(dbxh****)님";
 		}
 
@@ -76,14 +79,7 @@ namespace CafeMaster_UI.Interface
 
 		private void UTIL_BUTTON1_Click( object sender, EventArgs e )
 		{
-			try
-			{
-				System.Diagnostics.Process.Start( "http://cafe.naver.com/revolution232" );
-			}
-			catch ( Exception )
-			{
-				NotifyBox.Show( null, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-			}
+			Utility.OpenWebPage( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID, this );
 		}
 	}
 }

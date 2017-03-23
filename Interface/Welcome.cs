@@ -15,13 +15,16 @@ namespace CafeMaster_UI.Interface
 		public Welcome( )
 		{
 			InitializeComponent( );
+
+			this.SetStyle( ControlStyles.ResizeRedraw, true );
+			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
 		}
 
 		private void Welcome_Load( object sender, EventArgs e )
 		{
 			System.Threading.Thread close = new System.Threading.Thread( ( ) =>
 			{
-				System.Threading.Thread.Sleep( 2000 );
+				System.Threading.Thread.Sleep( 1500 );
 
 				if ( this.InvokeRequired )
 				{
