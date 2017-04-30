@@ -89,7 +89,7 @@ namespace CafeMaster_UI.Interface
 
 					if ( Utility.GetUriCookieContainer( e.Url ).GetCookies( e.Url ).Count > 0 )
 					{
-						AutoLogin.SetAccountDataResult result = AutoLogin.SetAccountData( IDTemp, PWDTemp );
+						AutoLogin.SetAccountDataResult result = AutoLogin.SetAccountData( IDTemp, PWDTemp, IDTemp );
 
 						switch ( result )
 						{

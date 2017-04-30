@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using CafeMaster_UI.Lib;
 
@@ -145,7 +146,29 @@ namespace CafeMaster_UI.Interface
 
 			//this.MESSAGE_LABEL.BackColor = Color.FromArgb( 200, 255, 255, 255 );
 
-			Theme.Apply( this.centerNotifyImageBox, "notifyBox_*.png" );
+			if ( Config.Get( "ThemeEnable", "1" ) == "0" ) return;
+
+			if ( Directory.Exists( GlobalVar.LAYOUT_DIR ) )
+			{
+				try
+				{
+					string[ ] files = Directory.GetFiles( GlobalVar.LAYOUT_DIR, "notifyBox_*.png" );
+
+					if ( files.Length > 0 )
+					{
+						this.centerNotifyImageBox.Visible = true;
+						this.centerNotifyImageBox.Image = new Bitmap(
+								Utility.FileToMemoryStream( files[ new Random( DateTime.Now.Second ).Next( 0, files.Length ) ]
+							)
+						);
+					}
+				}
+				catch { }
+			}
+			else
+			{
+				this.centerNotifyImageBox.Image = null;
+			}
 		}
 
 		private void COPY_TEXT_BUTTON_Click( object sender, EventArgs e )

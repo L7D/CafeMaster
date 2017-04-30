@@ -21,11 +21,9 @@ namespace CafeMaster_UI
 		[STAThread]
 		static void Main( )
 		{
-			// TODO : 폰트 exists 체크문 추가바람
-
 			if ( mutex.WaitOne( TimeSpan.Zero, true ) )
 			{
-				foreach ( System.Drawing.FontFamily ix in ( new System.Drawing.Text.InstalledFontCollection( )).Families )
+				foreach ( System.Drawing.FontFamily ix in ( new System.Drawing.Text.InstalledFontCollection( ) ).Families )
 				{
 					if ( ix.Name == "나눔고딕" & ix.IsStyleAvailable( System.Drawing.FontStyle.Bold ) )
 					{
@@ -44,6 +42,7 @@ namespace CafeMaster_UI
 				{
 					System.Reflection.Assembly.Load( "HtmlAgilityPack" ).GetName( );
 					System.Reflection.Assembly.Load( "System.Net.Json" ).GetName( );
+					System.Reflection.Assembly.Load( "System.Data.SQLite" ).GetName( );
 					//System.Reflection.Assembly.Load( "Freezer" ).GetName( );
 				}
 				catch ( Exception )

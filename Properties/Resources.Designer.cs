@@ -93,6 +93,16 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Background05 {
+            get {
+                object obj = ResourceManager.GetObject("Background05", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap BELL_IGNORE {
             get {
                 object obj = ResourceManager.GetObject("BELL_IGNORE", resourceCulture);
@@ -213,16 +223,6 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap HELP {
-            get {
-                object obj = ResourceManager.GetObject("HELP", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
         internal static System.Drawing.Bitmap HIDE {
             get {
                 object obj = ResourceManager.GetObject("HIDE", resourceCulture);
@@ -243,9 +243,9 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap locked {
+        internal static System.Drawing.Bitmap MEMBER_ACTIVITY_STOP_ICON {
             get {
-                object obj = ResourceManager.GetObject("locked", resourceCulture);
+                object obj = ResourceManager.GetObject("MEMBER_ACTIVITY_STOP_ICON", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,9 +253,9 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap NETWORK_NOT_INIT {
+        internal static System.Drawing.Bitmap MEMBER_RANK {
             get {
-                object obj = ResourceManager.GetObject("NETWORK_NOT_INIT", resourceCulture);
+                object obj = ResourceManager.GetObject("MEMBER_RANK", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +263,9 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap NETWORK_OFFLINE {
+        internal static System.Drawing.Bitmap NETWORK_IDLE {
             get {
-                object obj = ResourceManager.GetObject("NETWORK_OFFLINE", resourceCulture);
+                object obj = ResourceManager.GetObject("NETWORK_IDLE", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +273,9 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap NETWORK_ONLINE {
+        internal static System.Drawing.Bitmap NETWORK_INIT_NOT {
             get {
-                object obj = ResourceManager.GetObject("NETWORK_ONLINE", resourceCulture);
+                object obj = ResourceManager.GetObject("NETWORK_INIT_NOT", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +283,39 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap NETWORK_WORKING {
+        internal static System.Drawing.Bitmap NETWORK_ISERROR {
             get {
-                object obj = ResourceManager.GetObject("NETWORK_WORKING", resourceCulture);
+                object obj = ResourceManager.GetObject("NETWORK_ISERROR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_SYNC_0 {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_SYNC_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_SYNC_1 {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_SYNC_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap NETWORK_SYNC_2 {
+            get {
+                object obj = ResourceManager.GetObject("NETWORK_SYNC_2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -303,9 +333,9 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap NOTIFICATION_BASIC {
+        internal static System.Drawing.Bitmap NOTIFY_REMOVE {
             get {
-                object obj = ResourceManager.GetObject("NOTIFICATION_BASIC", resourceCulture);
+                object obj = ResourceManager.GetObject("NOTIFY_REMOVE", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -413,26 +443,6 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap PROGRAM_LOCKED {
-            get {
-                object obj = ResourceManager.GetObject("PROGRAM_LOCKED", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap PROGRAM_LOGO {
-            get {
-                object obj = ResourceManager.GetObject("PROGRAM_LOGO", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
         internal static System.Drawing.Bitmap QUESTION_ICON {
             get {
                 object obj = ResourceManager.GetObject("QUESTION_ICON", resourceCulture);
@@ -456,6 +466,16 @@ namespace CafeMaster_UI.Properties {
         internal static System.Drawing.Bitmap REMOVE_ICON {
             get {
                 object obj = ResourceManager.GetObject("REMOVE_ICON", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap SELECT_ALL {
+            get {
+                object obj = ResourceManager.GetObject("SELECT_ALL", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -513,6 +533,66 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap USER_WARN_ICON {
+            get {
+                object obj = ResourceManager.GetObject("USER_WARN_ICON", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UTIL_ICON_1 {
+            get {
+                object obj = ResourceManager.GetObject("UTIL_ICON_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UTIL_ICON_2 {
+            get {
+                object obj = ResourceManager.GetObject("UTIL_ICON_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UTIL_ICON_3 {
+            get {
+                object obj = ResourceManager.GetObject("UTIL_ICON_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UTIL_ICON_4 {
+            get {
+                object obj = ResourceManager.GetObject("UTIL_ICON_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UTIL_ICON_5 {
+            get {
+                object obj = ResourceManager.GetObject("UTIL_ICON_5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap VIEW {
             get {
                 object obj = ResourceManager.GetObject("VIEW", resourceCulture);
@@ -536,16 +616,6 @@ namespace CafeMaster_UI.Properties {
         internal static System.Drawing.Bitmap WARNING_ICON {
             get {
                 object obj = ResourceManager.GetObject("WARNING_ICON", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap WELCOME_SPLASH {
-            get {
-                object obj = ResourceManager.GetObject("WELCOME_SPLASH", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -31,16 +31,18 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NaverLoginForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
-			this.APP_TITLE = new System.Windows.Forms.Label();
+			this.APP_TITLE = new CafeMaster_UI.Interface.CustomLabel();
 			this.AUTOLOGIN_DESC = new System.Windows.Forms.Label();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
 			this.DotAnimationTimer = new System.Windows.Forms.Timer(this.components);
 			this.AUTOLOGIN_TITLE = new System.Windows.Forms.Label();
 			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.PROFILE_IMAGE = new System.Windows.Forms.PictureBox();
+			this.BACKGROUND_SPLASH = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.BACKGROUND_SPLASH)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// APP_TITLE_BAR
@@ -68,6 +70,7 @@
 			this.APP_TITLE.Size = new System.Drawing.Size(76, 14);
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "네이버 로그인";
+			this.APP_TITLE.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
 			// 
 			// AUTOLOGIN_DESC
 			// 
@@ -97,9 +100,10 @@
 			this.browserBehind.Size = new System.Drawing.Size(593, 423);
 			this.browserBehind.TabIndex = 0;
 			this.browserBehind.TabStop = false;
-			this.browserBehind.Url = new System.Uri("https://nid.naver.com/nidlogin.login?svctype=64", System.UriKind.Absolute);
+			this.browserBehind.Url = new System.Uri("", System.UriKind.Relative);
 			this.browserBehind.WebBrowserShortcutsEnabled = false;
 			this.browserBehind.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.browserBehind_Navigating);
+			this.browserBehind.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.browserBehind_ProgressChanged);
 			// 
 			// DotAnimationTimer
 			// 
@@ -114,7 +118,7 @@
 			this.AUTOLOGIN_TITLE.Name = "AUTOLOGIN_TITLE";
 			this.AUTOLOGIN_TITLE.Size = new System.Drawing.Size(595, 46);
 			this.AUTOLOGIN_TITLE.TabIndex = 50;
-			this.AUTOLOGIN_TITLE.Text = "NULL";
+			this.AUTOLOGIN_TITLE.Text = "USER";
 			this.AUTOLOGIN_TITLE.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.AUTOLOGIN_TITLE.Visible = false;
 			// 
@@ -146,6 +150,16 @@
 			this.PROFILE_IMAGE.TabStop = false;
 			this.PROFILE_IMAGE.Visible = false;
 			// 
+			// BACKGROUND_SPLASH
+			// 
+			this.BACKGROUND_SPLASH.BackColor = System.Drawing.Color.Transparent;
+			this.BACKGROUND_SPLASH.Image = global::CafeMaster_UI.Properties.Resources.Background05;
+			this.BACKGROUND_SPLASH.Location = new System.Drawing.Point(1, 1);
+			this.BACKGROUND_SPLASH.Name = "BACKGROUND_SPLASH";
+			this.BACKGROUND_SPLASH.Size = new System.Drawing.Size(593, 468);
+			this.BACKGROUND_SPLASH.TabIndex = 51;
+			this.BACKGROUND_SPLASH.TabStop = false;
+			// 
 			// NaverLoginForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -157,6 +171,7 @@
 			this.Controls.Add(this.APP_TITLE_BAR);
 			this.Controls.Add(this.PROFILE_IMAGE);
 			this.Controls.Add(this.browserBehind);
+			this.Controls.Add(this.BACKGROUND_SPLASH);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -170,6 +185,7 @@
 			this.APP_TITLE_BAR.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.BACKGROUND_SPLASH)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -178,11 +194,12 @@
 
 		private System.Windows.Forms.WebBrowser browserBehind;
 		private System.Windows.Forms.Panel APP_TITLE_BAR;
-		private System.Windows.Forms.Label APP_TITLE;
+		private CustomLabel APP_TITLE;
 		private System.Windows.Forms.PictureBox CLOSE_BUTTON;
 		private System.Windows.Forms.Label AUTOLOGIN_DESC;
 		private System.Windows.Forms.PictureBox PROFILE_IMAGE;
 		private System.Windows.Forms.Timer DotAnimationTimer;
 		private System.Windows.Forms.Label AUTOLOGIN_TITLE;
+		private System.Windows.Forms.PictureBox BACKGROUND_SPLASH;
 	}
 }

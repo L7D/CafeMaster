@@ -136,9 +136,6 @@
   <data name="PROGRAM_ICON_45x45" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PROGRAM_ICON_45x45.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PROGRAM_LOGO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PROGRAM_LOGO.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="QUESTION_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\QUESTION_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,9 +147,6 @@
   </data>
   <data name="BELL_NORMAL" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BELL_NORMAL.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="locked" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\locked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="unlocked" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\unlocked.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,17 +166,11 @@
   <data name="USER_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\USER_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PROGRAM_LOCKED" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PROGRAM_LOCKED.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="THUNDER" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\THUNDER.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VIEW" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VIEW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="WELCOME_SPLASH" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\WELCOME_SPLASH.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Background03" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Background03.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -214,9 +202,6 @@
   <data name="ADMIN_SHIELD" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ADMIN_SHIELD.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HELP" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HELP.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="PROGRAM_ICON_150x150" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PROGRAM_ICON_150x150.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -238,21 +223,6 @@
   <data name="PROFILE_UNKNOWN_160x160" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PROFILE_UNKNOWN_160x160.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="NETWORK_NOT_INIT" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NETWORK_NOT_INIT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NETWORK_OFFLINE" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NETWORK_OFFLINE.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NETWORK_ONLINE" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NETWORK_ONLINE.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NETWORK_WORKING" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NETWORK_WORKING.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NOTIFICATION_BASIC" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NOTIFICATION_BASIC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DANGER_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DANGER_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -267,5 +237,56 @@
   </data>
   <data name="WELCOME_SPLASH_V2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WELCOME_SPLASH_V2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Background05" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background05.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MEMBER_ACTIVITY_STOP_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MEMBER_ACTIVITY_STOP_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NETWORK_IDLE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NETWORK_IDLE.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NETWORK_INIT_NOT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NETWORK_INIT_NOT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NETWORK_ISERROR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NETWORK_ISERROR.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NETWORK_SYNC_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NETWORK_SYNC_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NETWORK_SYNC_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NETWORK_SYNC_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NETWORK_SYNC_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NETWORK_SYNC_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NOTIFY_REMOVE" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NOTIFY_REMOVE.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="USER_WARN_ICON" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\USER_WARN_ICON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UTIL_ICON_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UTIL_ICON_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UTIL_ICON_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UTIL_ICON_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UTIL_ICON_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UTIL_ICON_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UTIL_ICON_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UTIL_ICON_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UTIL_ICON_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UTIL_ICON_5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MEMBER_RANK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MEMBER_RANK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SELECT_ALL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SELECT_ALL.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

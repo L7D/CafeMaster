@@ -30,6 +30,7 @@ namespace CafeMaster_UI.Lib
 	{
 		public string threadTime;
 		public string threadAuthor;
+		public string authorRank;
 		public string personaconURL;
 		public string articleName;
 	}
@@ -117,7 +118,7 @@ namespace CafeMaster_UI.Lib
 			}
 		}
 
-		private static string GetPersonaconID( )
+		public static string GetPersonaconID( )
 		{
 			try
 			{
@@ -143,30 +144,39 @@ namespace CafeMaster_UI.Lib
 						//string branchCode = "";
 
 						// Debug required
-						int count = 0;
-						foreach ( HtmlNode i in document.DocumentNode.SelectNodes( "//input[@type=\"hidden\"]" ) )
+
+						HtmlNode personaconNode = document.DocumentNode.SelectSingleNode( "//input[@name=\"personacon\"]" );
+
+						if ( personaconNode != null )
 						{
-							//switch ( count )
-							//{
-							//case 3: // cafeTempId
-							//	cafeTempId = i.GetAttributeValue( "value", "" );
-							//	break;
-							//case 4: // branchCode
-							//	branchCode = i.GetAttributeValue( "value", "" );
-							//	break;
-							//case 7: // personacon
-							//	personacon = i.GetAttributeValue( "value", "" );
-							//	break;
-							//}
-
-							if ( ++count == 7 ) // personacon
-							{
-								//personacon = i.GetAttributeValue( "value", "" );
-								return i.GetAttributeValue( "value", "" ).Trim( );
-							}
+							//File.WriteAllText( "test.txt", personaconNode.GetAttributeValue( "value", "" ).Trim( ) );
+							return personaconNode.GetAttributeValue( "value", "" ).Trim( );
 						}
+						else
+							return "";
 
-						return "";
+						//int count = 0;
+						//foreach ( HtmlNode i in  )
+						//{
+						//switch ( ++count )
+						//{
+						//case 3: // cafeTempId
+						//	cafeTempId = i.GetAttributeValue( "value", "" );
+						//	break;
+						//case 4: // branchCode
+						//	branchCode = i.GetAttributeValue( "value", "" );
+						//	break;
+						//case 7: // personacon
+						//	personacon = i.GetAttributeValue( "value", "" );
+						//	break;
+						//}
+						//if ( ++count == 7 ) // personacon
+						//{
+
+						//	//personacon = i.GetAttributeValue( "value", "" );
+						//	return i.GetAttributeValue( "value", "" ).Trim( );
+						//}
+						//}
 					}
 				}
 			}
@@ -180,7 +190,7 @@ namespace CafeMaster_UI.Lib
 		public static bool WarnThreadRequest( string nickName, int warnCount, string reason )
 		{
 			string personaconID = NaverRequest.GetPersonaconID( );
-			string dataString = @"clubid=" + GlobalVar.CAFE_ID + "&menuidForList=20&type=&typeOriginal=&personacon=" + personaconID + "&boardtype=L&page=1&m=write&attachpollyn=&attachPollids=&attachfileyn=&attachimageyn=&attachfiles=&attachsizerealsum=0&attachmodifylist=&attachsizes=&attachimagesizesum=0&attachfilesizesum=0&scrapedyn=&attachinfolist=&attachinfo=0&attachmaplist=&attachmovie=&attachmovielist=&article.leveragecode=0&article.attachCalendarList=&attachCalendar=&attachedCalendar=&tempsaveid=5&owfs=false&ndriveid=0&hadNaverPoll=&article.attachMusic=&appPost=&parameterString=&representImagePath=&menuid=20&headid=&tagnames=&openyn=N&replyyn=N&scrapyn=N&metoo=false&rclick=0&videoLink=false&autosourcing=0&ccl=0&rows_val=4&cols_val=4&border_val=1&borderColorCode=%23B7BBB5&backColorCode=%23FFFFFF&keyword=&keyword_re=&replace=&article.templatecode=0&subject=#SUBJECT&content=#CONTENT";
+			string dataString = @"clubid=" + GlobalVar.CAFE_ID + "&menuidForList=20&type=&typeOriginal=&personacon=" + personaconID + "&boardtype=L&page=1&m=write&attachpollyn=&attachPollids=&attachfileyn=&attachimageyn=&attachfiles=&attachsizerealsum=0&attachmodifylist=&attachsizes=&attachimagesizesum=0&attachfilesizesum=0&scrapedyn=&attachinfolist=&attachinfo=0&attachmaplist=&attachmovie=&attachmovielist=&article.leveragecode=0&article.attachCalendarList=&attachCalendar=&attachedCalendar=&tempsaveid=5&owfs=false&ndriveid=0&hadNaverPoll=&article.attachMusic=&appPost=&parameterString=&representImagePath=&menuid=20&headid=&tagnames=&openyn=N&replyyn=N&scrapyn=N&metoo=false&rclick=0&videoLink=false&autosourcing=0&ccl=0&rows_val=4&cols_val=4&border_val=1&borderColorCode=%23B7BBB5&backColorCode=%23FFFFFF&keyword=&keyword_re=&replace=&article.templatecode=0";
 
 			try
 			{
@@ -204,14 +214,12 @@ namespace CafeMaster_UI.Lib
 					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
 				}
 
-				dataString = dataString.Replace( "#SUBJECT", HttpUtility.UrlEncode(
-					nickName + "님 경고 (총 " + warnCount + "회)",
-					Encoding.UTF8 )
-				);
-				dataString = dataString.Replace( "#CONTENT", HttpUtility.UrlEncode(
+				//subject=#SUBJECT&content=#CONTENT
+
+				dataString += "&subject=" + HttpUtility.UrlEncode( nickName + "님 경고 (총 " + warnCount + "회)", Encoding.UTF8 );
+				dataString += "&content=" + HttpUtility.UrlEncode(
 					@"<div class='NHN_Writeform_Main'><p></p><p>용의자 닉네임 : " + nickName + "</p><p></p><p></p><p><br></p><p>진술 : " + reason + "</p></div>",
-					Encoding.UTF8 )
-				);
+				Encoding.UTF8 );
 
 				byte[ ] byteArray = Encoding.UTF8.GetBytes( dataString );
 
@@ -298,6 +306,72 @@ namespace CafeMaster_UI.Lib
 			}
 		}
 
+		public static bool MemberStopActivity( string memberID, int length, string reason, out bool alreadyStopped )
+		{
+			try
+			{
+				string dataString = "clubid=" + GlobalVar.CAFE_ID + "&activityStop.executorId=" + GlobalVar.NAVER_USER_ID + "&callback=close&memberids=" + memberID + "&activityStop.violationCode=2&activityStop.reason=" + reason + "&duration=" + length;
+
+				HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( "http://cafe.naver.com/ManageActivityStopProcess.nhn" );
+				request.Method = "POST";
+				request.Referer = "http://cafe.naver.com/ManageActivityStopPopupView.nhn";
+				request.Headers.Add( HttpRequestHeader.CacheControl, "max-age=0" );
+				request.UserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36";
+				request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+				request.ContentType = "application/x-www-form-urlencoded";
+				request.Headers.Add( "Origin", "http://cafe.naver.com" );
+				request.Headers.Add( "DNT", "1" );
+				request.Headers.Add( "Upgrade-Insecure-Requests", "1" );
+				request.Headers.Add( HttpRequestHeader.AcceptLanguage, "ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4" );
+				request.KeepAlive = true;
+				request.CookieContainer = new CookieContainer( );
+
+				foreach ( CookieTable i in GlobalVar.COOKIES_LIST )
+				{
+					request.CookieContainer.Add( new Cookie( i.id, i.value, "/", request.Host ) );
+				}
+
+				byte[ ] byteArray = Encoding.Default.GetBytes( dataString );
+
+				request.ContentLength = byteArray.Length;
+
+				using ( Stream requestStream = request.GetRequestStream( ) )
+				{
+					requestStream.Write( byteArray, 0, byteArray.Length );
+				}
+
+				using ( WebResponse res = request.GetResponse( ) )
+				{
+					using ( Stream responseStream = res.GetResponseStream( ) )
+					{
+						using ( StreamReader reader = new StreamReader( responseStream, Encoding.Default ) )
+						{
+							string html = reader.ReadToEnd( );
+
+							//File.WriteAllText( "log2222.txt", html, Encoding.UTF8 );
+
+							if ( html.Contains( "alert('이미 활동정지되었습니다.');" ) )
+							{
+								alreadyStopped = true;
+								return true;
+							}
+							else
+							{
+								alreadyStopped = false;
+								return html.Contains( "alert('성공적으로 반영 되었습니다.');" );
+							}
+						}
+					}
+				}
+			}
+			catch ( Exception ex )
+			{
+				alreadyStopped = false;
+				Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+				return false;
+			}
+		}
+
 		public static ThreadDetailStruct ThreadDetailRequest( string threadNumber )
 		{
 			try
@@ -336,7 +410,19 @@ namespace CafeMaster_UI.Lib
 
 						foreach ( HtmlNode i in document.DocumentNode.SelectNodes( "//td" ) )
 						{
-							if ( i.GetAttributeValue( "class", "" ) == "m-tcol-c date" )
+							// data.authorRank == null : null check 안할 시 Q&A 게시물에서 m-tcol-c step 클래스 element 가 2개 이므로 2번째 것으로 오류남
+							if ( data.authorRank == null && i.GetAttributeValue( "class", "" ) == "m-tcol-c step" )
+							{
+								foreach ( HtmlNode i2 in i.ChildNodes )
+								{
+									if ( i2.GetAttributeValue( "class", "" ) == "filter-50" )
+									{
+										data.authorRank = i2.InnerText.Trim( );
+										break;
+									}
+								}
+							}
+							else if ( i.GetAttributeValue( "class", "" ) == "m-tcol-c date" )
 							{
 								data.threadTime = i.InnerText.Trim( );
 							}

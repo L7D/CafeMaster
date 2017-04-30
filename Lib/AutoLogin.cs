@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -23,11 +24,18 @@ namespace CafeMaster_UI.Lib
 			Success
 		}
 
-		private static string KEY
+		private static string AESKEY
 		{
 			get
 			{
-				return "MilkPowerCafeStaff-AESKey-" + Environment.MachineName;
+				// http://chindaara.blogspot.kr/2013/05/get-bios-serial-number.html
+
+				foreach ( ManagementObject data in ( new ManagementObjectSearcher( " Select * From Win32_BIOS " ) ).Get( ) )
+				{
+					return "MILK_POWER_CAFE_STAFF^KEY^" + data[ "SerialNumber" ].ToString( );
+				}
+
+				return "MILK_POWER_CAFE_STAFF^KEY^" + Environment.MachineName;
 			}
 		}
 
@@ -59,27 +67,38 @@ namespace CafeMaster_UI.Lib
 			}
 		}
 
-		public static SetAccountDataResult SetAccountData( string id, string pwd )
+		public static SetAccountDataResult SetAccountData( string id, string pwd, string nickName )
 		{
 			try
 			{
-				string passKey = KEY;
+				byte[ ] utf8KeyByte = Encoding.UTF8.GetBytes( AESKEY );
+				byte[ ] key = new byte[ 16 ];
 
-				PasswordDeriveBytes key = new PasswordDeriveBytes( passKey, Encoding.ASCII.GetBytes( passKey.Length.ToString( ) ) );
-				ICryptoTransform encrypt = ( new RijndaelManaged( ) ).CreateEncryptor( key.GetBytes( 32 ), key.GetBytes( 16 ) );
+				Array.Copy(
+					utf8KeyByte,
+					key,
+					utf8KeyByte.Length > key.Length ? key.Length : utf8KeyByte.Length
+				);
 
-				byte[ ] stringByteData = Encoding.UTF8.GetBytes( id + "\n" + pwd );
+				RijndaelManaged rijndaelCipher = new RijndaelManaged( )
+				{
+					Mode = CipherMode.CBC,
+					Padding = PaddingMode.PKCS7,
+					KeySize = 128,
+					BlockSize = 128,
+					Key = key,
+					IV = key
+				};
+				ICryptoTransform encrypt = rijndaelCipher.CreateEncryptor( );
 
-				MemoryStream ms = new MemoryStream( );
-				CryptoStream cryptoStream = new CryptoStream( ms, encrypt, CryptoStreamMode.Write );
-
-				cryptoStream.Write( stringByteData, 0, stringByteData.Length );
-				cryptoStream.FlushFinalBlock( );
+				byte[ ] stringByteData = Encoding.UTF8.GetBytes( id + "\n" + pwd + "\n" + nickName );
 
 				if ( !Directory.Exists( GlobalVar.APP_DIR + @"\data" ) )
 					Directory.CreateDirectory( GlobalVar.APP_DIR + @"\data" );
 
-				File.WriteAllBytes( GlobalVar.APP_DIR + @"\data\account.dat", ms.ToArray( ) );
+				File.WriteAllText( GlobalVar.APP_DIR + @"\data\account.dat",
+					@"// 우윳빛깔 카페스탭 자동 로그인 데이터 파일 //" + Environment.NewLine + "// 경고 : 절대로 다른 사람에게 이 파일을 공유하지 마십시오, 개인정보가 유출될 수 있습니다!!! //" + Environment.NewLine + Environment.NewLine +
+					Convert.ToBase64String( encrypt.TransformFinalBlock( stringByteData, 0, stringByteData.Length ) ) );
 
 				return SetAccountDataResult.Success;
 			}
@@ -105,19 +124,26 @@ namespace CafeMaster_UI.Lib
 			}
 		}
 
-		// http://stackoverflow.com/questions/240258/removing-trailing-nulls-from-byte-array-in-c-sharp
-		private static byte[ ] TrimByte( byte[ ] fileByte )
+		public static void ModifyAccountDataNickName( string newNickName )
 		{
-			var i = fileByte.Length - 1;
-			while ( fileByte[ i ] == 0 )
+			string dataString;
+
+			if ( AutoLogin.GetAccountData( out dataString ) == GetAccountDataResult.Success )
 			{
-				--i;
+				string[ ] dataTable = dataString.Trim( ).Split( '\n' );
+
+				if ( dataTable.Length == 3 && dataTable[ 2 ] != newNickName )
+				{
+					AutoLogin.SetAccountData(
+						dataTable[ 0 ],
+						dataTable[ 1 ],
+						newNickName
+					);
+				}
 			}
-			var temp = new byte[ i + 1 ];
-			Array.Copy( fileByte, temp, i + 1 );
-			return temp;
 		}
 
+		// http://intro0517.tistory.com/37
 		public static GetAccountDataResult GetAccountData( out string accountString )
 		{
 			if ( !File.Exists( GlobalVar.APP_DIR + @"\data\account.dat" ) )
@@ -128,21 +154,36 @@ namespace CafeMaster_UI.Lib
 
 			try
 			{
-				string passKey = KEY;
+				byte[ ] utf8KeyByte = Encoding.UTF8.GetBytes( AESKEY );
+				byte[ ] key = new byte[ 16 ];
 
-				PasswordDeriveBytes key = new PasswordDeriveBytes( passKey, Encoding.ASCII.GetBytes( passKey.Length.ToString( ) ) );
-				ICryptoTransform decrypt = ( new RijndaelManaged( ) ).CreateDecryptor( key.GetBytes( 32 ), key.GetBytes( 16 ) );
+				Array.Copy(
+					utf8KeyByte,
+					key,
+					utf8KeyByte.Length > key.Length ? key.Length : utf8KeyByte.Length
+				);
 
-				byte[ ] fileByte = File.ReadAllBytes( GlobalVar.APP_DIR + @"\data\account.dat" );
+				RijndaelManaged rijndaelCipher = new RijndaelManaged( )
+				{
+					Mode = CipherMode.CBC,
+					Padding = PaddingMode.PKCS7,
+					KeySize = 128,
+					BlockSize = 128,
+					Key = key,
+					IV = key
+				};
+				ICryptoTransform decrypt = rijndaelCipher.CreateDecryptor( );
 
-				MemoryStream ms = new MemoryStream( fileByte );
-				CryptoStream cryptoStream = new CryptoStream( ms, decrypt, CryptoStreamMode.Read );
+				string[ ] dataLines = File.ReadAllLines( GlobalVar.APP_DIR + @"\data\account.dat" );
 
-				byte[ ] originalData = new byte[ fileByte.Length ];
+				if ( dataLines.Length != 4 )
+				{
+					throw new Exception( "올바르지 않은 데이터 파일" );
+				}
 
-				int count = cryptoStream.Read( originalData, 0, originalData.Length );
+				byte[ ] encryptedData = Convert.FromBase64String( dataLines[ 3 ] );
 
-				accountString = Encoding.UTF8.GetString( TrimByte( originalData ) );
+				accountString = Encoding.UTF8.GetString( decrypt.TransformFinalBlock( encryptedData, 0, encryptedData.Length ) );
 
 				return GetAccountDataResult.Success;
 			}

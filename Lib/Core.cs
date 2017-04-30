@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Json;
 using System.Text;
 using System.Threading;
+using System.Data.SQLite;
 
 namespace CafeMaster_UI.Lib
 {
@@ -199,11 +200,19 @@ namespace CafeMaster_UI.Lib
 			List<string> newThreadNumberTemp = new List<string>( );
 			string[ ] savedDataTable = ThreadDataStore.Get( ); // 최적화 필요;
 
+			if ( savedDataTable.Length <= 0 ) // Need to test
+			{
+				Utility.WriteErrorLog( "savedDataTable 길이가 0입니다, DB가 정상적으로 생성되지 않았을 수 있습니다.", Utility.LogSeverity.ERROR );
+				TopProgressMessage.End( );
+				WORKING = false;
+				return;
+			}
+
 			searchThreadPage: // 페이지 루프를 위한 goto
 
 			int newThreadCount = 0;
 
-			TopProgressMessage.Set( "새로운 게시물을 확인하고 있습니다 ... [" + currentArticlePage + "p]" );
+			TopProgressMessage.Set( "새로운 게시물을 확인하고 있습니다 ... [" + currentArticlePage + " 페이지]" );
 
 			NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&search.page=" + currentArticlePage, NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
 			{
@@ -226,7 +235,8 @@ namespace CafeMaster_UI.Lib
 					{
 						if ( Notify.Exists( newDataTable[ i ].number ) ) continue;
 
-						newThreadFound = true;
+						if ( !newThreadFound )
+							newThreadFound = true;
 
 						TopProgressMessage.Set( "#" + newDataTable[ i ].number + " 게시글의 정보를 불러오고 있습니다 ... [1/3]" );
 
@@ -263,13 +273,136 @@ namespace CafeMaster_UI.Lib
 		}
 	}
 
+
+
+	//static class ThreadDataStore
+	//{
+	//	private static readonly string DATA_FILE_LOCATION;
+
+	//	static ThreadDataStore( )
+	//	{
+	//		DATA_FILE_LOCATION = GlobalVar.DATA_DIR + @"\dataTable.dat";
+	//	}
+
+	//	public static void Initialize( )
+	//	{
+	//		try
+	//		{
+	//			if ( !Directory.Exists( GlobalVar.DATA_DIR ) )
+	//				Directory.CreateDirectory( GlobalVar.DATA_DIR );
+
+	//			Notify.Initialize( );
+
+	//			if ( !File.Exists( DATA_FILE_LOCATION ) ) // 데이터 파일이 없을 시 
+	//			{
+	//				NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&userDisplay=15", NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
+	//				{
+	//					JsonArrayCollection collection = new JsonArrayCollection( );
+	//					List<TableDataTable> dataTable = Parse.TotalArticlePageCrawling( value );
+
+	//					foreach ( TableDataTable i in dataTable )
+	//					{
+	//						collection.Add( new JsonStringValue( null, i.number ) );
+	//					}
+
+	//					File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+
+	//					Thread.Sleep( 1000 );
+
+	//					TopProgressMessage.End( );
+	//				} );
+	//			}
+	//		}
+	//		catch ( IOException ex )
+	//		{
+	//			Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+	//			NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 불러오지 못했습니다, 파일 접근 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+	//		}
+	//		catch ( Exception ex )
+	//		{
+	//			Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+	//			NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 불러오지 못했습니다, 알 수 없는 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+	//		}
+	//	}
+
+	//	public static void Add( string threadID )
+	//	{
+	//		try
+	//		{
+	//			if ( !File.Exists( DATA_FILE_LOCATION ) ) return;
+
+	//			JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+
+	//			collection.Add( new JsonStringValue( null, threadID ) );
+
+	//			File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+	//		}
+	//		catch ( IOException ex )
+	//		{
+	//			Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+	//		}
+	//		catch ( Exception ex )
+	//		{
+	//			Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+	//		}
+	//	}
+
+	//	public static void Add( List<string> threadIDList )
+	//	{
+	//		try
+	//		{
+	//			if ( !File.Exists( DATA_FILE_LOCATION ) ) return;
+
+	//			JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+
+	//			foreach ( string i in threadIDList )
+	//			{
+	//				collection.Add( new JsonStringValue( null, i ) );
+	//			}
+
+	//			File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+	//		}
+	//		catch ( IOException ex )
+	//		{
+	//			Utility.WriteErrorLog( "IOException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+	//		}
+	//		catch ( Exception ex )
+	//		{
+	//			Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+	//		}
+	//	}
+
+	//	public static string[ ] Get( )
+	//	{
+	//		try
+	//		{
+	//			if ( File.Exists( DATA_FILE_LOCATION ) )
+	//			{
+	//				JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+	//				string[ ] dataTable = new string[ collection.Count ];
+	//				int count = 0;
+
+	//				foreach ( JsonStringValue i in collection )
+	//				{
+	//					dataTable[ count ] = i.Value;
+	//					count++;
+	//				}
+
+	//				return dataTable;
+	//			}
+	//			else
+	//				return new string[ ] { };
+	//		}
+	//		catch { return new string[ ] { }; }
+	//	}
+
 	static class ThreadDataStore
 	{
 		private static readonly string DATA_FILE_LOCATION;
 
 		static ThreadDataStore( )
 		{
-			DATA_FILE_LOCATION = GlobalVar.DATA_DIR + @"\dataTable.dat";
+			DATA_FILE_LOCATION = GlobalVar.DATA_DIR + @"\core.db";
 		}
 
 		public static void Initialize( )
@@ -279,29 +412,35 @@ namespace CafeMaster_UI.Lib
 				if ( !Directory.Exists( GlobalVar.DATA_DIR ) )
 					Directory.CreateDirectory( GlobalVar.DATA_DIR );
 
+				Notify.Initialize( );
+
 				if ( !File.Exists( DATA_FILE_LOCATION ) ) // 데이터 파일이 없을 시 
 				{
 					NaverRequest.New( "http://cafe.naver.com/ArticleList.nhn?search.clubid=" + GlobalVar.CAFE_ID + "&search.boardtype=L&userDisplay=15", NaverRequest.RequestMethod.GET, Encoding.Default, ( value ) =>
 					{
-						//File.WriteAllText( "log.txt", value, Encoding.Default );
+						DBProvider.SQLite sqliteProvider = new DBProvider.SQLite( "core.db", GlobalVar.THREAD_DATA_CREATE_SQLITE );
+						//sqliteProvider.Open( );
 
-						JsonArrayCollection collection = new JsonArrayCollection( );
+						//JsonArrayCollection collection = new JsonArrayCollection( );
 						List<TableDataTable> dataTable = Parse.TotalArticlePageCrawling( value );
 
 						foreach ( TableDataTable i in dataTable )
 						{
-							collection.Add( new JsonStringValue( null, i.number ) );
+							sqliteProvider.ExecuteQuery( "INSERT INTO ThreadIDStored ( id ) VALUES ( " + i.number + " ) WHERE NOT EXISTS ( SELECT * FROM ThreadIDStored WHERE id = " + i.number );
+							//collection.Add( new JsonStringValue( null, i.number ) );
 						}
 
-						File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+						//DBProvider.SQLite.Close( );
+
+						sqliteProvider.Close( );
+
+						//File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
 
 						Thread.Sleep( 1000 );
 
 						TopProgressMessage.End( );
 					} );
 				}
-
-				Notify.Initialize( );
 			}
 			catch ( IOException ex )
 			{
@@ -319,13 +458,21 @@ namespace CafeMaster_UI.Lib
 		{
 			try
 			{
-				if ( !File.Exists( DATA_FILE_LOCATION ) ) return;
+				DBProvider.SQLite sqliteProvider = new DBProvider.SQLite( "core.db", GlobalVar.THREAD_DATA_CREATE_SQLITE );
 
-				JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+				sqliteProvider.ExecuteQuery( "INSERT OR IGNORE INTO ThreadIDStored ( id ) VALUES ( " + threadID + " )" );
 
-				collection.Add( new JsonStringValue( null, threadID ) );
+				sqliteProvider.Close( );
+				//JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
 
-				File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+				//collection.Add( new JsonStringValue( null, threadID ) );
+
+				//File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+			}
+			catch ( SQLiteException ex )
+			{
+				Utility.WriteErrorLog( "SQLiteException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 정의하지 못했습니다, SQLite 오류입니다.\n\n" + ex.Message + " (0x" + ( ex.ErrorCode > 0 ? ex.ErrorCode : 0 ) + ")", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 			catch ( IOException ex )
 			{
@@ -341,16 +488,27 @@ namespace CafeMaster_UI.Lib
 		{
 			try
 			{
-				if ( !File.Exists( DATA_FILE_LOCATION ) ) return;
-
-				JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+				DBProvider.SQLite sqliteProvider = new DBProvider.SQLite( "core.db", GlobalVar.THREAD_DATA_CREATE_SQLITE );
 
 				foreach ( string i in threadIDList )
 				{
-					collection.Add( new JsonStringValue( null, i ) );
+					sqliteProvider.ExecuteQuery( "INSERT OR IGNORE INTO ThreadIDStored ( id ) VALUES ( " + i + " )" );
 				}
-				
-				File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+
+				sqliteProvider.Close( );
+				//JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+
+				//foreach ( string i in threadIDList )
+				//{
+				//	collection.Add( new JsonStringValue( null, i ) );
+				//}
+
+				//File.WriteAllText( DATA_FILE_LOCATION, collection.ToString( ) );
+			}
+			catch ( SQLiteException ex )
+			{
+				Utility.WriteErrorLog( "SQLiteException - " + ex.Message, Utility.LogSeverity.EXCEPTION );
+				NotifyBox.Show( null, "오류", "죄송합니다, 데이터를 정의하지 못했습니다, SQLite 오류입니다.\n\n" + ex.Message + " (0x" + ( ex.ErrorCode > 0 ? ex.ErrorCode : 0 ) + ")", NotifyBoxType.OK, NotifyBoxIcon.Error );
 			}
 			catch ( IOException ex )
 			{
@@ -364,26 +522,34 @@ namespace CafeMaster_UI.Lib
 
 		public static string[ ] Get( )
 		{
-			try
+			//try
+			//{
+			DBProvider.SQLite sqliteProvider = new DBProvider.SQLite( "core.db", GlobalVar.THREAD_DATA_CREATE_SQLITE );
+			List<string> array = new List<string>( );
+
+			sqliteProvider.ExecuteDataReader( "SELECT * FROM ThreadIDStored", ( SQLiteDataReader reader ) => // order by 추가바람
 			{
-				if ( File.Exists( DATA_FILE_LOCATION ) )
-				{
-					JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
-					string[ ] dataTable = new string[ collection.Count ];
-					int count = 0;
+				array.Add( reader[ "id" ].ToString( ) );
+				return true;
+			} );
 
-					foreach ( JsonStringValue i in collection )
-					{
-						dataTable[ count ] = i.Value;
-						count++;
-					}
+			sqliteProvider.Close( );
 
-					return dataTable;
-				}
-				else
-					return new string[ ] { };
-			}
-			catch { return new string[ ] { }; }
+			return array.ToArray( );
+
+			//JsonArrayCollection collection = ( JsonArrayCollection ) new JsonTextParser( ).Parse( File.ReadAllText( DATA_FILE_LOCATION ) );
+			//string[ ] dataTable = new string[ collection.Count ];
+			//int count = 0;
+
+			//foreach ( JsonStringValue i in collection )
+			//{
+			//	dataTable[ count ] = i.Value;
+			//	count++;
+			//}
+
+			//return dataTable;
+			//}
+			//catch { return new string[ ] { }; }
 		}
 	}
 }

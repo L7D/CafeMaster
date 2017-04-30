@@ -15,8 +15,10 @@ namespace CafeMaster_UI
 	{
 		public static readonly System.Drawing.Color MasterColor = System.Drawing.Color.Silver; // 메인 색
 
-		public const string CAFE_ID = "25430492"; // 카페 숫자 아이디
+		public const string CAFE_ID = "25430492"; // 카페 숫자 아이디 // 25016505 // 25430492
 		public const string CAFE_URL_ID = "revolution232"; // 카페 문자열 아이디
+		//http://cafe.naver.com/left7deadhalflife
+		//revolution232
 
 		public const string CAFE_RULE_URL = "http://cafe.naver.com/revolution232/6894"; // 카페 공지사항 링크
 		public const string CAFE_CHAT_URL = "https://chat.cafe.naver.com/room/25430492/lolori_:1484751066552?ssId=2"; // 카페 채팅 링크
@@ -24,12 +26,33 @@ namespace CafeMaster_UI
 		public const string CAFE_MANAGE_HOME_URL = "http://cafe.naver.com/ManageHome.nhn?clubid=25430492"; // 카페 관리 링크
 		public const string CAFE_MANAGE_JOINMANAGE_URL = "http://cafe.naver.com/ManageJoinApplication.nhn?search.clubid=25430492"; // 카페 가입 신청 관리 링크
 		public const string CAFE_WARNING_ARTICLE_URL = "http://cafe.naver.com/ArticleList.nhn?search.clubid=25430492&search.menuid=20&search.boardtype=L"; // 카페 경고 게시판 주소
-		public const string CAFE_MEMBER_NETWORK_VIEW_URL = "http://cafe.naver.com/CafeMemberNetworkView.nhn?m=view&clubid=25430492&memberid=";
+		public const string CAFE_MEMBER_NETWORK_VIEW_URL = "http://cafe.naver.com/CafeMemberNetworkView.nhn?m=view&clubid=25430492&memberid="; // 
+		public const string CAFE_STOP_ACTIVITY_LIST_URL = "http://cafe.naver.com/ManageActivityStopMemberView.nhn?search.clubid=25430492"; // 카페 활동정지 리스트 주소
+		public const string NAVER_SPELL_CHECKER_URL = "https://search.naver.com/search.naver?ie=utf8&query=%EB%A7%9E%EC%B6%A4%EB%B2%95%EA%B2%80%EC%82%AC"; // 네이버 맞춤법 검사기 주소
 
 		public static bool UPDATE_AVAILABLE = false; // 새로운 버전 있음
 		//public static bool OFFLINE_MODE = true; // 우유서버 연결 불가 -> 오프라인 모드 여부
 		public static string COOKIES = ""; // 네이버 계정 쿠키
 		public static List<Lib.CookieTable> COOKIES_LIST = new List<Lib.CookieTable>( ); // 네이버 계정 쿠키 리스트
+
+
+		public const string NOTIFY_ARTICLE_CREATE_SQLITE = @"
+		CREATE TABLE IF NOT EXISTS ArticleNotification(
+			threadID INTEGER PRIMARY KEY,
+			threadTitle TEXT,
+			threadAuthor TEXT,
+			threadURL TEXT,
+			threadTime TEXT,
+			threadHit INTEGER,
+			focused INTEGER,
+			personaconURL TEXT,
+			articleName TEXT,
+			authorRank TEXT
+		);";
+		public const string THREAD_DATA_CREATE_SQLITE = @"
+		CREATE TABLE IF NOT EXISTS ThreadIDStored(
+			id INTEGER
+		);";
 
 		public static string NAVER_USER_ID; // 네이버 아이디
 

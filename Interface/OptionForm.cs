@@ -207,19 +207,6 @@ namespace CafeMaster_UI.Interface
 			if ( isInitialize ) return;
 
 			Config.Set( "ThemeEnable", this.OPTION_6_OBJECT.Status == true ? "1" : "0" );
-
-			Main main = Utility.GetMainForm( );
-
-			if ( main != null )
-			{
-				if ( Config.Get( "ThemeEnable", "1" ) == "1" )
-					Theme.Apply( main.BACKGROUND_SPLASH, "main_*.png" );
-
-				else
-					Theme.DisApply( main.BACKGROUND_SPLASH );
-
-				main.Refresh( );
-			}
 		}
 	}
 }

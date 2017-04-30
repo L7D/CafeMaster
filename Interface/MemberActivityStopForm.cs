@@ -279,7 +279,87 @@ namespace CafeMaster_UI.Interface
 
 		private void ACTIVITY_STOP_RUN_BUTTON_Click( object sender, EventArgs e )
 		{
+			if ( !userSelected )
+			{
+				NotifyBox.Show( this, "오류", "활동 정지 처리할 회원을 선택하세요.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+				return;
+			}
 
+			if ( this.REASON_TEXTBOX.Text.Trim( ).Length <= 0 )
+			{
+				NotifyBox.Show( this, "오류", "활동 정지 처리하는 사유를 입력하세요.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+				return;
+			}
+
+			if ( NotifyBox.Show( this, "경고", selectedMemberInformation.nickName + "( " + selectedMemberInformation.memberID + " ) 회원을 " + ( this.UNLIMITED_LENGTH_CHECKBOX.Checked == true ? "영구적으로" : ( ( ( int ) this.STOP_LENGTH.Value ) + "일 간" ) ) + " 활동 정지 처리하시겠습니까?\n\n모든 정보를 다시 확인하시고 확인 버튼을 눌러주세요 ^.^", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
+			{
+				if ( NotifyBox.Show( this, "경고", "정말로 정말로!!! " + selectedMemberInformation.nickName + "(" + selectedMemberInformation.memberID + ") 회원을 활동 정지하시길 원하십니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
+				{
+					this.SELECT_RESET_BUTTON.Enabled = false;
+					this.REASON_TEXTBOX.Enabled = false;
+					this.STOP_LENGTH.Enabled = false;
+					this.UNLIMITED_LENGTH_CHECKBOX.Enabled = false;
+					this.CANCEL_BUTTON.Enabled = false;
+
+					Thread thread = new Thread( ( ) =>
+					{
+						bool alreadyStopped;
+
+						if ( NaverRequest.MemberStopActivity( selectedMemberInformation.memberID,
+							this.UNLIMITED_LENGTH_CHECKBOX.Checked == true ? 0 : ( ( int ) this.STOP_LENGTH.Value ),
+							this.REASON_TEXTBOX.Text.Trim( ),
+							out alreadyStopped
+						) )
+						{
+							Utility.OpenWebPage( GlobalVar.CAFE_STOP_ACTIVITY_LIST_URL, this );
+							if ( alreadyStopped )
+								NotifyBox.Show( this, "활동 정지 불가", "활동 정지 처리를 할 수 없습니다, 이미 활동 정지 처리된 회원입니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+							else
+								NotifyBox.Show( this, "활동 정지 완료", "활동 정지 처리를 성공적으로 완료했습니다, 활동 정지 회원 목록 페이지가 열립니다, 꼭 처리사항을 다시 확인하세요.", NotifyBoxType.OK, NotifyBoxIcon.Danger );
+
+							if ( this.InvokeRequired )
+							{
+								this.Invoke( new Action( ( ) =>
+								{
+									this.Close( );
+								} ) );
+							}
+							else
+							{
+								this.Close( );
+							}
+						}
+						else
+						{
+							if ( this.InvokeRequired )
+							{
+								this.Invoke( new Action( ( ) =>
+								{
+									this.SELECT_RESET_BUTTON.Enabled = true;
+									this.REASON_TEXTBOX.Enabled = true;
+									this.STOP_LENGTH.Enabled = true;
+									this.UNLIMITED_LENGTH_CHECKBOX.Enabled = true;
+									this.CANCEL_BUTTON.Enabled = true;
+								} ) );
+							}
+							else
+							{
+								this.SELECT_RESET_BUTTON.Enabled = true;
+								this.REASON_TEXTBOX.Enabled = true;
+								this.STOP_LENGTH.Enabled = true;
+								this.UNLIMITED_LENGTH_CHECKBOX.Enabled = true;
+								this.CANCEL_BUTTON.Enabled = true;
+							}
+
+							NotifyBox.Show( this, "오류", "죄송합니다, 활동 정지 처리를 하는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+						}
+					} )
+					{
+						IsBackground = true
+					};
+					thread.Start( );
+				}
+			}
 		}
 
 		private void USER_SEARCH_TEXTBOX_KeyDown( object sender, KeyEventArgs e )

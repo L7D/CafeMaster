@@ -163,7 +163,7 @@ namespace CafeMaster_UI.Interface
 
 			if ( NotifyBox.Show( this, "경고", "닉네임 : " + this.nickName + "\n경고 횟수 : " + this.warnCount + "회\n진술 : " + this.REASON_TEXTBOX.Text + "\n\n모든 정보를 다시 확인하시고 확인 버튼을 눌러주세요 ^.^", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
 			{
-				if ( NotifyBox.Show( this, "경고", "정말로 정말로!!! " + this.nickName + " 님께 경고를 부여하시길 원하십니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
+				if ( NotifyBox.Show( this, "경고", "정말로 정말로!!! " + this.nickName + " 회원에게 경고를 부여하시길 원하십니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Danger ) == NotifyBoxResult.Yes )
 				{
 					this.WARN_RUN_BUTTON.ButtonText = "서버와 통신하는 중 ...";
 

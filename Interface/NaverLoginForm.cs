@@ -22,6 +22,9 @@ namespace CafeMaster_UI.Interface
 
 			this.SetStyle( ControlStyles.ResizeRedraw, true );
 			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+
+			this.browserBehind.Navigate( "https://nid.naver.com/nidlogin.login?svctype=64" );
+			this.AUTOLOGIN_TITLE.Text = Environment.MachineName;
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )
@@ -106,8 +109,7 @@ namespace CafeMaster_UI.Interface
 						else
 						{
 							NotifyBox.Show( this, "오류", "죄송합니다, 귀하는 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-							System.Diagnostics.Process.GetCurrentProcess( ).Kill( );
-							//Application.Exit( );
+							Application.Exit( );
 						}
 					}
 					else
@@ -212,29 +214,32 @@ namespace CafeMaster_UI.Interface
 
 		private void NaverLoginForm_Load( object sender, EventArgs e )
 		{
+			this.AUTOLOGIN_TITLE.Parent = BACKGROUND_SPLASH;
+			this.AUTOLOGIN_DESC.Parent = BACKGROUND_SPLASH;
+
 			Thread thread = new Thread( ( ) =>
 			{
-			if ( AutoLogin.IsEnabled( ) )
-			{
-				SetMode( true );
-				SetMessage( "계정 자동 로그인 정보를 불러오는 중 " );
-
-				string accountString = null;
-				AutoLogin.GetAccountDataResult result = AutoLogin.GetAccountData( out accountString );
-
-				switch ( result )
+				if ( AutoLogin.IsEnabled( ) )
 				{
-					case AutoLogin.GetAccountDataResult.Success:
-						if ( !string.IsNullOrEmpty( accountString ) )
-						{
-							string[ ] dataTable = accountString.Trim( ).Split( '\n' );
+					SetMode( true );
+					SetMessage( "계정 자동 로그인 정보를 불러오는 중 " );
 
-							if ( dataTable.Length == 2 )
+					string accountString = null;
+					AutoLogin.GetAccountDataResult result = AutoLogin.GetAccountData( out accountString );
+
+					switch ( result )
+					{
+						case AutoLogin.GetAccountDataResult.Success:
+							if ( !string.IsNullOrEmpty( accountString ) )
 							{
+								string[ ] dataTable = accountString.Trim( ).Split( '\n' );
+
+								if ( dataTable.Length == 3 )
+								{
 									if ( this.InvokeRequired )
-										this.Invoke( new Action( ( ) => this.AUTOLOGIN_TITLE.Text = dataTable[ 0 ].Trim( ) ) );
+										this.Invoke( new Action( ( ) => this.AUTOLOGIN_TITLE.Text = dataTable[ 2 ].Trim( ) ) );
 									else
-										this.AUTOLOGIN_TITLE.Text = dataTable[ 0 ].Trim( );
+										this.AUTOLOGIN_TITLE.Text = dataTable[ 2 ].Trim( );
 
 									SetMessage( "자동 로그인을 시도하고 있습니다, 잠시만.. 기다려주세요 " );
 
@@ -275,8 +280,7 @@ namespace CafeMaster_UI.Interface
 											{
 												NotifyBox.Show( this, "오류", "죄송합니다, 해당 계정은 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다, 자동 로그인 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 												AutoLogin.DeleteAccountData( );
-												System.Diagnostics.Process.GetCurrentProcess( ).Kill( );
-												//Application.Exit( );
+												Application.Exit( );
 
 												return;
 											}
@@ -305,6 +309,7 @@ namespace CafeMaster_UI.Interface
 								else
 								{
 									NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+									AutoLogin.DeleteAccountData( );
 
 									SetMode( false );
 								}
@@ -371,6 +376,33 @@ namespace CafeMaster_UI.Interface
 				this.AUTOLOGIN_DESC.Text = this.AUTOLOGIN_DESC.Text + ".";
 				dotCount++;
 			}
+		}
+
+		//private bool d = true;
+		private void browserBehind_ProgressChanged( object sender, WebBrowserProgressChangedEventArgs e )
+		{
+			//if ( !d ) return;
+			//http://textuploader.com/dt2vv/raw
+			//<link rel="stylesheet" type="text/css" href="/login/css/global/desktop/e_20161104.css?dt=20161214">
+
+			
+
+			//foreach ( HtmlElement i in browserBehind.Document.GetElementsByTagName( "link" ) )
+			//{
+				
+			//	if ( i.GetAttribute("href").Contains( "e_" ) )
+			//	{
+			//		MessageBox.Show( i.GetAttribute( "href" ) );
+			//		i.SetAttribute( "href", "http://textuploader.com/dt2vv/raw" );
+			//	}
+			//	else if ( i.GetAttribute( "href" ).Contains( "w_" ) )
+			//	{
+			//		MessageBox.Show( i.GetAttribute( "href" ) );
+			//		i.SetAttribute( "href", "https://nid.naver.com/login/css/global/desktop/w_20161104.css?dt=20161214" );
+			//	}
+			//}
+
+			//d = false;
 		}
 	}
 }
