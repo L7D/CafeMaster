@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CafeMaster_UI.Interface;
@@ -63,6 +62,8 @@ namespace CafeMaster_UI
 
 			this.SetStyle( ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true );
 			this.UpdateStyles( );
+
+			this.Opacity = 0;
 		}
 
 		public void SetNetworkStatus( NetworkStatus status )
@@ -106,7 +107,7 @@ namespace CafeMaster_UI
 					case NetworkStatus.Error:
 						this.NETWORK_SYNC_ANIMATION_TIMER.Stop( );
 						this.NETWORK_STATUS_ICON.Image = Properties.Resources.NETWORK_ISERROR;
-						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, "통신 오류가 발생하였습니다." );
+						this.TOOL_TIP.SetToolTip( this.NETWORK_STATUS_ICON, " 오류가 발생하였습니다." );
 						break;
 					case NetworkStatus.Syncing:
 						this.NETWORK_SYNC_ANIMATION_TIMER.Start( );
@@ -144,7 +145,7 @@ namespace CafeMaster_UI
 			}
 		}
 
-		public void StartWorker( string message )
+		public void StartWorker( string message, bool useRed )
 		{
 			if ( this.InvokeRequired )
 			{
@@ -157,6 +158,11 @@ namespace CafeMaster_UI
 						this.CURRENT_PROGRESS_LABEL.Visible = true;
 
 					this.CURRENT_PROGRESS_LABEL.Text = message;
+
+					if ( useRed )
+						this.CURRENT_PROGRESS_LABEL.ForeColor = Color.Red;
+					else
+						this.CURRENT_PROGRESS_LABEL.ForeColor = Color.Black;
 				} ) );
 			}
 			else
@@ -168,6 +174,11 @@ namespace CafeMaster_UI
 					this.CURRENT_PROGRESS_LABEL.Visible = true;
 
 				this.CURRENT_PROGRESS_LABEL.Text = message;
+
+				if ( useRed )
+					this.CURRENT_PROGRESS_LABEL.ForeColor = Color.Red;
+				else
+					this.CURRENT_PROGRESS_LABEL.ForeColor = Color.Black;
 			}
 		}
 
@@ -219,47 +230,51 @@ namespace CafeMaster_UI
 
 		private void Main_Shown( object sender, EventArgs e )
 		{
+			Animation.UI.FadeIn( this );
+
 			SetNetworkStatus( NetworkStatus.Syncing );
 
 			InitializeUI( );
 
-			//var d = new Lib.DBProvider.SQLite( "core.db", "create table if not exists articleNumbers( int num )" );
-			//Lib.DBProvider.SQLite d = new Lib.DBProvider.SQLite( "core.db", GlobalVar.NOTIFY_ARTICLE_CREATE_SQLITE );
-
-
-
-			//Lib.DBProvider.SQLite.ExecuteReader( "SELECT * FROM articleNumbers", ( r ) =>
-			//{
-			//	MessageBox.Show( r.GetInt32( 0 ).ToString( ) );
-			//} );
-
-			//foreach ( string i in ThreadDataStore.Get( ) )
-			//{
-			//	Lib.DBProvider.SQLite.ExecuteQuery( "INSERT INTO articleNumbers VALUES ( " + i + ")",false );
-			//}
-
-			//Lib.DBProvider.SQLite.ExecuteReader( "SELECT * FROM articleNumbers", ( r )=>
-			//{
-			//	MessageBox.Show( r.GetInt32( 0 ).ToString( ) );
-			//} );
-
 			Task.Factory.StartNew( ( ) =>
 			{
-				TopProgressMessage.Set( "구성 요소를 불러오고 있습니다 ..." );
+				TopProgressMessage.Set( "프로그램 무결성을 확인하고 있습니다 ..." );
 
-				TopProgressMessage.Set( "새로운 버전을 확인하고 있습니다 ..." );
+				//if ( !Utility.ProgramValidCheck( ) )
+				//{
+				//	GlobalVar.CRCCheckFailed = true;
+				//	TopProgressMessage.End( );
+				//	SetNetworkStatus( NetworkStatus.Error );
+
+				//	if ( this.InvokeRequired )
+				//	{
+				//		this.Invoke( new Action( ( ) =>
+				//		{
+				//			this.STEP_CHATBOX.Visible = false;
+				//		} ) );
+				//	}
+				//	else
+				//		this.STEP_CHATBOX.Visible = false;
+
+				//	NotifyBox.Show( this, "오류", "죄송합니다, 프로그램이 변조되었습니다.\n\n보안상의 문제로 변조된 프로그램은 사용할 수 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				//	Application.Exit( );
+
+				//	return;
+				//}
+
+				TopProgressMessage.Set( "프로그램 버전을 확인하고 있습니다 ..." );
 
 				if ( Lib.Update.Check( ) )
 				{
 					GlobalVar.UPDATE_AVAILABLE = true;
-					//UpdateAvailable( );
+					UpdateAvailable( );
 				}
 				else
 				{
 					GlobalVar.UPDATE_AVAILABLE = false;
 				}
 
-				TopProgressMessage.Set( "네이버 계정 정보를 불러오고 있습니다 ..." );
+				TopProgressMessage.Set( "네이버 계정 토큰을 불러오고 있습니다 ..." );
 
 				if ( NaverAccountInitialize( ) && !string.IsNullOrEmpty( GlobalVar.COOKIES ) && GlobalVar.COOKIES_LIST.Count != 0 )
 				{
@@ -267,13 +282,21 @@ namespace CafeMaster_UI
 
 					ThreadDataStore.Initialize( );
 
-					Thread.Sleep( 2000 );
-
-					Up( );
+					Task.Delay( 2000 );
 
 					TopProgressMessage.End( );
 
 					Observer.Start( );
+
+					if ( this.InvokeRequired )
+					{
+						this.Invoke( new Action( ( ) =>
+						{
+							CheckNotifyListIsBlank( );
+						} ) );
+					}
+					else
+						CheckNotifyListIsBlank( );
 				}
 				else
 				{
@@ -284,40 +307,24 @@ namespace CafeMaster_UI
 					Application.Exit( );
 				}
 			} );
-			//} )
-			//{
-			//	IsBackground = true
-			//};
-			//preWorkAll.Start( );
+		}
+
+		private void CheckNotifyListIsBlank( )
+		{
+			if ( this.NOTIFY_PANEL.Controls.Count == 0 )
+			{
+				this.NOTIFYBOX_EMPTY_ICON.Visible = true;
+				this.NOTIFYBOX_EMPTY_TITLE.Visible = true;
+				this.NOTIFYBOX_EMPTY_DESC.Visible = true;
+			}
 		}
 
 		private void Main_Load( object sender, EventArgs e )
 		{
-			//new Welcome( ).ShowDialog( );
+			new Welcome( ).ShowDialog( );
 			new NaverLoginForm( ).ShowDialog( );
 
 			if ( this.Disposing || this.IsDisposed ) return;
-
-			
-
-
-		}
-
-		private void Up( )
-		{
-			Control.CheckForIllegalCrossThreadCalls = false;
-
-			Lib.DBProvider.SQLite d = new Lib.DBProvider.SQLite( "core.db", GlobalVar.NOTIFY_ARTICLE_CREATE_SQLITE );
-
-			System.Data.DataSet ds = d.ExecuteReturnDataSet( "SELECT * FROM ArticleNotification" );
-
-			dataGridView1.DataSource = ds.Tables[ 0 ];
-
-			//Lib.DBProvider.SQLite d = new Lib.DBProvider.SQLite( "core.db", GlobalVar.THREAD_DATA_CREATE_SQLITE );
-
-			//System.Data.DataSet ds = d.ExecuteReturnDataSet( "SELECT * FROM ThreadIDStored" );
-
-			//dataGridView1.DataSource = ds.Tables[ 0 ];
 		}
 
 		private void UpdateAvailable( )
@@ -341,7 +348,7 @@ namespace CafeMaster_UI
 		{
 			IS_NOTIFY_CHILD_PANEL_SELECTED_MODE = false;
 
-			if ( !string.IsNullOrEmpty( GlobalVar.COOKIES ) && GlobalVar.COOKIES_LIST.Count != 0 )
+			if ( !string.IsNullOrEmpty( GlobalVar.COOKIES ) && GlobalVar.COOKIES_LIST.Count != 0 && !GlobalVar.CRCCheckFailed )
 			{
 				this.STEP_CHATBOX.Visible = false;
 
@@ -359,7 +366,6 @@ namespace CafeMaster_UI
 
 					if ( File.Exists( GlobalVar.CUSTOM_STYLESHEET_DIR ) )
 					{
-
 						// 기존 카페채팅 text형식 스타일시트를 무효화 한 후 커스텀 스타일시트로 변경
 						foreach ( HtmlElement i in this.STEP_CHATBOX.Document.GetElementsByTagName( "style" ) )
 						{
@@ -388,7 +394,8 @@ namespace CafeMaster_UI
 						}
 					}
 
-					this.STEP_CHATBOX.Visible = true;
+					if ( !GlobalVar.CRCCheckFailed )
+						this.STEP_CHATBOX.Visible = true;
 				};
 
 				this.STEP_CHATBOX.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
@@ -417,13 +424,10 @@ namespace CafeMaster_UI
 			if ( Config.Get( "SoundEnable", "1" ) == "1" )
 			{
 				this.BELL_STATUS_BUTTON.Image = Properties.Resources.BELL_NORMAL;
-
 				SoundNotify.PlayWelcome( );
 			}
 			else
-			{
 				this.BELL_STATUS_BUTTON.Image = Properties.Resources.BELL_IGNORE;
-			}
 		}
 
 		private bool NaverAccountInitialize( )
@@ -472,8 +476,6 @@ namespace CafeMaster_UI
 					}
 				}
 			};
-
-			ThreadDataStore.Add( "0" );
 
 			if ( accountInformation.HasValue )
 			{
@@ -692,13 +694,12 @@ namespace CafeMaster_UI
 			if ( this.FORCE_SYNC_DELAY_TIMER.Enabled )
 			{
 				NotifyBox.Show( this, "오류", "너무 자주 동기화를 시도했습니다, 잠시 후 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
-
 				return;
 			}
 
 			if ( NotifyBox.Show( this, "지금 동기화", "지금 데이터를 동기화하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.Yes )
 			{
-				Observer.ForceProgress( );
+				Observer.ForceProgressAsync( );
 
 				this.FORCE_SYNC_DELAY_TIMER.Start( );
 			}
@@ -750,6 +751,8 @@ namespace CafeMaster_UI
 
 		private void Main_FormClosing( object sender, FormClosingEventArgs e )
 		{
+			if ( GlobalVar.NoCloseSave ) return;
+
 			//Notify.Save( ); // 데이터 저장시 오류 발생;
 			Config.Save( );
 		}
@@ -769,11 +772,6 @@ namespace CafeMaster_UI
 			Utility.OpenWebPage( GlobalVar.CAFE_MANAGE_HOME_URL, this );
 		}
 
-		private void UTIL_ICON_BUTTON3_Click( object sender, EventArgs e )
-		{
-			( new MemberActivityStopForm( ) ).ShowDialog( );
-		}
-
 		private void UTIL_ICON_BUTTON4_Click( object sender, EventArgs e )
 		{
 			Utility.OpenWebPage( GlobalVar.CAFE_MANAGE_JOINMANAGE_URL, this );
@@ -787,6 +785,16 @@ namespace CafeMaster_UI
 		private void UTIL_ICON_BUTTON6_Click( object sender, EventArgs e )
 		{
 			( new CafeRankViewer( ) ).ShowDialog( );
+		}
+
+		private void UTIL_ICON_BUTTON7_Click( object sender, EventArgs e )
+		{
+			( new MemberWarningForm( ) ).ShowDialog( );
+		}
+
+		private void UTIL_ICON_BUTTON8_Click( object sender, EventArgs e )
+		{
+			( new MemberActivityStopListForm( ) ).ShowDialog( );
 		}
 
 		private void CHILD_PANEL_UTIL_DELETE_Click( object sender, EventArgs e )
@@ -842,7 +850,7 @@ namespace CafeMaster_UI
 			//}
 		}
 
-		private int syncAnimationWIFISignalCount = 0;
+		private byte syncAnimationWIFISignalCount = 0;
 		private void NETWORK_SYNC_ANIMATION_TIMER_Tick( object sender, EventArgs e )
 		{
 			if ( syncAnimationWIFISignalCount++ >= 2 )

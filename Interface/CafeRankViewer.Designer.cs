@@ -30,7 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CafeRankViewer));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
-			this.APP_TITLE = new CustomLabel( );
+			this.APP_TITLE = new CafeMaster_UI.Interface.CustomLabel();
 			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.WEB_BROWSER = new System.Windows.Forms.WebBrowser();
 			this.APP_TITLE_BAR.SuspendLayout();
@@ -41,7 +41,7 @@
 			// 
 			this.APP_TITLE_BAR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
+			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.White;
 			this.APP_TITLE_BAR.Controls.Add(this.APP_TITLE);
 			this.APP_TITLE_BAR.Controls.Add(this.CLOSE_BUTTON);
 			this.APP_TITLE_BAR.Cursor = System.Windows.Forms.Cursors.Default;
@@ -64,6 +64,7 @@
 			this.APP_TITLE.Size = new System.Drawing.Size(104, 14);
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "카페 회원 등급 안내";
+			this.APP_TITLE.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
 			// 
 			// CLOSE_BUTTON
 			// 

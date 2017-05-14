@@ -36,8 +36,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
-			this.BackgroundImage = global::CafeMaster_UI.Properties.Resources.WELCOME_SPLASH_V2;
-			this.ClientSize = new System.Drawing.Size(512, 256);
+			this.ClientSize = new System.Drawing.Size(512, 312);
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -48,6 +47,8 @@
 			this.Text = "우윳빛깔 카페스탭";
 			this.TopMost = true;
 			this.Load += new System.EventHandler(this.Welcome_Load);
+			this.Shown += new System.EventHandler(this.Welcome_Shown);
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Welcome_Paint);
 			this.ResumeLayout(false);
 
 		}

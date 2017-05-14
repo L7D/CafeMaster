@@ -30,6 +30,8 @@ namespace CafeMaster_UI
 		public const string CAFE_STOP_ACTIVITY_LIST_URL = "http://cafe.naver.com/ManageActivityStopMemberView.nhn?search.clubid=25430492"; // 카페 활동정지 리스트 주소
 		public const string NAVER_SPELL_CHECKER_URL = "https://search.naver.com/search.naver?ie=utf8&query=%EB%A7%9E%EC%B6%A4%EB%B2%95%EA%B2%80%EC%82%AC"; // 네이버 맞춤법 검사기 주소
 
+		public static bool NoCloseSave = false;
+		public static bool CRCCheckFailed = false;
 		public static bool UPDATE_AVAILABLE = false; // 새로운 버전 있음
 		//public static bool OFFLINE_MODE = true; // 우유서버 연결 불가 -> 오프라인 모드 여부
 		public static string COOKIES = ""; // 네이버 계정 쿠키

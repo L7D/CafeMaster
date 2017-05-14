@@ -44,40 +44,44 @@ namespace CafeMaster_UI.Interface
 			this.WARNING_COUNT.Enabled = false;
 			this.WARNING_COUNT_AFTERDESC.Text = "경고 횟수를 서버에서 가져오고 있습니다 ...";
 
-			Thread thread = new Thread( ( ) =>
-			  {
-				  int countFetch = NaverRequest.WarnCountRequest( this.onlyID );
-
-				  warnCount = ++countFetch;
-
-				  Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
-
-				  if ( this.InvokeRequired )
-				  {
-					  this.Invoke( new Action( ( ) =>
-					  {
-						  this.WARNING_COUNT.Enabled = true;
-						  this.WARNING_COUNT_AFTERDESC.Text = "";
-						  this.WARNING_COUNT.Value = warnCount;
-						  this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
-						  this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
-						  this.WARN_RUN_BUTTON.Enabled = true;
-					  } ) );
-				  }
-				  else
-				  {
-					  this.WARNING_COUNT.Enabled = true;
-					  this.WARNING_COUNT_AFTERDESC.Text = "";
-					  this.WARNING_COUNT.Value = warnCount;
-					  this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
-					  this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
-					  this.WARN_RUN_BUTTON.Enabled = true;
-				  }
-			  } )
+			Task task = Task.Factory.StartNew( ( ) =>
 			{
-				IsBackground = true
-			};
-			thread.Start( );
+				if ( NaverRequest.CheckMemberExists( this.onlyID ) )
+				{
+					int countFetch = NaverRequest.GetMemberWarningCount( this.onlyID );
+
+					warnCount = ++countFetch;
+
+					Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
+
+					if ( this.InvokeRequired )
+					{
+						this.Invoke( new Action( ( ) =>
+						{
+							this.WARNING_COUNT.Enabled = true;
+							this.WARNING_COUNT_AFTERDESC.Text = "";
+							this.WARNING_COUNT.Value = warnCount;
+							this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+							this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
+							this.WARN_RUN_BUTTON.Enabled = true;
+						} ) );
+					}
+					else
+					{
+						this.WARNING_COUNT.Enabled = true;
+						this.WARNING_COUNT_AFTERDESC.Text = "";
+						this.WARNING_COUNT.Value = warnCount;
+						this.THREAD_TITLE_EXAMPLE.Text = nickName + "님 경고 (총 " + warnCount + "회)";
+						this.chatSendHelper.Navigate( new Uri( GlobalVar.CAFE_CHAT_URL ) );
+						this.WARN_RUN_BUTTON.Enabled = true;
+					}
+				}
+				else
+				{
+					NotifyBox.Show( this, "오류", "죄송합니다, " + this.nickName + " 회원을 경고 처리할 수 없습니다, 존재하지 않거나 탈퇴한 회원입니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+					this.Close( );
+				}
+			} );
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )
@@ -149,7 +153,7 @@ namespace CafeMaster_UI.Interface
 
 		private void WARN_RUN_BUTTON_Click( object sender, EventArgs e )
 		{
-			if ( warnCount == 0 )
+			if ( warnCount <= 0 || warnCount > 10 )
 			{
 				NotifyBox.Show( this, "오류", "경고 횟수는 1~10 사이여야 합니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 				return;
@@ -167,9 +171,11 @@ namespace CafeMaster_UI.Interface
 				{
 					this.WARN_RUN_BUTTON.ButtonText = "서버와 통신하는 중 ...";
 
-					bool success = NaverRequest.WarnThreadRequest( nickName, warnCount, this.REASON_TEXTBOX.Text.Trim( ) );
+					// Item1 : Success boolean;
+					// Item2 : Error reason string;
+					Tuple<bool, string> result = NaverRequest.WriteMemberWarningThread( nickName, warnCount, this.REASON_TEXTBOX.Text.Trim( ) );
 
-					if ( success )
+					if ( result.Item1 )
 					{
 						//switch ( warnCount )
 						//{
@@ -186,26 +192,13 @@ namespace CafeMaster_UI.Interface
 
 						NotifyBox.Show( this, "경고 부여 완료", "경고 부여를 성공적으로 완료했습니다, 경고 게시판 페이지가 열립니다, 아래 사항을 꼭 확인해주세요!\n\n> 다른 스탭 분들이 이미 경고를 부여했는지 여부\n> 게시물 알림을 뒤늦게 확인한 후 경고를 부여할 시 용의자 닉네임이 다를 수 있으니 닉네임 변경 여부 확인", NotifyBoxType.OK, NotifyBoxIcon.Danger );
 
-						ReleaseAllControls( );
-
-						try
-						{
-							System.Diagnostics.Process.Start( GlobalVar.CAFE_WARNING_ARTICLE_URL );
-						}
-						catch ( Exception ex )
-						{
-							Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
-							NotifyBox.Show( this, "오류", "죄송합니다, 웹 페이지를 여는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-						}
+						Utility.OpenWebPage( GlobalVar.CAFE_WARNING_ARTICLE_URL, this );
 
 						this.Close( );
 					}
 					else
 					{
-						NotifyBox.Show( this, "오류", "죄송합니다, 경고 부여를 하는 도중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-
-						ReleaseAllControls( );
-
+						NotifyBox.Show( this, "오류", "죄송합니다, 경고 부여를 하는 도중 오류가 발생했습니다.\n\n" + result.Item2, NotifyBoxType.OK, NotifyBoxIcon.Error );
 						this.WARN_RUN_BUTTON.ButtonText = "경고 부여";
 					}
 				}

@@ -22,8 +22,9 @@ namespace CafeMaster_UI.Interface
 			TITLE_LABEL.Text = title;
 			MESSAGE_LABEL.Text = message;
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 
 			switch ( icon )
 			{
@@ -136,6 +137,8 @@ namespace CafeMaster_UI.Interface
 
 		private void NotifyBoxInterface_Load( object sender, EventArgs e )
 		{
+			Animation.UI.FadeIn( this );
+
 			this.APP_TITLE_BAR.Parent = centerNotifyImageBox;
 			this.MESSAGE_LABEL.Parent = centerNotifyImageBox;
 			this.TYPE_ICON.Parent = centerNotifyImageBox;

@@ -53,6 +53,7 @@
 			this.OPTION_6_OBJECT = new CafeMaster_UI.Interface.FlatCheckBox();
 			this.OPTION_6_DESC = new System.Windows.Forms.Label();
 			this.OPTION_6_TITLE = new System.Windows.Forms.Label();
+			this.OPTION_4_DENIED = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_1_OBJECT)).BeginInit();
@@ -60,11 +61,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_4_OBJECT)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_2_OBJECT_1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_6_OBJECT)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.OPTION_4_DENIED)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// APP_TITLE_BAR
 			// 
-			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
+			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.White;
 			this.APP_TITLE_BAR.Controls.Add(this.APP_TITLE);
 			this.APP_TITLE_BAR.Controls.Add(this.CLOSE_BUTTON);
 			this.APP_TITLE_BAR.Cursor = System.Windows.Forms.Cursors.Default;
@@ -216,14 +218,14 @@
 			this.INIT_DB_BUTTON.AnimationLerpP = 0.8F;
 			this.INIT_DB_BUTTON.BackColor = System.Drawing.Color.Transparent;
 			this.INIT_DB_BUTTON.ButtonText = "데이터 초기화";
-			this.INIT_DB_BUTTON.ButtonTextColor = System.Drawing.Color.Black;
+			this.INIT_DB_BUTTON.ButtonTextColor = System.Drawing.Color.White;
 			this.INIT_DB_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.INIT_DB_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Tomato;
+			this.INIT_DB_BUTTON.EnterStateBackgroundColor = System.Drawing.Color.Red;
 			this.INIT_DB_BUTTON.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.INIT_DB_BUTTON.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.INIT_DB_BUTTON.Font = new System.Drawing.Font("나눔고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.INIT_DB_BUTTON.Location = new System.Drawing.Point(240, 497);
 			this.INIT_DB_BUTTON.Name = "INIT_DB_BUTTON";
-			this.INIT_DB_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Salmon;
+			this.INIT_DB_BUTTON.NormalStateBackgroundColor = System.Drawing.Color.Crimson;
 			this.INIT_DB_BUTTON.Size = new System.Drawing.Size(250, 40);
 			this.INIT_DB_BUTTON.TabIndex = 41;
 			this.INIT_DB_BUTTON.Text = "데이터 초기화";
@@ -325,6 +327,7 @@
 			this.OPTION_4_OBJECT.Status = false;
 			this.OPTION_4_OBJECT.TabIndex = 48;
 			this.OPTION_4_OBJECT.TabStop = false;
+			this.OPTION_4_OBJECT.Visible = false;
 			this.OPTION_4_OBJECT.StatusChanged += new System.EventHandler(this.OPTION_4_OBJECT_StatusChanged);
 			// 
 			// OPTION_2_OBJECT_1
@@ -392,12 +395,26 @@
 			this.OPTION_6_TITLE.TabIndex = 50;
 			this.OPTION_6_TITLE.Text = "테마";
 			// 
+			// OPTION_4_DENIED
+			// 
+			this.OPTION_4_DENIED.BackColor = System.Drawing.Color.Transparent;
+			this.OPTION_4_DENIED.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.OPTION_4_DENIED.Image = global::CafeMaster_UI.Properties.Resources.ERROR_ICON;
+			this.OPTION_4_DENIED.Location = new System.Drawing.Point(443, 285);
+			this.OPTION_4_DENIED.Name = "OPTION_4_DENIED";
+			this.OPTION_4_DENIED.Size = new System.Drawing.Size(30, 30);
+			this.OPTION_4_DENIED.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.OPTION_4_DENIED.TabIndex = 53;
+			this.OPTION_4_DENIED.TabStop = false;
+			this.OPTION_4_DENIED.Click += new System.EventHandler(this.OPTION_4_DENIED_Click);
+			// 
 			// OptionForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(500, 550);
+			this.Controls.Add(this.OPTION_4_DENIED);
 			this.Controls.Add(this.OPTION_6_OBJECT);
 			this.Controls.Add(this.OPTION_6_DESC);
 			this.Controls.Add(this.OPTION_6_TITLE);
@@ -427,7 +444,7 @@
 			this.Name = "OptionForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "우윳빛깔 카페스탭";
+			this.Text = "설정";
 			this.Load += new System.EventHandler(this.OptionForm_Load);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.OptionForm_Paint);
 			this.APP_TITLE_BAR.ResumeLayout(false);
@@ -438,6 +455,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_4_OBJECT)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_2_OBJECT_1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.OPTION_6_OBJECT)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.OPTION_4_DENIED)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -469,5 +487,6 @@
 		private FlatCheckBox OPTION_6_OBJECT;
 		private System.Windows.Forms.Label OPTION_6_DESC;
 		private System.Windows.Forms.Label OPTION_6_TITLE;
+		private System.Windows.Forms.PictureBox OPTION_4_DENIED;
 	}
 }

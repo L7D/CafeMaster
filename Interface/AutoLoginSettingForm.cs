@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Net;
-using System.Text;
 using System.Windows.Forms;
 using CafeMaster_UI.Lib;
 
@@ -21,8 +19,9 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )
@@ -135,7 +134,7 @@ namespace CafeMaster_UI.Interface
 
 		private void AutoLoginSettingForm_Load( object sender, EventArgs e )
 		{
-
+			Animation.UI.FadeIn( this );
 		}
 
 		private void browserLoginButtonPressedEvent( object sender, EventArgs e )

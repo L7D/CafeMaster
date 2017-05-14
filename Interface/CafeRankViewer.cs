@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using CafeMaster_UI.Lib;
 
 namespace CafeMaster_UI.Interface
 {
@@ -16,12 +17,15 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 		}
 		
 		private void CafeRankViewer_Load( object sender, EventArgs e )
 		{
+			Animation.UI.FadeIn( this );
+
 			string html = @"<html lang='ko'>
 	<head>
 		<meta http-equiv='Content-type' content='text/html; charset=utf8'>

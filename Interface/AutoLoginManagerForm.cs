@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Net;
-using System.Text;
 using System.Windows.Forms;
 using CafeMaster_UI.Lib;
 
@@ -19,8 +17,9 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )
@@ -67,6 +66,8 @@ namespace CafeMaster_UI.Interface
 
 		private void AutoLoginManagerForm_Load( object sender, EventArgs e )
 		{
+			Animation.UI.FadeIn( this );
+
 			string accountString = null;
 			AutoLogin.GetAccountDataResult result = AutoLogin.GetAccountData( out accountString );
 
@@ -77,7 +78,7 @@ namespace CafeMaster_UI.Interface
 					{
 						string[ ] dataTable = accountString.Trim( ).Split( '\n' );
 
-						if ( dataTable.Length == 2 )
+						if ( dataTable.Length == 3 )
 						{
 							this.USERID_VALUE.Text = dataTable[ 0 ];
 							this.PWD_VALUE.Text = new string( '*', dataTable[ 1 ].Length * new Random( DateTime.Now.Second ).Next( 2, 4 ) );
@@ -88,18 +89,24 @@ namespace CafeMaster_UI.Interface
 								{
 									this.PROFILE_IMAGE.BackgroundImage = Image.FromFile( GlobalVar.APP_DIR + @"\data\profileImage.jpg" );
 								}
-								catch ( Exception ) { }
+								catch ( Exception ex )
+								{
+									Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
+									NotifyBox.Show( this, "오류", "죄송합니다, 계정 프로필 사진을 불러올 수 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+								}
 							}
 						}
 						else
 						{
-							NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+							NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+							AutoLogin.DeleteAccountData( );
 							this.Close( );
 						}
 					}
 					else
 					{
-						NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+						NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+						AutoLogin.DeleteAccountData( );
 						this.Close( );
 					}
 

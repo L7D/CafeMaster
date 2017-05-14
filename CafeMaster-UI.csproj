@@ -54,10 +54,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>APP_ICON.ico</ApplicationIcon>
+    <ApplicationIcon>APP_ICON_v2_50x50.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>9E222C25D37C1A58B69AB439676A97B04B646D69</ManifestCertificateThumbprint>
@@ -140,6 +140,24 @@
     <Compile Include="Interface\AutoLoginSettingForm.Designer.cs">
       <DependentUpon>AutoLoginSettingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interface\MemberActivityStopListChild.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\MemberActivityStopListChild.Designer.cs">
+      <DependentUpon>MemberActivityStopListChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\MemberActivityStopListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\MemberActivityStopListForm.Designer.cs">
+      <DependentUpon>MemberActivityStopListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\MemberWarningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\MemberWarningForm.Designer.cs">
+      <DependentUpon>MemberWarningForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interface\NotifyBoxInterface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,18 +188,13 @@
     <Compile Include="Interface\MemberActivityStopForm.Designer.cs">
       <DependentUpon>MemberActivityStopForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interface\UserWarnOptionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Interface\UserWarnOptionForm.Designer.cs">
-      <DependentUpon>UserWarnOptionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Interface\Welcome.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Interface\Welcome.Designer.cs">
       <DependentUpon>Welcome.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lib\Animation.cs" />
     <Compile Include="Lib\AutoLogin.cs" />
     <Compile Include="Lib\BrowserCapture.cs" />
     <Compile Include="Lib\Config.cs" />
@@ -218,6 +231,15 @@
     <EmbeddedResource Include="Interface\AutoLoginSettingForm.resx">
       <DependentUpon>AutoLoginSettingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interface\MemberActivityStopListChild.resx">
+      <DependentUpon>MemberActivityStopListChild.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\MemberActivityStopListForm.resx">
+      <DependentUpon>MemberActivityStopListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\MemberWarningForm.resx">
+      <DependentUpon>MemberWarningForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\NaverLoginForm.resx">
       <DependentUpon>NaverLoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -235,9 +257,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\MemberActivityStopForm.resx">
       <DependentUpon>MemberActivityStopForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interface\UserWarnOptionForm.resx">
-      <DependentUpon>UserWarnOptionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Welcome.resx">
       <DependentUpon>Welcome.cs</DependentUpon>
@@ -272,9 +291,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\NaverLoginForm_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\WARNING_ICON.png" />
   </ItemGroup>
   <ItemGroup>
@@ -287,37 +303,33 @@
     <None Include="Resources\QUESTION_ICON.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PROGRAM_LOGO.png" />
     <None Include="Resources\PICTURE.png" />
     <None Include="Resources\WARN_EXAMPLE.jpg" />
     <None Include="Resources\THUNDER.png" />
-    <None Include="Resources\Background01.png" />
-    <None Include="Resources\Background02.png" />
-    <None Include="Resources\PROGRAM_LOCKED.png" />
     <None Include="Resources\VIEW.png" />
-    <None Include="Resources\newNotify.wav" />
-    <None Include="Resources\welcome_v2.wav" />
-    <None Include="Resources\welcome.wav" />
-    <None Include="Resources\PROGRAM_FUNNY_ICON.png" />
     <None Include="Resources\BOARD_ICON.png" />
     <None Include="Resources\USER_ICON.png" />
-    <None Include="Resources\locked.png" />
     <None Include="Resources\unlocked.png" />
     <None Include="Resources\BELL_IGNORE.png" />
     <None Include="Resources\BELL_NORMAL.png" />
     <None Include="Resources\HIDE.png" />
-    <None Include="Resources\notify.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HELP.png" />
     <None Include="Resources\ADMIN_SHIELD.png" />
     <None Include="Resources\CHECK.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="APP_ICON.ico" />
+    <Content Include="APP_ICON_50x50.ico" />
+    <Content Include="APP_ICON_v2_50x50.ico" />
+    <None Include="Resources\EMPTY.png" />
+    <None Include="Resources\Background06.png" />
+    <None Include="Resources\PROGRAM_ICON_150x150.png" />
+    <None Include="Resources\WELCOME_SPLASH_V3.png" />
+    <None Include="Resources\UTIL_ICON_6.png" />
+    <None Include="Resources\APP_ICON_v2_25x25.png" />
     <None Include="Resources\SELECT_ALL.png" />
     <None Include="Resources\MEMBER_RANK.png" />
-    <None Include="Resources\EMPTY.png" />
     <None Include="Resources\NETWORK_IDLE.png" />
     <None Include="Resources\OPTION.png" />
     <None Include="Resources\REFRESH.png" />
@@ -341,7 +353,6 @@
     <None Include="Resources\NETWORK_SYNC_0.png" />
     <None Include="Resources\NETWORK_INIT_NOT.png" />
     <None Include="Resources\WELCOME_SPLASH_V2.png" />
-    <None Include="WELCOME_SPLASH_V2.png" />
     <None Include="Resources\PROGRAM_ICON_25x25.png" />
     <None Include="Resources\PROFILE_UNKNOWN_V2_120x120.png" />
     <None Include="Resources\Background03.png" />
@@ -349,9 +360,6 @@
     <None Include="Resources\DANGER_ICON.png" />
     <None Include="Resources\NOTIFICATION_BASIC.png" />
     <None Include="Resources\NETWORK_ONLINE.png" />
-    <None Include="Resources\NETWORK_WORKING.png" />
-    <None Include="Resources\NETWORK_OFFLINE.png" />
-    <None Include="Resources\NETWORK_NOT_INIT.png" />
     <None Include="Resources\FLATCHECKBOX_ON.png" />
     <None Include="Resources\FLATCHECKBOX_OFF.png" />
     <None Include="Resources\PROFILE_UNKNOWN_160x160.png" />
@@ -360,9 +368,7 @@
     <None Include="Resources\CLIPBOARD.png" />
     <None Include="Resources\PROFILE_IMAGE_CIRCLE_160x160.png" />
     <None Include="Resources\CLOSE.png" />
-    <None Include="Resources\WELCOME_SPLASH.png" />
     <None Include="Resources\PROGRAM_ICON_45x45.png" />
-    <None Include="Resources\PROGRAM_ICON_150x150.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

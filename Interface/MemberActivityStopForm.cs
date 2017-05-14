@@ -1,14 +1,8 @@
-﻿using CafeMaster_UI.Lib;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using CafeMaster_UI.Lib;
 
 namespace CafeMaster_UI.Interface
 {
@@ -99,22 +93,26 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 		}
 
 		public MemberActivityStopForm( string id )
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 
 			this.externalSearchString = id;
 		}
 
 		private void UserWarnOptionForm_Load( object sender, EventArgs e )
 		{
+			Animation.UI.FadeIn( this );
+
 			Utility.SetUriCookieContainerToNaverCookies( "http://cafe.naver.com" );
 
 			this.USER_SEARCH_TEXTBOX.Focus( );
@@ -222,12 +220,13 @@ namespace CafeMaster_UI.Interface
 				return;
 			}
 
+			this.USER_SEARCH_TEXTBOX.Enabled = false;
 			this.USER_SEARCH_BUTTON.Text = "서버에 요청하는 중 ...";
 			this.USER_SEARCH_BUTTON.Enabled = false;
 
 			Thread thread = new Thread( ( ) =>
 			{
-				if ( NaverRequest.CheckMemberExists( id ) )
+				if ( NaverRequest.CheckMemberExistsSimple( id ) )
 				{
 					MemberInformationStruct? info = NaverRequest.GetMemberInformation( id );
 
@@ -263,12 +262,14 @@ namespace CafeMaster_UI.Interface
 					{
 						this.USER_SEARCH_BUTTON.Text = "회원 검색";
 						this.USER_SEARCH_BUTTON.Enabled = true;
+						this.USER_SEARCH_TEXTBOX.Enabled = true;
 					} ) );
 				}
 				else
 				{
 					this.USER_SEARCH_BUTTON.Text = "회원 검색";
 					this.USER_SEARCH_BUTTON.Enabled = true;
+					this.USER_SEARCH_TEXTBOX.Enabled = true;
 				}
 			} )
 			{
@@ -305,7 +306,7 @@ namespace CafeMaster_UI.Interface
 					{
 						bool alreadyStopped;
 
-						if ( NaverRequest.MemberStopActivity( selectedMemberInformation.memberID,
+						if ( NaverRequest.ExecuteMemberStopActivity( selectedMemberInformation.memberID,
 							this.UNLIMITED_LENGTH_CHECKBOX.Checked == true ? 0 : ( ( int ) this.STOP_LENGTH.Value ),
 							this.REASON_TEXTBOX.Text.Trim( ),
 							out alreadyStopped

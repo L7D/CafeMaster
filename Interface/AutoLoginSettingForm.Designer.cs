@@ -30,7 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoLoginSettingForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
-			this.APP_TITLE = new System.Windows.Forms.Label();
+			this.APP_TITLE = new CafeMaster_UI.Interface.CustomLabel();
 			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.TIP_LABEL = new System.Windows.Forms.Label();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
@@ -42,7 +42,7 @@
 			// 
 			// APP_TITLE_BAR
 			// 
-			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
+			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.White;
 			this.APP_TITLE_BAR.Controls.Add(this.APP_TITLE);
 			this.APP_TITLE_BAR.Controls.Add(this.CLOSE_BUTTON);
 			this.APP_TITLE_BAR.Cursor = System.Windows.Forms.Cursors.Default;
@@ -65,6 +65,7 @@
 			this.APP_TITLE.Size = new System.Drawing.Size(90, 14);
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "자동 로그인 설정";
+			this.APP_TITLE.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
 			// 
 			// CLOSE_BUTTON
 			// 
@@ -155,7 +156,7 @@
 
 		private System.Windows.Forms.WebBrowser browserBehind;
 		private System.Windows.Forms.Panel APP_TITLE_BAR;
-		private System.Windows.Forms.Label APP_TITLE;
+		private CustomLabel APP_TITLE;
 		private System.Windows.Forms.PictureBox CLOSE_BUTTON;
 		private System.Windows.Forms.Label TIP_LABEL;
 		private System.Windows.Forms.PictureBox TIP_IMAGE;

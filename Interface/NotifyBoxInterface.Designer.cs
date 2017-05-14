@@ -50,7 +50,7 @@
 			// 
 			this.APP_TITLE_BAR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
+			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.White;
 			this.APP_TITLE_BAR.Controls.Add(this.TITLE_LABEL);
 			this.APP_TITLE_BAR.Location = new System.Drawing.Point(0, 0);
 			this.APP_TITLE_BAR.Name = "APP_TITLE_BAR";
@@ -75,7 +75,7 @@
 			// MESSAGE_LABEL
 			// 
 			this.MESSAGE_LABEL.BackColor = System.Drawing.Color.Transparent;
-			this.MESSAGE_LABEL.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.MESSAGE_LABEL.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.MESSAGE_LABEL.Location = new System.Drawing.Point(86, 50);
 			this.MESSAGE_LABEL.Name = "MESSAGE_LABEL";
 			this.MESSAGE_LABEL.Size = new System.Drawing.Size(500, 105);

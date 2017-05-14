@@ -39,6 +39,9 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
+			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			
 			// 데이터 설정
 			this.THREAD_ID = data.threadID;
 			try
@@ -215,30 +218,7 @@ namespace CafeMaster_UI.Interface
 				}
 			}
 		}
-
-		private void WARN_BUTTON_Click( object sender, EventArgs e )
-		{
-			if ( this.authorID == "NULL" )
-			{
-				NotifyBox.Show( null, "오류", "죄송합니다, 올바르지 않은 회원 아이디인 것 같습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
-				return;
-			}
-
-			if ( this.authorID == GlobalVar.NAVER_USER_ID )
-			{
-				NotifyBox.Show( null, "오류", "셀프 경고는 불가능합니다!", NotifyBoxType.OK, NotifyBoxIcon.Warning );
-				return;
-			}
-
-			if ( GlobalVar.ADMINS.ContainsKey( this.authorID ) )
-			{
-				NotifyBox.Show( null, "오류", "다른 스탭분들께 경고를 주는 행위는 불가능합니다!", NotifyBoxType.OK, NotifyBoxIcon.Warning );
-				return;
-			}
-
-			( new UserWarnOptionForm( this.dataTemp.threadAuthor ) ).ShowDialog( );
-		}
-
+		
 		private void IMAGE_VIEW_BUTTON_Click( object sender, EventArgs e )
 		{
 			if ( BrowserCapture.FileAvailable( this.THREAD_ID ) )
@@ -404,7 +384,8 @@ namespace CafeMaster_UI.Interface
 				return;
 			}
 
-			( new UserWarnOptionForm( this.dataTemp.threadAuthor ) ).ShowDialog( );
+			( new MemberWarningForm( this.dataTemp.threadAuthor ) ).ShowDialog( );
+			//( new UserWarnOptionForm( this.dataTemp.threadAuthor ) ).ShowDialog( );
 		}
 	}
 }

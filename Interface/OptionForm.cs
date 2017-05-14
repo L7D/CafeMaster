@@ -1,7 +1,7 @@
-﻿using CafeMaster_UI.Lib;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using CafeMaster_UI.Lib;
 
 namespace CafeMaster_UI.Interface
 {
@@ -18,12 +18,15 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+			this.Opacity = 0;
 		}
 
 		private void OptionForm_Load( object sender, EventArgs e )
 		{
+			Animation.UI.FadeIn( this );
+
 			isInitialize = true;
 
 			try
@@ -60,7 +63,7 @@ namespace CafeMaster_UI.Interface
 				}
 
 				this.OPTION_3_OBJECT.Status = Config.Get( "CaptureEnable", "1" ) == "1";
-				this.OPTION_4_OBJECT.Status = Config.Get( "UXSendEnable", "1" ) == "1";
+				//this.OPTION_4_OBJECT.Status = Config.Get( "UXSendEnable", "1" ) == "1";
 				this.OPTION_6_OBJECT.Status = Config.Get( "ThemeEnable", "1" ) == "1";
 			}
 			catch { }
@@ -125,8 +128,13 @@ namespace CafeMaster_UI.Interface
 							registryKey.DeleteValue( "MilkPowerCafeStaff", false );
 						}
 
-						System.IO.Directory.Delete( GlobalVar.CAPTURE_DIR, true );
-						System.IO.Directory.Delete( GlobalVar.DATA_DIR, true );
+						if ( System.IO.Directory.Exists( GlobalVar.CAPTURE_DIR ) )
+							System.IO.Directory.Delete( GlobalVar.CAPTURE_DIR, true );
+
+						if ( System.IO.Directory.Exists( GlobalVar.DATA_DIR ) )
+							System.IO.Directory.Delete( GlobalVar.DATA_DIR, true );
+
+						GlobalVar.NoCloseSave = true;
 
 						NotifyBox.Show( this, "데이터 초기화 완료", "모든 데이터를 초기화했습니다, 프로그램을 다시 시작하세요.", NotifyBoxType.OK, NotifyBoxIcon.Information );
 						Application.Exit( );
@@ -134,7 +142,7 @@ namespace CafeMaster_UI.Interface
 					catch ( Exception ex )
 					{
 						Utility.WriteErrorLog( ex.Message, Utility.LogSeverity.EXCEPTION );
-						NotifyBox.Show( this, "오류", "죄송합니다, 데이터를 초기화하는 중 오류가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+						NotifyBox.Show( this, "오류", "죄송합니다, 데이터를 초기화하는 중 오류가 발생했습니다.\n\n" + ex.Message + "( 0x" + ( ex.HResult > 0 ? ex.HResult : 0 ) + " )", NotifyBoxType.OK, NotifyBoxIcon.Error );
 					}
 				}
 			}
@@ -178,16 +186,16 @@ namespace CafeMaster_UI.Interface
 		{
 			if ( isInitialize ) return;
 
-			if ( this.OPTION_4_OBJECT.Status )
-			{
-				if ( NotifyBox.Show( this, "사용자 환경 개선 서비스 안내", "사용자 환경 개선 서비스에 가입하면 자동으로 정보를 서버에 전송합니다.\n예를 들어 윈도우 버전 정보, 프로그램 버전 등의 정보를 전송할 수 있습니다, 이 정보를 이용하여 프로그램과 서비스 환경을 개선합니다, 서버에 전송하는 정보에 개인 정보는 포함되지 않습니다.\n가입하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.No )
-				{
-					this.OPTION_4_OBJECT.Status = false;
-					return;
-				}
-			}
+			//if ( this.OPTION_4_OBJECT.Status )
+			//{
+			//	if ( NotifyBox.Show( this, "사용자 환경 개선 서비스 안내", "사용자 환경 개선 서비스에 가입하면 자동으로 정보를 서버에 전송합니다.\n예를 들어 윈도우 버전 정보, 프로그램 버전 등의 정보를 전송할 수 있습니다, 이 정보를 이용하여 프로그램과 서비스 환경을 개선합니다, 서버에 전송하는 정보에 개인 정보는 포함되지 않습니다.\n가입하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Question ) == NotifyBoxResult.No )
+			//	{
+			//		this.OPTION_4_OBJECT.Status = false;
+			//		return;
+			//	}
+			//}
 
-			Config.Set( "UXSendEnable", this.OPTION_4_OBJECT.Status == true ? "1" : "0" );
+			//Config.Set( "UXSendEnable", this.OPTION_4_OBJECT.Status == true ? "1" : "0" );
 		}
 
 		private void OPTION_5_OBJECT_Click( object sender, EventArgs e )
@@ -207,6 +215,14 @@ namespace CafeMaster_UI.Interface
 			if ( isInitialize ) return;
 
 			Config.Set( "ThemeEnable", this.OPTION_6_OBJECT.Status == true ? "1" : "0" );
+
+			if ( this.OPTION_6_OBJECT.Status )
+				NotifyBox.Show( this, "안내", "테마 제작에 도움을 주신 분 (자른이미지) : 잰(cony****), on(dbxh****)", NotifyBoxType.OK, NotifyBoxIcon.Information );
+		}
+
+		private void OPTION_4_DENIED_Click( object sender, EventArgs e )
+		{
+			NotifyBox.Show( this, "오류", "죄송합니다, 이 프로그램의 버전에서는 사용할 수 없습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 		}
 	}
 }

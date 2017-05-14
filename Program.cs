@@ -43,7 +43,6 @@ namespace CafeMaster_UI
 					System.Reflection.Assembly.Load( "HtmlAgilityPack" ).GetName( );
 					System.Reflection.Assembly.Load( "System.Net.Json" ).GetName( );
 					System.Reflection.Assembly.Load( "System.Data.SQLite" ).GetName( );
-					//System.Reflection.Assembly.Load( "Freezer" ).GetName( );
 				}
 				catch ( Exception )
 				{

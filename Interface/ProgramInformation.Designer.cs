@@ -30,15 +30,15 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramInformation));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
-			this.APP_TITLE = new CustomLabel( );
+			this.APP_TITLE = new CafeMaster_UI.Interface.CustomLabel();
 			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.TITLE = new System.Windows.Forms.Label();
 			this.TITLE_ENG = new System.Windows.Forms.Label();
 			this.VERSION = new System.Windows.Forms.Label();
-			this.LOGO = new System.Windows.Forms.PictureBox();
 			this.COPYRIGHT = new System.Windows.Forms.Label();
 			this.UTIL_BUTTON1 = new CafeMaster_UI.Interface.FlatButton();
 			this.COPYRIGHT_2 = new System.Windows.Forms.Label();
+			this.LOGO = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.CLOSE_BUTTON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.LOGO)).BeginInit();
@@ -46,7 +46,7 @@
 			// 
 			// APP_TITLE_BAR
 			// 
-			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
+			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.White;
 			this.APP_TITLE_BAR.Controls.Add(this.APP_TITLE);
 			this.APP_TITLE_BAR.Controls.Add(this.CLOSE_BUTTON);
 			this.APP_TITLE_BAR.Cursor = System.Windows.Forms.Cursors.Default;
@@ -69,6 +69,7 @@
 			this.APP_TITLE.Size = new System.Drawing.Size(123, 14);
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "우윳빛깔 카페스탭 정보";
+			this.APP_TITLE.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
 			// 
 			// CLOSE_BUTTON
 			// 
@@ -100,11 +101,11 @@
 			// 
 			this.TITLE_ENG.AutoSize = true;
 			this.TITLE_ENG.BackColor = System.Drawing.Color.Transparent;
-			this.TITLE_ENG.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+			this.TITLE_ENG.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.TITLE_ENG.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.TITLE_ENG.Location = new System.Drawing.Point(181, 86);
 			this.TITLE_ENG.Name = "TITLE_ENG";
-			this.TITLE_ENG.Size = new System.Drawing.Size(141, 15);
+			this.TITLE_ENG.Size = new System.Drawing.Size(127, 14);
 			this.TITLE_ENG.TabIndex = 5;
 			this.TITLE_ENG.Text = "Milk Power Cafe Staff";
 			// 
@@ -113,23 +114,12 @@
 			this.VERSION.BackColor = System.Drawing.Color.Transparent;
 			this.VERSION.Font = new System.Drawing.Font("나눔고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.VERSION.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.VERSION.Location = new System.Drawing.Point(183, 195);
+			this.VERSION.Location = new System.Drawing.Point(183, 190);
 			this.VERSION.Name = "VERSION";
-			this.VERSION.Size = new System.Drawing.Size(287, 15);
+			this.VERSION.Size = new System.Drawing.Size(287, 20);
 			this.VERSION.TabIndex = 6;
 			this.VERSION.Text = "버전 1.0.0.0";
 			this.VERSION.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// LOGO
-			// 
-			this.LOGO.BackColor = System.Drawing.Color.Transparent;
-			this.LOGO.Image = global::CafeMaster_UI.Properties.Resources.PROGRAM_ICON_150x150;
-			this.LOGO.Location = new System.Drawing.Point(15, 60);
-			this.LOGO.Name = "LOGO";
-			this.LOGO.Size = new System.Drawing.Size(150, 150);
-			this.LOGO.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.LOGO.TabIndex = 3;
-			this.LOGO.TabStop = false;
 			// 
 			// COPYRIGHT
 			// 
@@ -139,9 +129,9 @@
 			this.COPYRIGHT.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.COPYRIGHT.Location = new System.Drawing.Point(12, 226);
 			this.COPYRIGHT.Name = "COPYRIGHT";
-			this.COPYRIGHT.Size = new System.Drawing.Size(247, 14);
+			this.COPYRIGHT.Size = new System.Drawing.Size(191, 14);
 			this.COPYRIGHT.TabIndex = 7;
-			this.COPYRIGHT.Text = "Copyright © \'DeveloFOX Studio - L7D\' 2017";
+			this.COPYRIGHT.Text = "© \'DeveloFOX Studio - L7D\' 2017";
 			this.COPYRIGHT.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// UTIL_BUTTON1
@@ -175,6 +165,18 @@
 			this.COPYRIGHT_2.Text = "자이 ...";
 			this.COPYRIGHT_2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// LOGO
+			// 
+			this.LOGO.BackColor = System.Drawing.Color.Transparent;
+			this.LOGO.Image = global::CafeMaster_UI.Properties.Resources.PROGRAM_ICON_150x150;
+			this.LOGO.Location = new System.Drawing.Point(15, 60);
+			this.LOGO.Name = "LOGO";
+			this.LOGO.Size = new System.Drawing.Size(150, 150);
+			this.LOGO.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.LOGO.TabIndex = 3;
+			this.LOGO.TabStop = false;
+			this.LOGO.Click += new System.EventHandler(this.LOGO_Click);
+			// 
 			// ProgramInformation
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -194,7 +196,7 @@
 			this.Name = "ProgramInformation";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "우윳빛깔 카페스탭";
+			this.Text = "우윳빛깔 카페스탭 정보";
 			this.Load += new System.EventHandler(this.ProgramInformation_Load);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.ProgramInformation_Paint);
 			this.APP_TITLE_BAR.ResumeLayout(false);

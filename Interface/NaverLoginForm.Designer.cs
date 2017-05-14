@@ -32,11 +32,11 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NaverLoginForm));
 			this.APP_TITLE_BAR = new System.Windows.Forms.Panel();
 			this.APP_TITLE = new CafeMaster_UI.Interface.CustomLabel();
+			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.AUTOLOGIN_DESC = new System.Windows.Forms.Label();
 			this.browserBehind = new System.Windows.Forms.WebBrowser();
 			this.DotAnimationTimer = new System.Windows.Forms.Timer(this.components);
 			this.AUTOLOGIN_TITLE = new System.Windows.Forms.Label();
-			this.CLOSE_BUTTON = new System.Windows.Forms.PictureBox();
 			this.PROFILE_IMAGE = new System.Windows.Forms.PictureBox();
 			this.BACKGROUND_SPLASH = new System.Windows.Forms.PictureBox();
 			this.APP_TITLE_BAR.SuspendLayout();
@@ -47,7 +47,7 @@
 			// 
 			// APP_TITLE_BAR
 			// 
-			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.Transparent;
+			this.APP_TITLE_BAR.BackColor = System.Drawing.Color.White;
 			this.APP_TITLE_BAR.Controls.Add(this.APP_TITLE);
 			this.APP_TITLE_BAR.Controls.Add(this.CLOSE_BUTTON);
 			this.APP_TITLE_BAR.Cursor = System.Windows.Forms.Cursors.Default;
@@ -71,6 +71,20 @@
 			this.APP_TITLE.TabIndex = 3;
 			this.APP_TITLE.Text = "네이버 로그인";
 			this.APP_TITLE.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+			// 
+			// CLOSE_BUTTON
+			// 
+			this.CLOSE_BUTTON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
+			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
+			this.CLOSE_BUTTON.Location = new System.Drawing.Point(560, 10);
+			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
+			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
+			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.CLOSE_BUTTON.TabIndex = 4;
+			this.CLOSE_BUTTON.TabStop = false;
+			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
 			// 
 			// AUTOLOGIN_DESC
 			// 
@@ -102,6 +116,7 @@
 			this.browserBehind.TabStop = false;
 			this.browserBehind.Url = new System.Uri("", System.UriKind.Relative);
 			this.browserBehind.WebBrowserShortcutsEnabled = false;
+			this.browserBehind.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.browserBehind_DocumentCompleted);
 			this.browserBehind.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.browserBehind_Navigating);
 			this.browserBehind.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.browserBehind_ProgressChanged);
 			// 
@@ -121,20 +136,6 @@
 			this.AUTOLOGIN_TITLE.Text = "USER";
 			this.AUTOLOGIN_TITLE.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.AUTOLOGIN_TITLE.Visible = false;
-			// 
-			// CLOSE_BUTTON
-			// 
-			this.CLOSE_BUTTON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.CLOSE_BUTTON.BackColor = System.Drawing.Color.Transparent;
-			this.CLOSE_BUTTON.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.CLOSE_BUTTON.Image = global::CafeMaster_UI.Properties.Resources.CLOSE;
-			this.CLOSE_BUTTON.Location = new System.Drawing.Point(560, 10);
-			this.CLOSE_BUTTON.Name = "CLOSE_BUTTON";
-			this.CLOSE_BUTTON.Size = new System.Drawing.Size(25, 25);
-			this.CLOSE_BUTTON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.CLOSE_BUTTON.TabIndex = 4;
-			this.CLOSE_BUTTON.TabStop = false;
-			this.CLOSE_BUTTON.Click += new System.EventHandler(this.CLOSE_BUTTON_Click);
 			// 
 			// PROFILE_IMAGE
 			// 
@@ -180,6 +181,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "네이버 로그인";
 			this.Load += new System.EventHandler(this.NaverLoginForm_Load);
+			this.Shown += new System.EventHandler(this.NaverLoginForm_Shown);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.NaverLoginForm_Paint);
 			this.APP_TITLE_BAR.ResumeLayout(false);
 			this.APP_TITLE_BAR.PerformLayout();

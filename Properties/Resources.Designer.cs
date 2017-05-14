@@ -73,6 +73,16 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap APP_ICON_v2_25x25 {
+            get {
+                object obj = ResourceManager.GetObject("APP_ICON_v2_25x25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Background03 {
             get {
                 object obj = ResourceManager.GetObject("Background03", resourceCulture);
@@ -96,6 +106,16 @@ namespace CafeMaster_UI.Properties {
         internal static System.Drawing.Bitmap Background05 {
             get {
                 object obj = ResourceManager.GetObject("Background05", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Background06 {
+            get {
+                object obj = ResourceManager.GetObject("Background06", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -593,6 +613,16 @@ namespace CafeMaster_UI.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap UTIL_ICON_6 {
+            get {
+                object obj = ResourceManager.GetObject("UTIL_ICON_6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap VIEW {
             get {
                 object obj = ResourceManager.GetObject("VIEW", resourceCulture);
@@ -626,6 +656,16 @@ namespace CafeMaster_UI.Properties {
         internal static System.Drawing.Bitmap WELCOME_SPLASH_V2 {
             get {
                 object obj = ResourceManager.GetObject("WELCOME_SPLASH_V2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap WELCOME_SPLASH_V3 {
+            get {
+                object obj = ResourceManager.GetObject("WELCOME_SPLASH_V3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
