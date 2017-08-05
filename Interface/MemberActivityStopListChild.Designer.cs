@@ -44,11 +44,11 @@
 			// PROFILE_IMAGE
 			// 
 			this.PROFILE_IMAGE.BackColor = System.Drawing.Color.Transparent;
-			this.PROFILE_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.PROFILE_IMAGE.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 			this.PROFILE_IMAGE.Image = global::CafeMaster_UI.Properties.Resources.PROFILE_UNKNOWN_V2_120x120;
-			this.PROFILE_IMAGE.Location = new System.Drawing.Point(8, 8);
+			this.PROFILE_IMAGE.Location = new System.Drawing.Point(0, 0);
 			this.PROFILE_IMAGE.Name = "PROFILE_IMAGE";
-			this.PROFILE_IMAGE.Size = new System.Drawing.Size(80, 70);
+			this.PROFILE_IMAGE.Size = new System.Drawing.Size(85, 85);
 			this.PROFILE_IMAGE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.PROFILE_IMAGE.TabIndex = 20;
 			this.PROFILE_IMAGE.TabStop = false;
@@ -81,7 +81,7 @@
 			// 
 			this.BEGIN_END_DATE_LABEL.BackColor = System.Drawing.Color.Transparent;
 			this.BEGIN_END_DATE_LABEL.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-			this.BEGIN_END_DATE_LABEL.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.BEGIN_END_DATE_LABEL.ForeColor = System.Drawing.Color.Red;
 			this.BEGIN_END_DATE_LABEL.Location = new System.Drawing.Point(327, 63);
 			this.BEGIN_END_DATE_LABEL.Name = "BEGIN_END_DATE_LABEL";
 			this.BEGIN_END_DATE_LABEL.Size = new System.Drawing.Size(220, 15);
@@ -142,9 +142,8 @@
 			// 
 			// MemberActivityStopListChild
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.Color.Transparent;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+			this.BackColor = System.Drawing.Color.White;
 			this.Controls.Add(this.MEMBER_ACTIVITY_STOP_REMOVE_BUTTON);
 			this.Controls.Add(this.OPEN_MEMBER_INFORMATION);
 			this.Controls.Add(this.WORK_STAFF_INFORMATION);

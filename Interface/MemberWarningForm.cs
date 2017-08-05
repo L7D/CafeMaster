@@ -131,8 +131,8 @@ namespace CafeMaster_UI.Interface
 
 			userSelected = false;
 
-			this.WARN_INFORMATION_PANEL.Parent = BACKGROUND_SPLASH;
-			this.USER_INFORMATION_PANEL.Parent = BACKGROUND_SPLASH;
+			//this.WARN_INFORMATION_PANEL.Parent = BACKGROUND_SPLASH;
+			//this.USER_INFORMATION_PANEL.Parent = BACKGROUND_SPLASH;
 
 			this.WARN_RUN_BUTTON.Enabled = false;
 			this.WARNING_COUNT.Enabled = false;
@@ -163,13 +163,17 @@ namespace CafeMaster_UI.Interface
 
 		private void CLOSE_BUTTON_Click( object sender, EventArgs e )
 		{
-			this.Close( );
+			Animation.UI.FadeOut( this, true );
 		}
 
 		private void UserWarnOptionForm_Paint( object sender, PaintEventArgs e )
 		{
 			int w = this.Width, h = this.Height;
 
+			e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+			e.Graphics.DrawImage( Properties.Resources.Background06, this.ClientRectangle );
 			e.Graphics.DrawLine( lineDrawer, 0, 0, w, 0 ); // 위
 			e.Graphics.DrawLine( lineDrawer, 0, 0, 0, h ); // 왼쪽
 			e.Graphics.DrawLine( lineDrawer, w - lineDrawer.Width, 0, w - lineDrawer.Width, h ); // 오른쪽
@@ -307,24 +311,28 @@ namespace CafeMaster_UI.Interface
 					}
 					else
 					{
-						NotifyBox.Show( this, "오류", "입력하신 아이디는 존재하지 않는 카페 회원입니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+						NotifyBox.Show( this, "오류", "죄송합니다, 회원 데이터를 불러올 수 없었습니다, 다시 시도하세요.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 					}
+				}
+				else
+				{
+					NotifyBox.Show( this, "오류", "입력하신 아이디는 존재하지 않는 카페 회원입니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+				}
 
-					if ( this.InvokeRequired )
-					{
-						this.Invoke( new Action( ( ) =>
-						{
-							this.USER_SEARCH_BUTTON.Text = "회원 검색";
-							this.USER_SEARCH_BUTTON.Enabled = true;
-							this.USER_SEARCH_TEXTBOX.Enabled = true;
-						} ) );
-					}
-					else
+				if ( this.InvokeRequired )
+				{
+					this.Invoke( new Action( ( ) =>
 					{
 						this.USER_SEARCH_BUTTON.Text = "회원 검색";
 						this.USER_SEARCH_BUTTON.Enabled = true;
 						this.USER_SEARCH_TEXTBOX.Enabled = true;
-					}
+					} ) );
+				}
+				else
+				{
+					this.USER_SEARCH_BUTTON.Text = "회원 검색";
+					this.USER_SEARCH_BUTTON.Enabled = true;
+					this.USER_SEARCH_TEXTBOX.Enabled = true;
 				}
 			} );
 		}
@@ -424,6 +432,13 @@ namespace CafeMaster_UI.Interface
 					}
 				}
 			}
+		}
+
+		private void USER_INFORMATION_PANEL_Paint( object sender, PaintEventArgs e )
+		{
+			int w = this.USER_INFORMATION_PANEL.Width, h = this.USER_INFORMATION_PANEL.Height;
+
+			e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
 		}
 	}
 }

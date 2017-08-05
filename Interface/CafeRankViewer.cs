@@ -120,7 +120,7 @@ namespace CafeMaster_UI.Interface
 
 		private void CLOSE_BUTTON_Click( object sender, EventArgs e )
 		{
-			this.Close( );
+			Animation.UI.FadeOut( this, true );
 		}
 
 		private void WEB_BROWSER_DocumentCompleted( object sender, WebBrowserDocumentCompletedEventArgs e )

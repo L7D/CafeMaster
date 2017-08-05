@@ -28,7 +28,75 @@ namespace CafeMaster_UI.Interface
 		{
 			Animation.UI.FadeIn( this );
 
-			this.VERSION.Text = "버전 " + GlobalVar.CURRENT_VERSION + ( GlobalVar.UPDATE_AVAILABLE ? " - 새로운 업데이트가 있습니다." : " - 최신 버전 입니다." );
+			this.UPDATE_LABEL.Text = "새로운 버전을 확인하는 중 ...";
+
+			Task.Factory.StartNew( ( ) =>
+			{
+				ProgramValidation programValidation = new ProgramValidation( );
+				ProgramValidation.UpdateCheckErrorResult errorCode;
+				ProgramValidation.UpdateResultStruct? versionInfo = programValidation.CheckNewVersion( out errorCode );
+
+				switch ( errorCode )
+				{
+					case ProgramValidation.UpdateCheckErrorResult.WebException:
+						this.Invoke( new Action( ( ) =>
+						{
+							this.UPDATE_LABEL.Text = "새로운 버전을 확인하는 중, 서버 오류가 발생했습니다.";
+						} ) );
+						break;
+					case ProgramValidation.UpdateCheckErrorResult.UnknownError:
+						this.Invoke( new Action( ( ) =>
+						{
+							this.UPDATE_LABEL.Text = "새로운 버전을 확인하는 중, 알 수 없는 오류가 발생했습니다.";
+						} ) );
+						break;
+					default:
+						this.Invoke( new Action( ( ) =>
+						{
+							if ( versionInfo.HasValue )
+							{
+								if ( versionInfo.Value.isLatestVersion )
+									this.UPDATE_LABEL.Text = "최신 버전을 사용 중입니다.";
+								else
+								{
+									this.UPDATE_LABEL.Text = "새로운 버전을 사용할 수 있습니다!";
+									this.UPDATE_LABEL.Cursor = Cursors.Hand;
+									this.UPDATE_LABEL.Click += ( object sender2, EventArgs e2 ) =>
+									{
+										if ( !string.IsNullOrEmpty( versionInfo.Value.updateURL ) )
+											Utility.OpenWebPage( versionInfo.Value.updateURL, this );
+									};
+
+
+									bool highLightStatus = false;
+
+									Timer highLightTimer = new Timer( )
+									{
+										Interval = 500
+									};
+									highLightTimer.Tick += ( object sender2, EventArgs e2 ) =>
+									{
+										highLightStatus = !highLightStatus;
+										this.UPDATE_LABEL.ForeColor = highLightStatus ? Color.OrangeRed : Color.Black;
+									};
+
+									highLightTimer.Start( );
+
+									this.FormClosing += new FormClosingEventHandler( ( object sender2, FormClosingEventArgs e2 ) =>
+									{
+										highLightTimer.Stop( );
+										highLightTimer.Dispose( );
+									} );
+
+								}
+							}
+						} ) );
+
+						break;
+				}
+			} );
+
+			this.VERSION.Text = "버전 " + GlobalVar.CURRENT_VERSION;
 			this.COPYRIGHT_2.Text = "자른이미지 by 잰(cony****), on(dbxh****)";
 		}
 
@@ -56,7 +124,7 @@ namespace CafeMaster_UI.Interface
 			e.Graphics.DrawLine( lineDrawer, 0, 0, w, 0 ); // 위
 			e.Graphics.DrawLine( lineDrawer, 0, 0, 0, h ); // 왼쪽
 			e.Graphics.DrawLine( lineDrawer, w - lineDrawer.Width, 0, w - lineDrawer.Width, h ); // 오른쪽
-			e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
+			//e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
 		}
 
 		private void CLOSE_BUTTON_Click( object sender, EventArgs e )
@@ -74,11 +142,6 @@ namespace CafeMaster_UI.Interface
 			e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
 		}
 
-		private void UTIL_BUTTON1_Click( object sender, EventArgs e )
-		{
-			Utility.OpenWebPage( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID, this );
-		}
-
 		private void LOGO_Click( object sender, EventArgs e )
 		{
 			Task.Factory.StartNew( ( ) =>
@@ -94,11 +157,21 @@ namespace CafeMaster_UI.Interface
 							Utility.OpenWebPage( urls[ i ], this );
 						}
 
-						NotifyBox.Show( this, "안내", urls[ urls.Length - 1 ], NotifyBoxType.OK, NotifyBoxIcon.Information );
+						NotifyBox.Show( this, "비밀", urls[ urls.Length - 1 ], NotifyBoxType.OK, NotifyBoxIcon.Information );
 					}
 					catch { }
 				} );
 			} );
+		}
+
+		private void CAFE_DIRECTGO_HYPERLINK_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+		{
+			Utility.OpenWebPage( "http://cafe.naver.com/" + GlobalVar.CAFE_URL_ID, this );
+		}
+
+		private void ProgramInformation_MouseDown( object sender, MouseEventArgs e )
+		{
+			this.Close( );
 		}
 	}
 }

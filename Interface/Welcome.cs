@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CafeMaster_UI.Lib;
+using WinFormAnimation;
 
 namespace CafeMaster_UI.Interface
 {
@@ -21,7 +22,7 @@ namespace CafeMaster_UI.Interface
 
 		private void Welcome_Load( object sender, EventArgs e )
 		{
-			Animation.UI.FadeIn( this );
+			
 		}
 
 		private void Welcome_Paint( object sender, PaintEventArgs e )
@@ -35,23 +36,31 @@ namespace CafeMaster_UI.Interface
 
 		private void Welcome_Shown( object sender, EventArgs e )
 		{
-			Animation.NumberSmoothEffect( 0, 123, ( float alpha ) =>
+			Animation.UI.FadeIn( this );
+
+			Action<float> CustomSetMethod = ( float yes ) =>
 			{
-				size = ( int ) alpha;
+				size = ( int ) yes;
 				this.Invalidate( );
-			} );
+			};
 
-			Task.Factory.StartNew( async ( ) =>
+			var animator = new Animator( new Path( 0, 123, 600 ), FPSLimiterKnownValues.LimitSixty );
+			animator.Play( new SafeInvoker<float>( CustomSetMethod ), new SafeInvoker( ( ) =>
 			{
-				await Task.Delay( 2000 );
-
-				if ( this.InvokeRequired )
+				Task.Factory.StartNew( async ( ) =>
 				{
-					this.Invoke( new Action( ( ) => Animation.UI.FadeOut( this, true ) ) );
-				}
-				else
-					Animation.UI.FadeOut( this, true );
-			} );
+					await Task.Delay( 300 );
+
+					if ( this.InvokeRequired )
+					{
+						this.Invoke( new Action( ( ) => Animation.UI.FadeOut( this, true ) ) );
+					}
+					else
+						Animation.UI.FadeOut( this, true );
+				} );
+			} ) );
+
+			
 		}
 	}
 }

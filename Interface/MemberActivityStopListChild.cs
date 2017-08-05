@@ -36,9 +36,12 @@ namespace CafeMaster_UI.Interface
 			{
 				try
 				{
+					data.profileImage = data.profileImage.Replace( "?type=s45", "?type=c120_120" ); // 네모난 이미지 원형으로 변경
+
+					System.IO.File.AppendAllText( "log.txt", data.profileImage + Environment.NewLine );
 					this.PROFILE_IMAGE.Load( data.profileImage );
 				}
-				catch ( Exception ex )
+				catch ( Exception )
 				{
 					//수정필요;
 					//Utility.WriteErrorLog( ex );

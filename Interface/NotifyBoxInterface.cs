@@ -86,19 +86,24 @@ namespace CafeMaster_UI.Interface
 		private void Yes_Button_Click( object sender, EventArgs e )
 		{
 			Result = NotifyBoxResult.Yes;
-			this.Close( );
+			this.CloseForm( );
 		}
 
 		private void NO_Button_Click( object sender, EventArgs e )
 		{
 			Result = NotifyBoxResult.No;
-			this.Close( );
+			this.CloseForm( );
 		}
 
 		private void OK_Button_Click( object sender, EventArgs e )
 		{
 			Result = NotifyBoxResult.OK;
-			this.Close( );
+			this.CloseForm( );
+		}
+
+		private void CloseForm( )
+		{
+			Animation.UI.FadeOut( this, true );
 		}
 
 		private void APP_TITLE_BAR_MouseMove( object sender, MouseEventArgs e )

@@ -52,6 +52,8 @@ namespace CafeMaster_UI
 					return;
 				}
 
+				Application.ThreadException += Application_ThreadException;
+				AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 				Application.EnableVisualStyles( );
 				Application.SetCompatibleTextRenderingDefault( false );
 				Application.Run( new Main( ) );
@@ -61,6 +63,24 @@ namespace CafeMaster_UI
 			{
 				NotifyBox.Show( null, "오류", "죄송합니다, 우윳빛깔 카페스탭이 이미 실행 중 입니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
 			}
+		}
+
+		private static void CurrentDomain_UnhandledException( object sender, UnhandledExceptionEventArgs e )
+		{
+			Utility.ProgramErrorHappendTick( );
+			GlobalVar.PROGRAM_UNCATCHED_ERRORS.Add( new ProgramErrorStruct( )
+			{
+				ex = ( Exception ) e.ExceptionObject
+			} );
+		}
+
+		private static void Application_ThreadException( object sender, ThreadExceptionEventArgs e )
+		{
+			Utility.ProgramErrorHappendTick( );
+			GlobalVar.PROGRAM_UNCATCHED_ERRORS.Add( new ProgramErrorStruct( )
+			{
+				ex = e.Exception
+			} );
 		}
 	}
 }

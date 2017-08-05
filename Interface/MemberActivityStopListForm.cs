@@ -48,7 +48,7 @@ namespace CafeMaster_UI.Interface
 
 		private void CLOSE_BUTTON_Click( object sender, EventArgs e )
 		{
-			this.Close( );
+			Animation.UI.FadeOut( this, true );
 		}
 
 		private void UserWarnOptionForm_Paint( object sender, PaintEventArgs e )
@@ -82,15 +82,13 @@ namespace CafeMaster_UI.Interface
 
 			ChangeUIStatus( true );
 
-			Task.Factory.StartNew( async ( ) =>
+			Task.Factory.StartNew( ( ) =>
 			{
 				Tuple<bool, List<MemberActivityStopListStruct>, string> data = NaverRequest.GetMemberActivityStopList( );
 
-				await Task.Delay( 1000 );
-
 				if ( data.Item1 )
 				{
-					int y = 10;
+					int y = 0;
 
 					if ( this.InvokeRequired )
 					{
@@ -103,7 +101,7 @@ namespace CafeMaster_UI.Interface
 								MemberActivityStopListChild panel = new MemberActivityStopListChild( i );
 								panel.Location = new Point( 10, y );
 
-								y += panel.Height + 5;
+								y += panel.Height+5;
 
 								this.MEMBER_ACTIVITY_STOP_LIST_PANEL.Controls.Add( panel );
 							}

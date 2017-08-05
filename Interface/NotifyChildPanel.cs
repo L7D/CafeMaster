@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 using CafeMaster_UI.Lib;
@@ -18,10 +17,6 @@ namespace CafeMaster_UI.Interface
 		{
 			Width = 1
 		};
-		private Pen selectedLineDrawer = new Pen( Color.Gold )
-		{
-			Width = 3
-		};
 		private NotifyData dataTemp;
 		private string authorID;
 
@@ -39,9 +34,11 @@ namespace CafeMaster_UI.Interface
 		{
 			InitializeComponent( );
 
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
+			this.SetStyle( ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.SupportsTransparentBackColor, true );
 			this.UpdateStyles( );
-			
+
+			this.BackColor = Color.FromArgb( 100, Color.White );
+
 			// 데이터 설정
 			this.THREAD_ID = data.threadID;
 			try
@@ -132,7 +129,7 @@ namespace CafeMaster_UI.Interface
 		//colorAnimationTimer.Start( );
 		//}
 
-		private void REMOVE_BUTTON_Click( object sender, EventArgs e )
+		private void NOTIFY_DELETE_BUTTON_Click( object sender, EventArgs e )
 		{
 			if ( NotifyBox.Show( null, "삭제 확인", "이 알림을 삭제하시겠습니까?", NotifyBoxType.YesNo, NotifyBoxIcon.Warning ) == NotifyBoxResult.Yes )
 				Notify.Remove( this.THREAD_ID );
@@ -140,8 +137,8 @@ namespace CafeMaster_UI.Interface
 
 		private void NotifyChildPanel_Load( object sender, EventArgs e )
 		{
-			this.SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
-			this.SetStyle( ControlStyles.ResizeRedraw, true );
+			if ( !BrowserCapture.FileAvailable( this.THREAD_ID ) )
+				this.IMAGE_VIEW_BUTTON.Visible = false;
 		}
 
 		private void NotifyChildPanel_Paint( object sender, PaintEventArgs e )
@@ -149,15 +146,7 @@ namespace CafeMaster_UI.Interface
 			int w = this.Width, h = this.Height;
 
 			//e.Graphics.FillRectangle( this.BackgroundDrawer, e.ClipRectangle );
-
-			if ( this.CHECKED )
-			{
-				e.Graphics.DrawLine( selectedLineDrawer, 0, h - selectedLineDrawer.Width, w, h - selectedLineDrawer.Width ); // 아래
-			}
-			else
-			{
-				e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
-			}
+			e.Graphics.DrawLine( lineDrawer, 0, h - lineDrawer.Width, w, h - lineDrawer.Width ); // 아래
 		}
 
 		private void RefreshData( )
@@ -237,16 +226,23 @@ namespace CafeMaster_UI.Interface
 
 			if ( this.CHECKED )
 			{
-				this.THIS_SELECT_BUTTON.NormalStateBackgroundColor = Color.Gold;
-				this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = Color.DimGray;
+				this.lineDrawer = new Pen( Color.FromArgb( 35, 144, 237 ) )
+				{
+					Width = 2,
+					DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot
+				};
+				this.THIS_SELECT_BUTTON.Image = Properties.Resources.NOTIFY_SELECT_YES_ICON;
 			}
 			else
 			{
-				this.THIS_SELECT_BUTTON.NormalStateBackgroundColor = Color.DimGray;
-				this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = Color.Gold;
+				this.lineDrawer = new Pen( GlobalVar.MasterColor )
+				{
+					Width = 1
+				};
+				this.THIS_SELECT_BUTTON.Image = Properties.Resources.NOTIFY_SELECT_NOPE_ICON;
 			}
-
-			this.Refresh( );
+			
+			this.Invalidate( );
 
 			Main main = Utility.GetMainForm( );
 
@@ -263,16 +259,23 @@ namespace CafeMaster_UI.Interface
 
 			if ( this.CHECKED )
 			{
-				this.THIS_SELECT_BUTTON.NormalStateBackgroundColor = Color.Gold;
-				this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = Color.Gold;
+				this.lineDrawer = new Pen( Color.FromArgb( 35, 144, 237 ) )
+				{
+					Width = 2,
+					DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot
+				};
+				this.THIS_SELECT_BUTTON.Image = Properties.Resources.NOTIFY_SELECT_YES_ICON;
 			}
 			else
 			{
-				this.THIS_SELECT_BUTTON.NormalStateBackgroundColor = Color.DarkGray;
-				this.THIS_SELECT_BUTTON.EnterStateBackgroundColor = Color.Gold;
+				this.lineDrawer = new Pen( GlobalVar.MasterColor )
+				{
+					Width = 1
+				};
+				this.THIS_SELECT_BUTTON.Image = Properties.Resources.NOTIFY_SELECT_NOPE_ICON;
 			}
 
-			this.Refresh( );
+			this.Invalidate( );
 
 			Main main = Utility.GetMainForm( );
 

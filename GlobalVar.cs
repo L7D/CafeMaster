@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using CafeMaster_UI.Lib;
 
 namespace CafeMaster_UI
 {
@@ -17,8 +18,11 @@ namespace CafeMaster_UI
 
 		public const string CAFE_ID = "25430492"; // 카페 숫자 아이디 // 25016505 // 25430492
 		public const string CAFE_URL_ID = "revolution232"; // 카페 문자열 아이디
-		//http://cafe.naver.com/left7deadhalflife
-		//revolution232
+														   //http://cafe.naver.com/left7deadhalflife
+														   //revolution232
+
+		public static ProgramValidation.UpdateResultStruct VERSION_INFO;
+		public static List<ProgramErrorStruct> PROGRAM_UNCATCHED_ERRORS = new List<ProgramErrorStruct>( );
 
 		public const string CAFE_RULE_URL = "http://cafe.naver.com/revolution232/6894"; // 카페 공지사항 링크
 		public const string CAFE_CHAT_URL = "https://chat.cafe.naver.com/room/25430492/lolori_:1484751066552?ssId=2"; // 카페 채팅 링크

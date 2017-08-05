@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CafeMaster_UI.Lib;
+using mshtml;
 
 namespace CafeMaster_UI.Interface
 {
@@ -113,7 +114,7 @@ namespace CafeMaster_UI.Interface
 						{
 							if ( Config.Get( "AutoLoginRecommendNeed", "1" ) == "1" )
 							{
-								if ( NotifyBox.Show( this, "자동 로그인 설정 권장", IDTemp + " 계정 자동 로그인 설정을 하시겠습니까? 자동 로그인 설정을 하시면 다음부터는 이러한 귀찮은 아이디와 암호를 입력할 필요가 없습니다.\n\n단, 공공장소에서는 절대로 하지 마십시오, 메인 화면에서 설정 메뉴로 들어가 언제든지 자동 로그인 설정을 바꿀 수 있습니다.", NotifyBoxType.YesNo, NotifyBoxIcon.Information ) == NotifyBoxResult.Yes )
+								if ( NotifyBox.Show( this, "자동 로그인 설정 권장", IDTemp + " 계정 자동 로그인 설정을 하시겠습니까? 자동 로그인 설정을 하시면 다음부터는 아이디와 암호를 입력할 필요가 없습니다.\n\n단, 공공장소에서는 절대로 하지 마십시오, 메인 화면에서 설정 메뉴로 들어가 언제든지 자동 로그인 설정을 바꿀 수 있습니다.", NotifyBoxType.YesNo, NotifyBoxIcon.Information ) == NotifyBoxResult.Yes )
 								{
 									AutoLogin.SetAccountDataResult result = AutoLogin.SetAccountData( IDTemp, PWDTemp, IDTemp );
 
@@ -317,14 +318,15 @@ namespace CafeMaster_UI.Interface
 												}
 												else
 												{
-													NotifyBox.Show( this, "오류", "죄송합니다, 해당 계정은 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다, 자동 로그인 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+													NotifyBox.Show( this, "오류", "죄송합니다, 해당 계정은 연애혁명 공식 팬카페 '카페혁명 우윳빛깔 232'의 스탭이 아닙니다, 자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 													AutoLogin.DeleteAccountData( );
 													Application.Exit( );
 
 													return;
 												}
 											case NaverRequest.NaverLoginResult.ChptchaRequired:
-
+												NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인에 실패했습니다, 자동 입력 방지 문자를 입력해야 합니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
+												SetMode( false );
 												break;
 											case NaverRequest.NaverLoginResult.IDorPWDError:
 												NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인에 실패했습니다, 아이디 또는 비밀번호가 올바르지 않습니다\n자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Warning );
@@ -350,7 +352,7 @@ namespace CafeMaster_UI.Interface
 									}
 									else
 									{
-										NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+										NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다, 자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 										AutoLogin.DeleteAccountData( );
 
 										SetMode( false );
@@ -358,7 +360,8 @@ namespace CafeMaster_UI.Interface
 								}
 								else
 								{
-									NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+									NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 데이터 구조 문제가 발생했습니다, 자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+									AutoLogin.DeleteAccountData( );
 
 									SetMode( false );
 								}
@@ -371,20 +374,20 @@ namespace CafeMaster_UI.Interface
 
 								break;
 							case AutoLogin.GetAccountDataResult.DecryptFailed:
-								NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 복호화 오류가 발생했습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+								NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 복호화 오류가 발생했습니다, 자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 								AutoLogin.DeleteAccountData( );
 
 								SetMode( false );
 
 								break;
 							case AutoLogin.GetAccountDataResult.Unknown:
-								NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 알 수 없는 오류가 발생했습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+								NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 알 수 없는 오류가 발생했습니다, 자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 								AutoLogin.DeleteAccountData( );
 
 								SetMode( false );
 								break;
 							default:
-								NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 알 수 없는 오류가 발생했습니다, 설정이 초기화되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
+								NotifyBox.Show( this, "오류", "죄송합니다, 자동 로그인 데이터를 불러오지 못했습니다, 알 수 없는 오류가 발생했습니다, 자동 로그인이 해제되었습니다.", NotifyBoxType.OK, NotifyBoxIcon.Error );
 								AutoLogin.DeleteAccountData( );
 
 								SetMode( false );
@@ -429,23 +432,40 @@ namespace CafeMaster_UI.Interface
 			//<link rel="stylesheet" type="text/css" href="/login/css/global/desktop/e_20161104.css?dt=20161214">
 
 
+//			HtmlElement head = browserBehind.Document.GetElementsByTagName( "head" )[ 0 ];
+//			HtmlElement styleEl = browserBehind.Document.CreateElement( "style" );
+//			IHTMLStyleElement element = ( IHTMLStyleElement ) styleEl.DomElement;
+//			IHTMLStyleSheet styleSheet = element.styleSheet;
+//			styleSheet.cssText = @"body,
+//input,
+//textarea,
+//select,
+//button,
+//table {
+//	font-family: '맑은 고딕',Dotum,Arial,Helvetica,sans-serif;
+//	font-size: 12px;
 
-			//foreach ( HtmlElement i in browserBehind.Document.GetElementsByTagName( "link" ) )
-			//{
+//	-webkit-text-size-adjust: none;
+//}";
+//			head.AppendChild( styleEl );
 
-			//	if ( i.GetAttribute("href").Contains( "e_" ) )
-			//	{
-			//		MessageBox.Show( i.GetAttribute( "href" ) );
-			//		i.SetAttribute( "href", "http://textuploader.com/dt2vv/raw" );
-			//	}
-			//	else if ( i.GetAttribute( "href" ).Contains( "w_" ) )
-			//	{
-			//		MessageBox.Show( i.GetAttribute( "href" ) );
-			//		i.SetAttribute( "href", "https://nid.naver.com/login/css/global/desktop/w_20161104.css?dt=20161214" );
-			//	}
-			//}
+//			browserBehind.Refresh( );
 
-			//d = false;
+//			foreach ( HtmlElement i in browserBehind.Document.GetElementsByTagName( "link" ) )
+//			{
+
+//				//MessageBox.Show( i.GetAttribute( "href" ) );
+//				if ( i.GetAttribute( "href" ).Contains( "e_20161104.css?dt=20161214" ) )
+//				{
+//					//i.SetAttribute( "href", "http://textuploader.com/dt2vv/raw" );
+//				}
+//				else if ( i.GetAttribute( "href" ).Contains( "e_20161104.css?dt=20161214" ) )
+//				{
+//					//i.SetAttribute( "href", "https://nid.naver.com/login/css/global/desktop/w_20161104.css?dt=20161214" );
+//				}
+//			}
+
+//			d = false;
 		}
 
 		private void NaverLoginForm_Shown( object sender, EventArgs e )

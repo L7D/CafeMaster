@@ -118,9 +118,42 @@
     <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WinFormAnimation">
+      <HintPath>..\..\..\C#\라이브러리\WinFormAnimation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalVar.cs" />
+    <Compile Include="Interface\MaskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\MaskForm.Designer.cs">
+      <DependentUpon>MaskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\ProgramErrorListChild.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\ProgramErrorListChild.Designer.cs">
+      <DependentUpon>ProgramErrorListChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\ProgramErrorNotify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\ProgramErrorNotify.Designer.cs">
+      <DependentUpon>ProgramErrorNotify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\UpdateNotifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interface\UpdateNotifyForm.Designer.cs">
+      <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interface\CafeRankViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +227,7 @@
     <Compile Include="Interface\Welcome.Designer.cs">
       <DependentUpon>Welcome.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lib\Analysis.cs" />
     <Compile Include="Lib\Animation.cs" />
     <Compile Include="Lib\AutoLogin.cs" />
     <Compile Include="Lib\BrowserCapture.cs" />
@@ -204,7 +238,7 @@
     <Compile Include="Lib\Notify.cs" />
     <Compile Include="Lib\NotifyBox.cs" />
     <Compile Include="Lib\SoundNotify.cs" />
-    <Compile Include="Lib\Update.cs" />
+    <Compile Include="Lib\ProgramValidation.cs" />
     <Compile Include="Lib\Utility.cs" />
     <Compile Include="Lib\UXProgram.cs" />
     <Compile Include="Lib\WinAPI.cs" />
@@ -222,6 +256,21 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Interface\MaskForm.resx">
+      <DependentUpon>MaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\ProgramErrorListChild.resx">
+      <DependentUpon>ProgramErrorListChild.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\ProgramErrorNotify.resx">
+      <DependentUpon>ProgramErrorNotify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\UpdateNotifyForm.resx">
+      <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\CafeRankViewer.resx">
       <DependentUpon>CafeRankViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -303,11 +352,8 @@
     <None Include="Resources\QUESTION_ICON.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PICTURE.png" />
     <None Include="Resources\WARN_EXAMPLE.jpg" />
     <None Include="Resources\THUNDER.png" />
-    <None Include="Resources\VIEW.png" />
-    <None Include="Resources\BOARD_ICON.png" />
     <None Include="Resources\USER_ICON.png" />
     <None Include="Resources\unlocked.png" />
     <None Include="Resources\BELL_IGNORE.png" />
@@ -316,19 +362,37 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ADMIN_SHIELD.png" />
-    <None Include="Resources\CHECK.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="APP_ICON.ico" />
-    <Content Include="APP_ICON_50x50.ico" />
     <Content Include="APP_ICON_v2_50x50.ico" />
+    <None Include="Resources\CAFE_RANK_RULE_ICON.png" />
+    <None Include="Resources\CAFE_MANAGEMENT_ICON.png" />
+    <None Include="Resources\USER_ACCEPT_ICON.png" />
+    <None Include="Resources\LAW_ICON.png" />
+    <None Include="bin\Debug\BACKGROUND_WALLPAPER_1.png" />
+    <None Include="Resources\TIME_ICON.png" />
+    <None Include="Resources\MASK_PROGRESS_ICON.png" />
+    <None Include="Resources\SELECT_ALL.png" />
+    <None Include="Resources\NOTIFY_SELECT_NOPE_ICON.png" />
+    <None Include="Resources\NOTIFY_SELECT_YES_ICON.png" />
+    <None Include="Resources\THREAD_VIEW_OPEN_ICON.png" />
+    <None Include="Resources\IMAGE_VIEW_ICON.png" />
+    <None Include="Resources\MEMBER_ACTIVITY_STOP_ICON.png" />
+    <None Include="Resources\USER_WARN_ICON.png" />
+    <None Include="Resources\REMOVE_ICON.png" />
+    <None Include="Resources\NOTIFY_REMOVE.png" />
+    <None Include="Resources\ERROR_ICON_50x50.png" />
+    <None Include="Resources\ERROR_ICON_25x25_BLACK.png" />
+    <None Include="Resources\ERROR_ICON_25x25.png" />
+    <None Include="Resources\UPDATE_25x25_BLACK.png" />
+    <None Include="Resources\UPDATE_25x25.png" />
+    <None Include="Resources\UPDATE_35x35.png" />
+    <None Include="Resources\APP_ICON_v2_25x25.png" />
     <None Include="Resources\EMPTY.png" />
     <None Include="Resources\Background06.png" />
     <None Include="Resources\PROGRAM_ICON_150x150.png" />
     <None Include="Resources\WELCOME_SPLASH_V3.png" />
     <None Include="Resources\UTIL_ICON_6.png" />
-    <None Include="Resources\APP_ICON_v2_25x25.png" />
-    <None Include="Resources\SELECT_ALL.png" />
     <None Include="Resources\MEMBER_RANK.png" />
     <None Include="Resources\NETWORK_IDLE.png" />
     <None Include="Resources\OPTION.png" />
@@ -342,11 +406,6 @@
     <None Include="Resources\UTIL_ICON_1.png" />
     <None Include="Resources\CHAT.png" />
     <None Include="Resources\NEW_ARTICLE.png" />
-    <None Include="Resources\TIME_ICON.png" />
-    <None Include="Resources\NOTIFY_REMOVE.png" />
-    <None Include="Resources\REMOVE_ICON.png" />
-    <None Include="Resources\MEMBER_ACTIVITY_STOP_ICON.png" />
-    <None Include="Resources\USER_WARN_ICON.png" />
     <None Include="Resources\NETWORK_ISERROR.png" />
     <None Include="Resources\NETWORK_SYNC_2.png" />
     <None Include="Resources\NETWORK_SYNC_1.png" />
@@ -381,6 +440,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSHTML">
+      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

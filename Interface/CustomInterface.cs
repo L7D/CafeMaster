@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -31,7 +32,7 @@ namespace CafeMaster_UI.Interface
 			}
 		}
 	}
-
+	
 	public class FlatCheckBox : PictureBox
 	{
 		private bool Status_private;
@@ -68,6 +69,121 @@ namespace CafeMaster_UI.Interface
 		{
 			base.OnClick( e );
 			this.Status = !this.Status;
+		}
+	}
+
+	public class FlatScrollBar : UserControl
+	{
+		public new event EventHandler Scroll = null;
+		public event EventHandler ValueChanged = null;
+		private int grapHeight = 30;
+		private int Value_private;
+		private int Minimum_private;
+		private int Maximum_private;
+
+		[EditorBrowsable( EditorBrowsableState.Always ), Browsable( true ), DefaultValue( false ), Category( "Behavior" ), Description( "Minimum" )]
+		public int Minimum
+		{
+			get { return Minimum_private; }
+			set
+			{
+				Minimum_private = value;
+				Invalidate( );
+			}
+		}
+
+		[EditorBrowsable( EditorBrowsableState.Always ), Browsable( true ), DefaultValue( false ), Category( "Behavior" ), Description( "Maximum" )]
+		public int Maximum
+		{
+			get { return Maximum_private; }
+			set
+			{
+				Maximum_private = value;
+				Invalidate( );
+			}
+		}
+
+		[EditorBrowsable( EditorBrowsableState.Always ), Browsable( true ), DefaultValue( false ), Category( "Behavior" ), Description( "Value" )]
+		public int Value
+		{
+			get { return Value_private; }
+			set
+			{
+				Value_private = Utility.Clamp( value, Maximum, Minimum );
+				Invalidate( );
+			}
+		}
+
+		public FlatScrollBar( )
+		{
+			this.SetStyle( ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true );
+			this.UpdateStyles( );
+		}
+
+		private void MoveGrap( int y )
+		{
+			mouseClickPoint = Utility.Clamp( y, Height- grapHeight, 0 );
+			this.Invalidate( );
+		}
+
+		private bool isGrapped = false;
+		protected override void OnMouseMove( MouseEventArgs e )
+		{
+			base.OnMouseMove( e );
+
+			if ( isGrapped )
+			{
+				MoveGrap( e.Y );
+
+				
+			}
+
+			Value = e.Y;
+
+			if ( ValueChanged != null )
+				ValueChanged( this, new EventArgs( ) );
+
+			if ( Scroll != null )
+				Scroll( this, new EventArgs( ) );
+		}
+		private int mouseClickPoint;
+
+		protected override void OnMouseDown( MouseEventArgs e )
+		{
+			base.OnMouseDown( e );
+
+			if ( !isGrapped )
+				isGrapped = true;
+
+			Point mousePoint = PointToClient( Cursor.Position );
+
+			Rectangle rail = new Rectangle( new Point( 1, 0 ), new Size( Width, Height ) );
+
+			if ( rail.Contains( mousePoint ) )
+			{
+				mouseClickPoint = mousePoint.Y;
+				this.Invalidate( );
+				//MessageBox.Show( mouseClickPoint.ToString( ) );
+			}
+		}
+
+		protected override void OnPaint( PaintEventArgs e )
+		{
+			//base.OnPaint( e );
+
+			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+			//draw channel
+			e.Graphics.FillRectangle( Brushes.Silver, e.ClipRectangle );
+			e.Graphics.FillRectangle( Brushes.Red, new Rectangle( 1, mouseClickPoint, Width, grapHeight ) );
+		}
+
+		protected override void OnMouseUp( MouseEventArgs e )
+		{
+			base.OnMouseDown( e );
+
+			if ( isGrapped )
+				isGrapped = false;
 		}
 	}
 

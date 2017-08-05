@@ -43,7 +43,6 @@
 			this.USER_SEARCH_TEXTBOX = new System.Windows.Forms.TextBox();
 			this.USER_SEARCH_DESC = new System.Windows.Forms.Label();
 			this.USER_SEARCH_TITLE = new System.Windows.Forms.Label();
-			this.BACKGROUND_SPLASH = new System.Windows.Forms.PictureBox();
 			this.WARN_TEXT = new System.Windows.Forms.Label();
 			this.WARN_ICON = new System.Windows.Forms.PictureBox();
 			this.USER_SEARCH_BUTTON = new CafeMaster_UI.Interface.FlatButton();
@@ -67,7 +66,6 @@
 			this.USER_INFORMATION_PANEL.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PERSONACON_IMAGE_ICON)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE_ICON)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.BACKGROUND_SPLASH)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARN_ICON)).BeginInit();
 			this.WARN_INFORMATION_PANEL.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.WARNING_COUNT)).BeginInit();
@@ -127,7 +125,7 @@
 			this.USER_INFORMATION_PANEL.Name = "USER_INFORMATION_PANEL";
 			this.USER_INFORMATION_PANEL.Size = new System.Drawing.Size(531, 95);
 			this.USER_INFORMATION_PANEL.TabIndex = 26;
-			this.USER_INFORMATION_PANEL.Visible = false;
+			this.USER_INFORMATION_PANEL.Paint += new System.Windows.Forms.PaintEventHandler(this.USER_INFORMATION_PANEL_Paint);
 			// 
 			// MEMBER_INFO_OPEN_BUTTON
 			// 
@@ -258,16 +256,6 @@
 			this.USER_SEARCH_TITLE.Size = new System.Drawing.Size(44, 14);
 			this.USER_SEARCH_TITLE.TabIndex = 34;
 			this.USER_SEARCH_TITLE.Text = "회원 ID";
-			// 
-			// BACKGROUND_SPLASH
-			// 
-			this.BACKGROUND_SPLASH.BackColor = System.Drawing.Color.Transparent;
-			this.BACKGROUND_SPLASH.Image = global::CafeMaster_UI.Properties.Resources.Background06;
-			this.BACKGROUND_SPLASH.Location = new System.Drawing.Point(1, 0);
-			this.BACKGROUND_SPLASH.Name = "BACKGROUND_SPLASH";
-			this.BACKGROUND_SPLASH.Size = new System.Drawing.Size(598, 648);
-			this.BACKGROUND_SPLASH.TabIndex = 35;
-			this.BACKGROUND_SPLASH.TabStop = false;
 			// 
 			// WARN_TEXT
 			// 
@@ -548,7 +536,6 @@
 			this.Controls.Add(this.WARN_RUN_BUTTON);
 			this.Controls.Add(this.APP_TITLE_BAR);
 			this.Controls.Add(this.USER_SEARCH_TEXTBOX);
-			this.Controls.Add(this.BACKGROUND_SPLASH);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("나눔고딕", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -564,7 +551,6 @@
 			this.USER_INFORMATION_PANEL.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.PERSONACON_IMAGE_ICON)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PROFILE_IMAGE_ICON)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.BACKGROUND_SPLASH)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.WARN_ICON)).EndInit();
 			this.WARN_INFORMATION_PANEL.ResumeLayout(false);
 			this.WARN_INFORMATION_PANEL.PerformLayout();
@@ -593,7 +579,6 @@
 		private System.Windows.Forms.TextBox USER_SEARCH_TEXTBOX;
 		private System.Windows.Forms.Label USER_SEARCH_DESC;
 		private System.Windows.Forms.Label USER_SEARCH_TITLE;
-		private System.Windows.Forms.PictureBox BACKGROUND_SPLASH;
 		private System.Windows.Forms.Label WARN_TEXT;
 		private System.Windows.Forms.PictureBox WARN_ICON;
 		private FlatButton MEMBER_INFO_OPEN_BUTTON;

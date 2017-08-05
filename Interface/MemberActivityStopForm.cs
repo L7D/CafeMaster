@@ -189,7 +189,7 @@ namespace CafeMaster_UI.Interface
 
 		private void CANCEL_BUTTON_Click( object sender, EventArgs e )
 		{
-			this.Close( );
+			Animation.UI.FadeOut( this, true );
 		}
 
 		private void SELECT_RESET_BUTTON_Click( object sender, EventArgs e )
@@ -229,7 +229,7 @@ namespace CafeMaster_UI.Interface
 				if ( NaverRequest.CheckMemberExistsSimple( id ) )
 				{
 					MemberInformationStruct? info = NaverRequest.GetMemberInformation( id );
-
+					
 					if ( info.HasValue )
 					{
 						if ( this.InvokeRequired )
